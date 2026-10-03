@@ -303,6 +303,49 @@ def _(ds_single, mo):
 
 
 @app.cell
+def _(mo):
+    mo.md(r"""
+    ### Validated and unvalidated parsing
+
+    `to_ds()` validates every epoch by default: the epoch line, the
+    satellite IDs, the satellite count and the observation records are
+    checked through Pydantic models. Epochs that fail are dropped, and the
+    reader logs how many and at which lines.
+
+    ```python
+    ds = reader.to_ds(keep_data_vars=["SNR"])                       # validated (default)
+    ds = reader.to_ds(keep_data_vars=["SNR"], parser="validated")   # the same, explicit
+    ```
+
+    An unvalidated fast parser exists for files you have checked yourself.
+    It is shown here, not run:
+
+    ```python
+    ds = reader.to_ds(keep_data_vars=["SNR"], parser="unvalidated_fast")
+    # UnvalidatedParserWarning: DANGEROUS: the unvalidated fast RINEX v3 parser ...
+    ```
+
+    /// danger | The unvalidated parser is your responsibility
+    It slices fixed columns without any check, so a corrupted record can
+    enter the dataset as partial or wrong values. canVODpy takes no
+    responsibility for its results. For a valid file both parsers give the
+    identical dataset. In a configuration file, the choice is
+    `processing.params.rinex_v3_parser` (`validated` by default).
+    ///
+
+    ### Time scale of the epochs
+
+    Epochs are stored as written in the file, in the time system of its
+    `TIME OF FIRST OBS` header record. The epoch coordinate records it:
+
+    ```python
+    ds["epoch"].attrs["time_system"]   # e.g. "GPS"; RINEX "GLO" is recorded as "UTC"
+    ```
+    """)
+    return
+
+
+@app.cell
 def _(ds_single, mo):
     import numpy as np
 
