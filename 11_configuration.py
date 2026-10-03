@@ -40,7 +40,7 @@ def _():
 
     1. **Configuration** (`canvod-config`) — Pydantic models that define
        every tuneable parameter of the canvodpy pipeline, loaded from YAML
-    2. **Utilities and stage timing** (`canvod-utils`, `canvodpy.logging`)
+    2. **Utilities and stage timing** (`canvod-utils`)
        — date and hashing helpers, and timed pipeline stages
 
     Together they ensure that the pipeline is both reproducible
@@ -558,7 +558,7 @@ def _(mo):
     run that crashes still has a timing record:
 
     ```python
-    from canvodpy.logging.stage_timer import stage_timer
+    from canvod.utils.logging import stage_timer
 
     with stage_timer("rinex.process_file", file=path.name):
         ...
