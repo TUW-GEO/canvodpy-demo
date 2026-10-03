@@ -150,9 +150,25 @@ def _(mo):
         r"""
     ## Temporal aggregation
 
-    `canvodpy run` and `Site(...).pipeline()` store observations at their
-    full time resolution.  To aggregate a dataset to a coarser time
-    resolution, apply a `canvod-ops` pipeline to it:
+    By default, `canvodpy run`, `Site(...).pipeline()` and Airflow store
+    observations at the receiver's sampling interval.  To store them
+    aggregated instead, set the optional `processing.preprocessing`
+    section of `config/canvod-settings.yaml`:
+
+    ```yaml
+    preprocessing:
+      temporal_aggregation:
+        freq: "1min"      # whole number + "s", "min" or "h"; divides one day
+        method: "median"  # or "mean"
+    ```
+
+    Each run then aggregates every receiver's files of a day before
+    writing them to the GNSS store; a time bin spanning two files is
+    aggregated from both.  Keep the setting for the life of a store:
+    writing differently aggregated data into an existing store stops
+    with an error.
+
+    To aggregate a dataset yourself, apply a `canvod-ops` pipeline to it:
 
     ```python
     from canvod.ops import Pipeline, TemporalAggregate
@@ -161,14 +177,11 @@ def _(mo):
     ds_aggregated, result = ops(ds)
     ```
 
-    `freq` is a pandas offset alias. (The `processing.preprocessing`
-    settings section is deprecated: no run applies it.)
-
     | Frequency | Epochs per day | Use case |
     |-----------|---------------|----------|
     | `"5s"` | 17,280 | Full resolution (no aggregation) |
     | `"30s"` | 2,880 | Reduced noise, moderate resolution |
-    | `"1min"` | 1,440 | Standard for daily VOD maps |
+    | `"1min"` | 1,440 | Daily VOD maps |
     | `"5min"` | 288 | Coarse monitoring |
     | `"15min"` | 96 | Matches file boundaries |
 
