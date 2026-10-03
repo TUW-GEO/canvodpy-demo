@@ -152,24 +152,17 @@ def _(mo):
 
     `canvodpy run` and `Site(...).pipeline()` store observations at their
     full time resolution.  To aggregate a dataset to a coarser time
-    resolution, apply the `canvod-ops` pipeline to it; it reads its
-    settings from the `processing.preprocessing` section of
-    `config/canvod-settings.yaml`:
-
-    ```yaml
-    preprocessing:
-      temporal_aggregation:
-        enabled: true
-        freq: "1min"      # Pandas offset alias
-        method: "mean"    # or "median"
-    ```
+    resolution, apply a `canvod-ops` pipeline to it:
 
     ```python
-    from canvod.ops import build_default_pipeline
+    from canvod.ops import Pipeline, TemporalAggregate
 
-    ops = build_default_pipeline()   # reads processing.preprocessing
+    ops = Pipeline([TemporalAggregate(freq="1min", method="mean")])
     ds_aggregated, result = ops(ds)
     ```
+
+    `freq` is a pandas offset alias. (The `processing.preprocessing`
+    settings section is deprecated: no run applies it.)
 
     | Frequency | Epochs per day | Use case |
     |-----------|---------------|----------|
