@@ -320,9 +320,9 @@ def _(catalog, date, mo):
     $$f_{{L1}} = 1602.0 + k \\times 0.5625 \\text{{ MHz}}$$
     $$f_{{L2}} = 1246.0 + k \\times 0.4375 \\text{{ MHz}}$$
 
-    where $k$ is the channel number.  The SBF reader resolves these
-    frequencies from a live `ChannelStatus` cache; the catalog provides
-    the ground-truth assignment for validation.
+    where $k$ is the channel number.  The SBF reader takes $k$ from the
+    MeasEpoch block of each observation; the catalog provides the
+    ground-truth assignment for validation.
     """
     )
 

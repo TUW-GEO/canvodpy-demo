@@ -110,7 +110,7 @@ def _(mo):
     | Property | RINEX v3.04 | SBF |
     |----------|-------------|-----|
     | **Encoding** | Fixed-width ASCII | Packed binary blocks |
-    | **SNR quantization** | ~0.001 dB | 0.25 dB |
+    | **SNR quantization** | ~0.001 dB | 0.25 dB-Hz; 0.03125 dB-Hz with MeasExtra |
     | **Satellite geometry** | Not included | Firmware-computed azimuth, elevation |
     | **DOP values** | Not included | PDOP, HDOP, VDOP per epoch |
     | **PVT solution** | Not included | Full position/velocity/time |
@@ -118,10 +118,10 @@ def _(mo):
     | **File size** | Larger (text) | Smaller (~40% of RINEX) |
     | **Constellations** | All GNSS | All GNSS |
 
-    The 0.25 dB SNR quantization in SBF is a hardware constraint of the
-    Septentrio receiver's measurement engine.  RINEX files converted from
-    SBF (via `sbf2rin`) inherit this quantization.  Raw RINEX files from
-    other receivers may have finer resolution.
+    The MeasEpoch block reports C/N0 in steps of 0.25 dB-Hz.  Where the
+    receiver also logs the MeasExtra block, its CN0HighRes field refines
+    this to 1/32 dB-Hz (0.03125 dB-Hz), and the `SbfReader` applies it to
+    `SNR` automatically.
     """
     )
 
@@ -307,22 +307,21 @@ def _(ds_sbf, mo, np):
     _snr_flat = ds_sbf["SNR"].values.ravel()
     _snr_valid = _snr_flat[np.isfinite(_snr_flat)]
 
-    _diffs = np.diff(np.sort(np.unique(np.round(_snr_valid, 2))))
+    _diffs = np.diff(np.sort(np.unique(np.round(_snr_valid, 5))))
     _min_step = np.min(_diffs) if len(_diffs) > 0 else 0
 
     mo.md(
         f"""
     ### SNR quantization
 
-    The Septentrio receiver quantizes SNR (C/N0) to **0.25 dB** steps.
-    This is visible in the data: the minimum step between unique SNR values
-    is **{_min_step:.2f} dB**.
+    MeasEpoch reports C/N0 in **0.25 dB-Hz** steps; with the MeasExtra
+    CN0HighRes field the step is **0.03125 dB-Hz**.  In this file the
+    minimum step between unique SNR values is **{_min_step:.5f} dB-Hz**.
 
-    This quantization is a hardware property of the measurement engine and
-    cannot be improved in post-processing.  For GNSS-T VOD retrieval, the
-    0.25 dB step size introduces a quantization noise of approximately
-    0.25 / sqrt(12) = 0.072 dB RMS, which is small relative to the typical
-    SNR dynamic range of 20--50 dB-Hz observed through forest canopies.
+    A step size q adds a quantization noise of about q / sqrt(12):
+    0.072 dB-Hz RMS for 0.25 dB-Hz and 0.009 dB-Hz RMS for 0.03125 dB-Hz,
+    both small relative to the typical SNR dynamic range of 20--50 dB-Hz
+    observed through forest canopies.
     """
     )
 
@@ -347,11 +346,17 @@ def _(mo):
 
     The metadata dataset (`sbf_obs`) contains:
 
-    - **Polar angle** (`theta`) and **azimuth** (`phi`) from the receiver's
-      real-time navigation solution
-    - **DOP values** (PDOP, HDOP, VDOP) per epoch
+    - **Polar angle** (`broadcast_theta`) and **azimuth** (`broadcast_phi`)
+      from the receiver's real-time navigation solution
+    - **DOP values** (PDOP, HDOP, VDOP) and the PVT solution per epoch
     - **Rise/set state** per satellite
-    - **Multipath corrections** (if available)
+    - **MeasExtra signal quality**: multipath and smoothing corrections,
+      noise variances, lock time (if MeasExtra is logged)
+    - **Receiver status and quality scores**: CPU load, temperature,
+      error flags, QualityInd scores, spoofing flags
+
+    Every value comes from the SBF blocks with the same time stamp as the
+    observations of that epoch.
 
     These receiver-computed angles use **broadcast ephemeris** (the
     navigation message decoded in real time), which has ~1--2 m orbit
@@ -386,9 +391,6 @@ def _(ds_meta, mo, np):
     _vars = list(ds_meta.data_vars)
     _coords_1d = [c for c in ds_meta.coords if ds_meta.coords[c].dims == ("epoch",)]
 
-    _theta = ds_meta["theta"].values if "theta" in ds_meta else None
-    _phi = ds_meta["phi"].values if "phi" in ds_meta else None
-
     _rows = []
     for _v in _vars:
         _arr = ds_meta[_v].values
@@ -411,11 +413,10 @@ def _(ds_meta, mo, np):
     |----------|-------|-------------|
     {chr(10).join(_rows)}
 
-    The `theta` (polar angle) and `phi` (azimuth) variables are in
-    **degrees** (geographic convention: 0=N, 90=E).  Note that the canvodpy
-    pipeline internally uses **radians** (mathematical convention: phi=0 at
-    East, counter-clockwise).  The coordinate transform is handled
-    automatically by the auxiliary package.
+    `broadcast_theta` (polar angle, 0 = zenith) and `broadcast_phi`
+    (azimuth, 0 = North, clockwise) are in **radians**, the same convention
+    the canvodpy pipeline uses for `theta` and `phi` computed from SP3
+    orbits.
     """
     )
 
