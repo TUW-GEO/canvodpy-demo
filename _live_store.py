@@ -24,7 +24,7 @@ machine: it runs the same in a standalone clone, on molab, from the Zenodo
 download and inside the canvodpy monorepo.
 
 `--no-vod` defaults to False and the recipe defines `vod_analyses`, so a
-single CLI run produces *both* a GNSS observation store and a VOD store
+single CLI run produces *both* a GNSS store and a VOD store
 (sibling directories under the same scratch `stores_root_dir`) -- no
 separate VOD computation step needed. `_run_pipeline()` runs the CLI once
 and is shared/cached by both accessors below, so calling both
@@ -123,7 +123,7 @@ def _write_settings(scratch_dir: Path) -> Path:
 def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "MyIcechunkStore", Path]:
     """Run the real ingest+VOD pipeline once and return both populated stores.
 
-    A single `canvodpy run` produces a GNSS observation store *and* a VOD
+    A single `canvodpy run` produces a GNSS store *and* a VOD
     store (`--no-vod` defaults to False, and the recipe defines
     `vod_analyses`) -- both are scratch Icechunk repositories under a
     freshly created `tempfile.mkdtemp()` directory, never inside the
@@ -191,7 +191,7 @@ def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "
 
 
 def build_rosalia_store(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path]:
-    """Return (store, store_path) for the GNSS observation store."""
+    """Return (store, store_path) for the GNSS store."""
     store, store_path, _vod_store, _vod_store_path = _run_pipeline(n_workers)
     return store, store_path
 

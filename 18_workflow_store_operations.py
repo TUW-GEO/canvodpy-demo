@@ -575,14 +575,14 @@ def _(mo):
     mo.md(r"""
     ## Creating a new store
 
-    The `create_rinex_store()` and `create_vod_store()` factory functions
+    The `create_gnss_store()` and `create_vod_store()` factory functions
     initialise new Icechunk repositories with the appropriate configuration:
 
     ```python
-    from canvod.store import create_rinex_store, create_vod_store
+    from canvod.store import create_gnss_store, create_vod_store
 
     # For raw observation data
-    obs_store = create_rinex_store(Path("/data/my_site/observations.icechunk"))
+    gnss_store = create_gnss_store(Path("/data/my_site/observations.icechunk"))
 
     # For VOD products
     vod_store = create_vod_store(Path("/data/my_site/vod.icechunk"))

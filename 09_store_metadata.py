@@ -106,9 +106,9 @@ def _(StoreMetadata, mo):
 
     _example = StoreMetadata(
         identity=StoreIdentity(
-            id="example_site/rinex_store",
+            id="example_site/gnss_store",
             title="Example GNSS-T Observations",
-            store_type="rinex_store",
+            store_type="gnss_store",
             source_format="rinex3",
             description="L-band SNR observations from paired GNSS receivers",
         ),
@@ -143,7 +143,7 @@ def _(StoreMetadata, mo):
     )
 
     metadata = StoreMetadata(
-        identity=StoreIdentity(id="my_site/rinex_store", title="My GNSS-T Store", store_type="rinex_store", source_format="rinex3", ...),
+        identity=StoreIdentity(id="my_site/gnss_store", title="My GNSS-T Store", store_type="gnss_store", source_format="rinex3", ...),
         creator=Creator(name="J. Doe", email="j.doe@example.edu", institution="My University", ...),
         temporal=TemporalExtent(created="2025-01-01T00:00:00Z", updated="2025-01-01T00:00:00Z", ...),
         spatial=SpatialExtent(site="My Site", geospatial_lat=48.0, ...),
@@ -179,9 +179,9 @@ def _(StoreMetadata, mo):
 
     _meta = StoreMetadata(
         identity=_Id(
-            id="test_site/rinex_store",
+            id="test_site/gnss_store",
             title="Test",
-            store_type="rinex_store",
+            store_type="gnss_store",
             source_format="rinex3",
         ),
         creator=_C(name="Test", email="test@example.com", institution="Test"),
