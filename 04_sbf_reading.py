@@ -489,7 +489,7 @@ def _(mo):
         systems: list[str]      # Active constellations
         num_epochs: int
         num_satellites: int
-        source_format: str      # "rinex3" or "sbf"
+        source_format: str      # e.g. "rinex3", "rinex2", "sbf", "nmea"
 
         def to_ds(...) -> xr.Dataset:
             ...  # (epoch, sid) with SNR, validated
