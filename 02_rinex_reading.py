@@ -106,7 +106,7 @@ def _(ROSALIA_CANOPY_DIR, mo):
     |-------|-------|---------|
     | `ROSA01TUW` | Site=ROSA, Rx=01, Agency=TUW | Canopy receiver |
     | `R` | | RINEX format |
-    | `20250010000` | 2025, DOY 001, 00:00 UTC | Start of observation window |
+    | `20250010000` | 2025, DOY 001, 00:00 GPS time | Start of observation window |
     | `15M` | 15 minutes | File duration |
     | `05S` | 5 seconds | Sampling interval |
     | `AA` | All observables, all constellations | Content descriptor |

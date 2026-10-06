@@ -262,7 +262,9 @@ def _(AUX_DATA_DIR, mo, np):
     import xarray as xr
 
     _zarr_path = AUX_DATA_DIR / "aux_2025001.zarr"
-    ds_aux = xr.open_zarr(str(_zarr_path), decode_timedelta=False, consolidated=False)
+    ds_aux = xr.open_zarr(
+        str(_zarr_path), decode_timedelta=False, consolidated=False
+    )
 
     _var_rows = []
     for _v in ds_aux.data_vars:

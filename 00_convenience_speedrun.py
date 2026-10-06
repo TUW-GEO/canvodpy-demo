@@ -154,7 +154,11 @@ def _(AUX_DATA_DIR, ds_can_raw, ds_ref_raw):
     )
 
     def _augment(ds_raw):
-        aux = xr.open_zarr(str(AUX_DATA_DIR / "aux_2025001.zarr"), decode_timedelta=False)
+        aux = xr.open_zarr(
+            str(AUX_DATA_DIR / "aux_2025001.zarr"),
+            decode_timedelta=False,
+            consolidated=False,
+        )
         shared_s = np.intersect1d(ds_raw.sid.values, aux.sid.values)
         shared_e = np.intersect1d(ds_raw.epoch.values, aux.epoch.values)
         aux_sel = aux.sel(sid=shared_s, epoch=shared_e)

@@ -198,7 +198,11 @@ def _(AUX_DATA_DIR, ds_canopy, ds_reference, mo, np, xr):
         compute_spherical_coordinates,
     )
 
-    _aux = xr.open_zarr(str(AUX_DATA_DIR / "aux_2025001.zarr"), decode_timedelta=False)
+    _aux = xr.open_zarr(
+        str(AUX_DATA_DIR / "aux_2025001.zarr"),
+        decode_timedelta=False,
+        consolidated=False,
+    )
 
     def _augment(ds, aux):
         """Augment a dataset with satellite geometry."""

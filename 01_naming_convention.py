@@ -88,7 +88,7 @@ def _(mo):
     | `_R_` | 3 | Separator (RINEX convention) | |
     | **YYYY** | 4 | Year | `2025` |
     | **DOY** | 3 | Day of year (001--366) | `001` |
-    | **HHMM** | 4 | Start hour and minute (UTC) | `0000` |
+    | **HHMM** | 4 | Start hour and minute (GPS time) | `0000` |
     | **PER** | 3 | File duration (`15M`, `01H`, `01D`) | `15M` |
     | **SMP** | 3 | Sampling interval (`05S`, `01S`) | `05S` |
     | **PH** | 2 | Reserved; ignored during parsing | `AA` |
@@ -264,7 +264,7 @@ def _(CanVODFilename, ROSALIA_CANOPY_DIR, mo):
     The canopy receiver directory contains **{len(_files)}** RINEX files
     covering DOY 2025-001 (1 January 2025).
 
-    | File | Start (UTC) | Period |
+    | File | Start (GPS time) | Period |
     |------|-------------|--------|
     {chr(10).join(_first_five)}
     | ... | | |

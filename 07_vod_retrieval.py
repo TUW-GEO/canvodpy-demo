@@ -165,7 +165,11 @@ def _(AUX_DATA_DIR, ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, np, xr):
     )
 
     # Load auxiliary data
-    _aux = xr.open_zarr(str(AUX_DATA_DIR / "aux_2025001.zarr"), decode_timedelta=False)
+    _aux = xr.open_zarr(
+        str(AUX_DATA_DIR / "aux_2025001.zarr"),
+        decode_timedelta=False,
+        consolidated=False,
+    )
 
     # Augment canopy
     _rx = ECEFPosition.from_ds_metadata(ds_can_raw)
