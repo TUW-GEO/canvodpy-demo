@@ -92,7 +92,7 @@ def _(mo):
     | **PER** | 3 | File duration (`15M`, `01H`, `01D`) | `15M` |
     | **SMP** | 3 | Sampling interval (`05S`, `01S`) | `05S` |
     | **PH** | 2 | Reserved; ignored during parsing | `AA` |
-    | **TYPE** | 3+ | File extension (`rnx`, `sbf`, `nmea`) | `rnx` |
+    | **TYPE** | 2-8 | File type (`rnx`, `sbf`, `nmea`, or a reader plugin's own) | `rnx` |
 
     This convention extends the
     [IGS long-name standard](http://acc.igs.org/misc/rinex304.pdf)
