@@ -546,7 +546,7 @@ def _(mo):
 
     1. **File hash match**: the SHA-256 hash of each RINEX/SBF file is
        recorded in the metadata ledger.  If the same file is ingested
-       again, it is silently skipped.
+       again, it is skipped, and the ledger records the skip.
 
     2. **Temporal overlap**: the start and end timestamps of each ingested
        file are compared against the existing data.  Files that overlap
@@ -1041,15 +1041,18 @@ def _(mo):
 
     The `TemporalAggregate` operation (from `canvod-ops`) handles all of
     this correctly — it groups by `(time_bin, sid)` before computing the
-    mean or median, and averages geometry coords per-SID:
+    mean or median, and aggregates `phi` and `theta` per SID:
 
     ```python
     from canvod.ops import TemporalAggregate
 
-    op = TemporalAggregate(freq="1min", method="mean")
+    op = TemporalAggregate(freq="1min", method="mean", integer_method="first")
     ds_agg, result = op(ds)
     # Each SID is aggregated independently within each 1-minute bin.
-    # Coordinates (phi, theta) are also averaged per-SID (centroid).
+    # phi and theta are aggregated per SID like the other variables;
+    # phi as an angle, so a satellite crossing north does not average to south.
+    # Integer flags (LLI, SSI) cannot be averaged: each bin takes the
+    # first, last or middle value, as integer_method sets.
     # sid-only coords (e.g. sv, band) are preserved unchanged.
     ```
 

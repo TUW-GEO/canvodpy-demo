@@ -150,51 +150,73 @@ def _(mo):
         r"""
     ## Temporal aggregation
 
-    By default, `canvodpy run`, `Site(...).pipeline()` and Airflow store
-    observations at the receiver's sampling interval.  To store them
-    aggregated instead, set the optional `processing.preprocessing`
-    section of `config/canvod-settings.yaml`:
+    `canvodpy run`, `Site(...).pipeline()` and Airflow store observations
+    at the receiver's sampling interval, unless the optional
+    `processing.preprocessing` section of `canvod-settings.yaml` sets a
+    temporal aggregation. Then each receiver's observations of a day are
+    aggregated into time bins before they are written to the GNSS store.
+    Nothing is aggregated unless it is set:
 
     ```yaml
-    preprocessing:
-      temporal_aggregation:
-        freq: "1min"      # whole number + "s", "min" or "h"; divides one day
-        method: "median"  # or "mean"
+    processing:
+      preprocessing:
+        temporal_aggregation:
+          freq: "1min"             # whole number + "s", "min" or "h"; divides one day
+          method: "mean"           # "mean" or "median" (floating-point variables)
+          integer_method: "first"  # "first", "last" or "middle" (integer flags)
     ```
 
-    Each run then aggregates every receiver's files of a day before
-    writing them to the GNSS store; a time bin spanning two files is
-    aggregated from both.  Keep the setting for the life of a store:
-    writing differently aggregated data into an existing store stops
-    with an error.
+    All three settings are required. Bins start at 00:00 and are labeled
+    with their start; a bin that spans two files is aggregated from both.
+    Keep the setting for the life of a store: writing differently
+    aggregated data into an existing store stops with an error.
 
     To aggregate a dataset yourself, apply a `canvod-ops` pipeline to it:
 
     ```python
     from canvod.ops import Pipeline, TemporalAggregate
 
-    ops = Pipeline([TemporalAggregate(freq="1min", method="mean")])
+    ops = Pipeline(
+        [TemporalAggregate(freq="1min", method="mean", integer_method="first")]
+    )
     ds_aggregated, result = ops(ds)
     ```
 
     | Frequency | Epochs per day | Use case |
     |-----------|---------------|----------|
-    | `"5s"` | 17,280 | Full resolution (no aggregation) |
+    | `"5s"` | 17,280 | Full resolution of the test data (no aggregation) |
     | `"30s"` | 2,880 | Reduced noise, moderate resolution |
     | `"1min"` | 1,440 | Daily VOD maps |
     | `"5min"` | 288 | Coarse monitoring |
     | `"15min"` | 96 | Matches file boundaries |
 
-    Temporal aggregation reduces noise by averaging multiple
-    observations within each time window.  The trade-off is loss
-    of temporal resolution for rapid vegetation dynamics (e.g.
-    rain interception, dew formation).
+    Temporal aggregation reduces noise by combining the observations
+    within each bin.  The trade-off is loss of temporal resolution for
+    rapid vegetation dynamics (e.g. rain interception, dew formation).
 
-    The `method` parameter controls how observations within each
-    window are combined:
+    `method` sets how the floating-point variables of a bin are combined:
 
-    - **`mean`**: arithmetic mean (default, lower noise)
+    - **`mean`**: arithmetic mean (lower noise)
     - **`median`**: more robust to outliers (multipath spikes)
+
+    Integer variables such as LLI and SSI are flags and codes, which
+    cannot be averaged: each bin takes their `first`, `last` or `middle`
+    value in time order, as `integer_method` sets.
+
+    The settings are recorded in the log book of the GNSS store. A store
+    group never mixes data preprocessed with different settings: `canvodpy
+    run` compares the settings with the stores before it processes any
+    data and stops on a mismatch. Keep the setting for the life of a store,
+    or write to a new store.
+
+    To aggregate a dataset yourself in Python:
+
+    ```python
+    from canvod.ops import TemporalAggregate
+
+    op = TemporalAggregate(freq="1min", method="mean", integer_method="first")
+    ds_aggregated, result = op(ds)
+    ```
     """
     )
 
@@ -212,26 +234,36 @@ def _(mo):
         r"""
     ## Grid configuration
 
-    `canvodpy run` does not assign grid cells; you assign them to a
-    VOD dataset yourself, at the resolution you choose (see
-    [16 — Single-Day Workflow](./16_workflow_single_day.py)):
+    `canvodpy run` assigns grid cells only if `processing.preprocessing`
+    sets a grid. The cells are then added to the observations, after the
+    temporal aggregation, before they are written to the GNSS store:
 
-    ```python
-    from canvod.grids import add_cell_ids_to_vod_fast, create_hemigrid
-
-    grid = create_hemigrid("equal_area", angular_resolution=5.0)
-    ds = add_cell_ids_to_vod_fast(ds_vod, grid, grid_name="equal_area_5deg")
+    ```yaml
+    processing:
+      preprocessing:
+        grid_assignment:
+          grid_type: "equal_area"
+          angular_resolution: 5.0  # degrees (0 < value <= 90)
     ```
 
-    | Resolution | Cells | Obs per cell (1 day) | Best for |
-    |------------|-------|---------------------|----------|
-    | 1° | ~10,300 | ~2 | Maximum spatial detail |
-    | 2° | ~2,600 | ~7 | Standard analysis |
-    | 5° | ~400 | ~45 | Robust averages |
-    | 10° | ~100 | ~180 | Coarse monitoring |
+    Alternatively, assign cells to a dataset yourself, at the resolution
+    you choose (see [16 — Single-Day Workflow](./16_workflow_single_day.py)):
 
-    The observation count per cell assumes ~18,000 valid observations
-    per day from ~100 visible satellites across GPS and Galileo.
+    ```python
+    from canvod.grids import add_cell_ids_to_ds_fast, create_hemigrid
+
+    grid = create_hemigrid("equal_area", angular_resolution=5.0)
+    ds = add_cell_ids_to_ds_fast(ds_vod, grid, grid_name="equal_area_5deg")
+    ```
+
+    Each observation goes to the cell that contains it.
+
+    | Resolution | Cells (`equal_area`) | Best for |
+    |------------|-------|----------|
+    | 1° | 26,263 | Maximum spatial detail |
+    | 2° | 6,563 | Standard analysis |
+    | 5° | 1,051 | Robust averages |
+    | 10° | 263 | Coarse monitoring |
     """
     )
 

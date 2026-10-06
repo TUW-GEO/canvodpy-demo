@@ -223,7 +223,7 @@ def _(mo):
     |-------------|---------|----------------|----------|
     | **Final** | 12--18 days | ~2 cm | Archival analysis |
     | **Rapid** | 17--41 hours | ~2--3 cm | Near-real-time |
-    | **Ultra-rapid** | 3--9 hours | ~5 cm | Operational |
+    | **Ultra-rapid** | 3--9 hours | ~5 cm | Not supported: refused in the settings |
     | **Broadcast** | Real-time | ~1--2 m | SBF fast path |
 
     For GNSS-T at 2-degree grid resolution, even broadcast ephemeris is

@@ -267,20 +267,22 @@ def _(mo):
     ## Assigning observations to grid cells
 
     Once a dataset has been augmented with $\phi$ and $\theta$ coordinates,
-    each observation is assigned to the nearest grid cell.  The assignment
-    uses a **KDTree** projected onto Cartesian coordinates for $O(n \log m)$
-    lookups, where $n$ is the number of observations and $m$ is the number
-    of grid cells.
+    each observation is assigned to the grid cell that contains it. Each
+    grid type is looked up by its own cell boundaries: theta band and phi
+    sector for the ring grids (`equal_area`, `equal_angle`,
+    `equirectangular`), the spherical triangle for `htm` and `geodesic`,
+    the pixel for `healpix` and the Voronoi cell for `fibonacci`.
 
     ```python
-    from canvod.grids import add_cell_ids_to_vod_fast
+    from canvod.grids import add_cell_ids_to_ds_fast
 
-    ds = add_cell_ids_to_vod_fast(ds, grid, grid_name="equal_area_2deg")
+    ds = add_cell_ids_to_ds_fast(ds, grid, grid_name="equal_area_2deg")
     # Adds: ds["cell_id_equal_area_2deg"] with shape (epoch, sid)
     ```
 
-    Observations with non-finite $\phi$ or $\theta$ (below horizon,
-    missing ephemeris) receive `NaN` cell IDs.
+    Observations outside the grid (below the horizon or the grid's
+    `cutoff_theta`) or with non-finite $\phi$ or $\theta$ (missing
+    ephemeris) receive `NaN` cell IDs.
     """
     )
 

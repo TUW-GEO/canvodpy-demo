@@ -314,7 +314,7 @@ def _(ds_vod):
 
 @app.cell
 def _(ds_can_aug, ds_ref_aug, mo, np):
-    from canvod.grids import add_cell_ids_to_vod_fast, create_hemigrid
+    from canvod.grids import add_cell_ids_to_ds_fast, create_hemigrid
 
     _grid = create_hemigrid("equal_area", angular_resolution=2.0)
 
@@ -322,7 +322,7 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     from canvod.vod import TauOmegaZerothOrder as _T
 
     _ds_vod = _T.from_datasets(canopy_ds=ds_can_aug, sky_ds=ds_ref_aug)
-    ds_vod_gridded = add_cell_ids_to_vod_fast(
+    ds_vod_gridded = add_cell_ids_to_ds_fast(
         _ds_vod,
         _grid,
         grid_name="equal_area_2deg",
@@ -340,10 +340,10 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     cell based on its $\\phi$ and $\\theta$ coordinates:
 
     ```python
-    from canvod.grids import create_hemigrid, add_cell_ids_to_vod_fast
+    from canvod.grids import create_hemigrid, add_cell_ids_to_ds_fast
 
     grid = create_hemigrid("equal_area", angular_resolution=2.0)
-    ds = add_cell_ids_to_vod_fast(ds_vod, grid, grid_name="equal_area_2deg")
+    ds = add_cell_ids_to_ds_fast(ds_vod, grid, grid_name="equal_area_2deg")
     ```
 
     | Property | Value |
@@ -379,7 +379,7 @@ def _(mo):
     | 2 | `Rnxv3Obs().to_ds()` + `xr.concat()` | RINEX files | `xr.Dataset(epoch, sid)` |
     | 3 | `compute_spherical_coordinates()` | Dataset + aux Zarr | Dataset + θ, φ, r |
     | 4 | `TauOmegaZerothOrder.from_datasets()` | Canopy + reference | VOD dataset |
-    | 5 | `add_cell_ids_to_vod_fast()` | VOD dataset + grid | VOD + cell_id |
+    | 5 | `add_cell_ids_to_ds_fast()` | VOD dataset + grid | VOD + cell_id |
 
     Each step can be run independently, inspected, and debugged.
     `Site.pipeline()` and the `canvodpy run` CLI wrap these exact same

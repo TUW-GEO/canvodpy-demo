@@ -392,27 +392,29 @@ def _(StorageConfig, mo):
         r"""
     ## Storage strategies
 
-    The `StorageConfig` model defines how the pipeline handles
-    pre-existing data in Icechunk stores:
+    `gnss_store_strategy` of the `StorageConfig` model sets what a run
+    does with a file that is already in the GNSS store (same file hash,
+    or an overlapping epoch range). New files are always written:
 
     | Strategy | Behaviour |
     |----------|-----------|
-    | `skip` | If the store already has data for this day, skip entirely |
-    | `append` | Append new epochs; deduplication guards prevent duplicates |
-    | `overwrite` | Delete existing data for the day, then write fresh |
+    | `skip` | Default: leave the stored data unchanged; the log book records the skip |
+    | `overwrite` | Replace the stored epochs of the file's range with the new data |
+    | `unsafe_append` | Write the data again, without any duplicate check |
 
     ```python
     storage = StorageConfig(
         stores_root_dir=Path("/data/stores"),
-        rinex_store_strategy="append",
-        vod_store_strategy="overwrite",
+        gnss_store_strategy="skip",
     )
     ```
 
-    The **append** strategy is the recommended default for production:
-    it is idempotent (re-running the same day is safe) and preserves
-    previously ingested data.  The three-layer deduplication system
-    in `canvod-store` ensures that no duplicate epochs enter the store.
+    **skip** is the recommended setting: re-running a day leaves the
+    stored data unchanged. Use **overwrite** to correct data already
+    stored, e.g. after a processing bug was fixed. The strategy applies to
+    the GNSS store only: a VOD result is always skipped if the VOD store
+    already holds one from the same source files or an overlapping epoch
+    range. To recompute VOD, write to a new VOD store.
     """
     )
 

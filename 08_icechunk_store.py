@@ -297,7 +297,7 @@ def _(mo):
 
     1. **File hash match**: the SHA-256 hash of each RINEX/SBF file is
        recorded in the metadata ledger.  If the same file is ingested
-       again, it is silently skipped.
+       again, it is skipped, and the ledger records the skip.
 
     2. **Temporal overlap**: the start and end timestamps of each ingested
        file are compared against the existing data.  Files that overlap

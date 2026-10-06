@@ -484,8 +484,8 @@ def _(mo):
     class GNSSDataReader(ABC):
         fpath: Path
         file_hash: str          # SHA-256 for deduplication
-        start_time: datetime    # First epoch (UTC)
-        end_time: datetime      # Last epoch (UTC)
+        start_time: datetime    # First epoch (GPS time)
+        end_time: datetime      # Last epoch (GPS time)
         systems: list[str]      # Active constellations
         num_epochs: int
         num_satellites: int
