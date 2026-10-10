@@ -360,7 +360,7 @@ def _(mo):
     ---
     **Note:** This notebook uses synthetic data for demonstration.
     To use real data, open an Icechunk store and pass actual per-cell
-    timeseries datasets via `AnalysisStorage.load_percell_timeseries()`.
+    timeseries datasets via `canvod.store.AnalysisStorage.load_percell_timeseries()`.
     """
     )
     return
