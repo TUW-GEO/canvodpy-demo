@@ -25,7 +25,7 @@ def _():
         r"""
     # Batch Processing Workflows
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_workflow_batch_processing.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_workflow_batch_processing.py?mode=edit)
 
     This notebook demonstrates various batch processing patterns:
 

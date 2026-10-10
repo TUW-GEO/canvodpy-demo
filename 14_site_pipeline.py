@@ -25,7 +25,7 @@ def _():
         r"""
     # Site Pipeline
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_site_pipeline.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_site_pipeline.py?mode=edit)
 
     `Site(...).pipeline()` is canvodpy's Python-native surface for running
     the pipeline — the exact same code path the `canvodpy run` CLI wraps
