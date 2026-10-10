@@ -355,19 +355,23 @@ def _(ProcessingParams, mo):
     |-----------|---------|-------------|
     {_rows}
 
-    The `resource_mode` setting determines how Dask workers are
-    allocated:
+    The `resource_mode` setting decides how many worker processes a
+    run starts:
 
-    - **`auto`**: the pipeline inspects available CPU cores and RAM,
-      then chooses worker count and memory limits automatically
-    - **`manual`**: the user specifies `n_max_threads`,
-      `max_memory_gb`, and optionally `cpu_affinity`
+    - **`auto`**: one worker per CPU core, minus two for the operating
+      system (at least one)
+    - **`manual`**: the user sets the number of workers with
+      `n_max_threads`, and optionally the CPU cores (`cpu_affinity`)
+      and the priority (`nice_priority`) of the workers
+
+    canVODpy doesn't limit memory; to lower the memory a run needs,
+    use fewer workers or a smaller `days_per_batch`.
 
     ```python
     params = ProcessingParams(
         resource_mode="manual",
         n_max_threads=4,
-        max_memory_gb=16.0,
+        nice_priority=10,
         ephemeris_source="broadcast",
     )
     ```

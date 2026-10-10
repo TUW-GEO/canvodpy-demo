@@ -6,7 +6,7 @@
 #
 # [tool.marimo.opengraph]
 # title = "17 · Batch Processing Workflows"
-# description = "Process multiple days of GNSS-T data in parallel using Dask. Covers date-range iteration, store appends, and strategies for large-scale canopy monitoring."
+# description = "Process multiple days of GNSS-T data in parallel worker processes. Covers date-range iteration, store appends, and strategies for large-scale canopy monitoring."
 # ///
 
 import marimo
@@ -34,9 +34,8 @@ def _():
     - Configuring **temporal aggregation** and grid parameters
     - **Resource management** for long-running pipelines
 
-    All examples use the L2 API (`Site`, `Pipeline`, `workflow`)
-    which provides the right balance of control and convenience for
-    batch operations.
+    All examples use `Site` and `Pipeline`, the Python counterpart of
+    `canvodpy run`.
 
     ---
 
@@ -77,9 +76,10 @@ def _(mo):
     | `start` | First date (YYYYDOY format) |
     | `end` | Last date (YYYYDOY format, inclusive) |
 
-    The generator pattern means that only one day's data is in memory
-    at a time.  After each iteration, the datasets are committed to
-    the Icechunk store and released.
+    The pipeline writes each day to the Icechunk store itself and
+    yields the days of a batch once the whole batch is written.  It
+    holds the days of one batch in memory at a time; `days_per_batch`
+    sets their number (default 1).
     """
     )
 
@@ -249,34 +249,30 @@ def _(mo):
         r"""
     ## Resource management
 
-    For long-running batch jobs, resource parameters prevent the
-    pipeline from overwhelming the system:
+    For long-running batch jobs, these arguments limit how much of
+    the machine the pipeline uses:
 
     ```python
     with site.pipeline(
-        n_workers=4,              # Dask workers
-        batch_hours=6.0,          # Process in 6-hour batches
-        max_memory_gb=16.0,       # Soft RAM limit per worker
-        cpu_affinity=[0, 1, 2, 3],# Pin to specific cores
-        nice_priority=10,         # Lower scheduling priority
-        threads_per_worker=2,     # Threads per Dask worker
+        n_workers=4,           # worker processes
+        days_per_batch=2,      # days the workers process together
+        threads_per_worker=1,  # threads of numerical libraries per worker
     ) as pipe:
         for date, data in pipe.process_range("2025001", "2025365"):
             pass
     ```
 
-    | Parameter | Default | Description |
-    |-----------|---------|-------------|
-    | `n_workers` | auto | Number of Dask workers |
-    | `batch_hours` | 24.0 | File grouping window |
-    | `max_memory_gb` | auto | Soft RAM limit per worker |
-    | `cpu_affinity` | None | Pin workers to CPU cores |
-    | `nice_priority` | 0 | Unix nice value (0-19) |
-    | `threads_per_worker` | auto | Threads within each worker |
+    | Argument | Default | Description |
+    |----------|---------|-------------|
+    | `n_workers` | from the settings | Number of worker processes |
+    | `days_per_batch` | from the settings (1) | Days the workers process together |
+    | `threads_per_worker` | from the settings (1) | Threads that numerical libraries use in each worker |
 
-    The `batch_hours` parameter controls how files are grouped for
-    processing.  With `batch_hours=6.0`, a 24-hour day is processed
-    in four batches of ~24 files each, reducing peak memory usage.
+    The CPU cores and the priority of the workers come from
+    `cpu_affinity` and `nice_priority` under `processing.params` in
+    `canvod-settings.yaml`.  canVODpy doesn't limit memory; to lower
+    the memory a run needs, use fewer workers or a smaller
+    `days_per_batch`.
     """
     )
 
