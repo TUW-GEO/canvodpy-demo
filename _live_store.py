@@ -86,7 +86,7 @@ def _build_overlay(scratch_dir: Path) -> Path:
     """Merge the tracked recipe with this run's environment-specific paths.
 
     The tracked recipe (_rosalia_v3_04_recipe.yaml) deliberately omits
-    `gnss_site_data_root` and the storage paths -- those are real absolute
+    `gnss_site_data_root`, the storage paths and the log folder -- those are real absolute
     paths that vary by machine/CI runner, injected here instead.
     """
     recipe = yaml.safe_load(_RECIPE_PATH.read_text())
@@ -97,6 +97,10 @@ def _build_overlay(scratch_dir: Path) -> Path:
             "aux_data_dir": str(scratch_dir / "aux"),
             "shared_aux_cache_dir": None,
         }
+    )
+    # A run needs a log folder (processing.logging.log_dir).
+    recipe["processing"].setdefault("logging", {})["log_dir"] = str(
+        scratch_dir / "logs"
     )
     overlay_path = scratch_dir / "overlay.yaml"
     overlay_path.write_text(yaml.safe_dump(recipe, sort_keys=False))

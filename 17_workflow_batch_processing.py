@@ -298,7 +298,7 @@ def _(mo):
 
     ```bash
     canvodpy dashboard                      # log directory from canvod-settings.yaml
-    canvodpy dashboard --logs-dir ./.logs   # or an explicit one
+    canvodpy dashboard --logs-dir /path/to/logs   # or an explicit one
     ```
     """
     )
