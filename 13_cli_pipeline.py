@@ -200,10 +200,6 @@ def _(mo):
     is read from the main file. Useful on shared/HPC machines where
     resource limits vary per job but the base configuration is
     version-controlled.
-
-    Any configuration value can also be overridden per-invocation via
-    environment variables (`CANVOD__PROCESSING__PARAMS__DAYS_PER_BATCH=7`,
-    etc.) — see the Configuration guide for the full mechanism.
     """
     )
 
