@@ -689,7 +689,6 @@ def _(mo):
     | **ACDD** | Attribute Convention for Dataset Discovery 1.3 | NetCDF/CF-style discovery attributes: summary, keywords, coverage, platform |
     | **STAC** | SpatioTemporal Asset Catalog 1.1 | Web-catalog fields: id, bbox, temporal extent, license |
     | **FAIR** | FAIR data principles (sub-principles `F1`-`F4`, `A1`-`A2`, `I1`-`I3`, `R1.1`-`R1.3`) | Cross-cutting findability/accessibility/interoperability/reusability -- see `validate_fair()` |
-    | **W3C PROV** | W3C PROV-O | Provenance: what produced this store, when, from what config |
     | **Internal** | canvodpy-specific | No external standard; operational/debugging value only |
 
     ```python
@@ -762,13 +761,13 @@ def _(mo, store_path):
         "instruments.instruments": "ACDD (instrument)",
         "instruments.receivers": "Internal (canvodpy-specific)",
         # processing
-        "processing.software": "W3C PROV (wasGeneratedBy) · FAIR R1.2",
+        "processing.software": "Internal · FAIR R1.2",
         "processing.python": "Internal · FAIR R1.2",
         "processing.uv_version": "Internal · FAIR R1.2",
-        "processing.level": "Internal (canvodpy API level)",
-        "processing.lineage": "ACDD (source) · W3C PROV",
+        "processing.level": "Internal (processing level)",
+        "processing.lineage": "ACDD (source)",
         "processing.facility": "ACDD (institution)",
-        "processing.datetime": "W3C PROV (generatedAtTime)",
+        "processing.datetime": "Internal",
         # environment
         "environment.hostname": "Internal · FAIR R1.2",
         "environment.os": "Internal · FAIR R1.2",
@@ -782,13 +781,13 @@ def _(mo, store_path):
         "environment.pyproject_toml_text": "FAIR R1.2 (reproducibility)",
         "environment.uv_lock_text": "FAIR R1.2 (reproducibility)",
         # config
-        "config.processing": "W3C PROV (frozen config) · Internal",
-        "config.preprocessing": "W3C PROV (frozen config) · Internal",
-        "config.aux_data": "W3C PROV (frozen config) · Internal",
-        "config.compression": "W3C PROV (frozen config) · Internal",
-        "config.icechunk": "W3C PROV (frozen config) · Internal",
-        "config.sids": "W3C PROV (frozen config) · Internal",
-        "config.config_hash": "W3C PROV (checksum) · Internal",
+        "config.processing": "Internal",
+        "config.preprocessing": "Internal",
+        "config.aux_data": "Internal",
+        "config.compression": "Internal",
+        "config.icechunk": "Internal",
+        "config.sids": "Internal",
+        "config.config_hash": "Internal",
         # references
         "references.software_repository": "FAIR R1.2 · Internal",
         "references.documentation": "Internal",
@@ -804,7 +803,7 @@ def _(mo, store_path):
         "summaries.temporal_resolution_s": "ACDD (summary statistics) · Internal",
         "summaries.file_count": "ACDD (summary statistics) · Internal",
         "summaries.store_size_mb": "ACDD (summary statistics) · Internal",
-        "summaries.history": "W3C PROV (activity log)",
+        "summaries.history": "Internal",
     }
 
     def _fmt_value(v):
