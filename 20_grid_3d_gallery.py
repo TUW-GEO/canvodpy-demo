@@ -438,6 +438,7 @@ def _(mo):
     —
 
     **Previous**: [19 — Grid Exploration](./19_grid_exploration.py)
+    | **Next**: [21 — Your Own VOD Calculator](./21_plugins.py)
 
     *canVODpy — Apache 2.0*
     """)

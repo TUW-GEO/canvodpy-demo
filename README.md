@@ -117,6 +117,7 @@ uv run marimo run demo/07_vod_retrieval.py
 | 18 | `18_workflow_store_operations.py` | Store read/write/branch operations | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/18_workflow_store_operations.py?mode=edit) |
 | 19 | `19_grid_exploration.py` | Interactive hemispheric grid explorer | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/19_grid_exploration.py?mode=edit) |
 | 20 | `20_grid_3d_gallery.py` | 3D gallery comparing all hemispheric grid types | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/20_grid_3d_gallery.py?mode=edit) |
+| 21 | `21_plugins.py` | Your own VOD calculator: register it, compare it, make it a plugin | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/21_plugins.py?mode=edit) |
 
 ---
 

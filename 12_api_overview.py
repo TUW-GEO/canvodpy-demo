@@ -200,9 +200,15 @@ def _(mo):
     | `VODFactory` | {", ".join(f"`{v}`" for v in _vods)} |
 
     Custom components must implement the corresponding abstract base
-    class (`GNSSDataReader`, `GridBuilder`, or `VODCalculator`). The
+    class (`GNSSDataReader`, `BaseGridBuilder`, or `VODCalculator`). The
     `canvodpy run --vod-calculator` CLI flag reads its choices directly
     from `VODFactory.list_available()`.
+
+    A registration in your code is not seen by `canvodpy run`, which
+    starts its own Python process. Readers and VOD calculators reach
+    `canvodpy run` as a plugin: a package of your own that declares them
+    as entry points. [21 — Your Own VOD Calculator](./21_plugins.py)
+    shows both ways.
     """
     )
 
@@ -227,7 +233,7 @@ def _(mo):
     | Recompute VOD separately from ingestion | `Site(...).vod` (`VodComputer`) |
     | Orchestrate with Airflow | The optional `canvod-airflow` extension (`canvodpy.workflows.tasks`) |
     | Inspect or modify an intermediate step for research | The `canvod-*` packages directly, see [16 — Single-Day Workflow](./16_workflow_single_day.py) |
-    | Extend with a custom reader/grid/calculator | Factories: `VODFactory.register()` |
+    | Extend with a custom reader/grid/calculator | Factories: `VODFactory.register()`; for `canvodpy run`, a plugin package, see [21 — Your Own VOD Calculator](./21_plugins.py) |
 
     The CLI and `Site(...).pipeline()` share the same implementation — you
     can mix them freely. A common pattern: use the CLI for scheduled
