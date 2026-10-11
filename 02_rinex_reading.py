@@ -307,10 +307,10 @@ def _(mo):
     mo.md(r"""
     ### Validated and unvalidated parsing
 
-    `to_ds()` validates every epoch by default: the epoch line, the
-    satellite IDs, the satellite count and the observation records are
-    checked through Pydantic models. Epochs that fail are dropped, and the
-    reader logs how many and at which lines.
+    `to_ds()` validates every epoch by default. Pydantic models check the
+    epoch line, the satellite IDs and the satellite count, and every
+    observation field must be blank or hold a readable value. Epochs that
+    fail are dropped, and the reader logs how many and at which lines.
 
     ```python
     ds = reader.to_ds(keep_data_vars=["SNR"])                       # validated (default)
