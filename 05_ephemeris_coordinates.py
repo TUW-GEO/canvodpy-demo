@@ -262,7 +262,7 @@ def _(AUX_DATA_DIR, mo, np):
     import xarray as xr
 
     _zarr_path = AUX_DATA_DIR / "aux_2025001.zarr"
-    ds_aux = xr.open_zarr(str(_zarr_path), decode_timedelta=False)
+    ds_aux = xr.open_zarr(str(_zarr_path), decode_timedelta=False, consolidated=False)
 
     _var_rows = []
     for _v in ds_aux.data_vars:
@@ -287,7 +287,7 @@ def _(AUX_DATA_DIR, mo, np):
     {chr(10).join(_var_rows)}
 
     The `X`, `Y`, `Z` variables are satellite ECEF coordinates in metres,
-    interpolated from SP3 15-minute samples to the 5-second observation grid.
+    interpolated from the 5-minute SP3 samples to the 5-second observation grid.
     `Vx`, `Vy`, `Vz` are velocity components computed by central differencing
     of the position time series.  `clock_offset` is the satellite clock
     correction interpolated from CLK 30-second samples.
@@ -542,7 +542,7 @@ def _(SP3_DIR, mo):
     |----------|-------|
     | **SP3 files** | {_sp3_info} |
     | **Days** | $n-1$, $n$, $n+1$ (1 h of each neighboring day) |
-    | **SP3 interval** | 5 minutes (288 positions per day) |
+    | **SP3 interval** | 5 minutes (289 positions per daily file, 00:00 to 24:00) |
     | **Target interval** | 5 seconds (17,280 positions per day) |
     | **Method** | `scipy.CubicHermiteSpline` (piecewise cubic) |
     | **Uses SP3 velocities** | Yes (as Hermite derivatives) |
@@ -558,11 +558,6 @@ def _(SP3_DIR, mo):
     conditions for each cubic segment.  This produces C1-continuous
     trajectories (continuous position and velocity) without the Runge
     phenomenon that affects high-degree polynomial fits.
-
-    For reference: the alternative tool gnssvod uses `numpy.polyfit`
-    degree-16 on 4-hour windows.  Both approaches are valid and produce
-    angular differences of approximately 0.002 degrees — 1000x smaller
-    than the 2-degree grid cell size.
     """
     )
 
