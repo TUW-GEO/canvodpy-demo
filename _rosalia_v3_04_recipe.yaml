@@ -1,4 +1,4 @@
-# Overlay-config recipe for the "rosalia_v3_04" site: real Rosalia RINEX
+# Settings recipe for the "rosalia_v3_04" site: real Rosalia RINEX
 # v3.04 test data (DOY 2025-001, canopy + reference receivers), used to
 # build a live Icechunk store for demo/08_icechunk_store.py and
 # demo/18_workflow_store_operations.py (see demo/_live_store.py).
@@ -12,8 +12,8 @@
 # those are inherently environment-specific (real paths on whoever's
 # machine/CI runner is generating the store) and are injected by the
 # caller (build_rosalia_store() in _live_store.py) on top of this template
-# before it's written out as a full overlay YAML and passed to
-# `canvodpy run --config`.
+# before it's written out as the complete canvod-settings.yaml of a scratch
+# configuration directory and passed to `canvodpy run --config-dir`.
 #
 # processing.metadata / processing.references below feed canvod-store-metadata's
 # collect_metadata() (see packages/canvod-store-metadata/src/canvod/store_metadata/

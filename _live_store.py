@@ -13,10 +13,15 @@ against the real raw RINEX under `_paths.ROSALIA` -- never against
 `_paths.STORES_DIR`, which is read-only test data -- writing into a fresh
 scratch Icechunk repository. Uses the CLI (not the Python Site/Pipeline API
 directly) per this project's own documented "Running-the-pipeline rule",
-via `sys.executable -m canvodpy.cli.app run --config <overlay>` so it runs
+via `sys.executable -m canvodpy.cli.app run --config-dir <dir>` so it runs
 in the same interpreter/venv this notebook's own PEP 723 deps already
 resolved -- no dependency on `canvodpy`'s console-script entry point being
 on PATH.
+
+The run reads only a settings file written into its own scratch directory
+(`--config-dir`), so it needs no canvodpy checkout and no settings of the
+machine: it runs the same in a standalone clone, on molab, from the Zenodo
+download and inside the canvodpy monorepo.
 
 `--no-vod` defaults to False and the recipe defines `vod_analyses`, so a
 single CLI run produces *both* a GNSS observation store and a VOD store
@@ -76,18 +81,23 @@ def _seed_aux_cache(scratch_aux_dir: Path) -> None:
     the real products into a scratch dir instead. A local-file hit means
     `download_aux_file()` is never called (it only fetches
     `if not file_path.exists()`), so this seed step means zero network
-    calls.
+    calls. The fixture holds the orbits and clocks of 2024-366, 2025-001
+    and 2025-002: a run joins the previous and the next day to the
+    processed one, so the first and last epochs are interpolated, not
+    extrapolated.
     """
     shutil.copytree(_paths.SP3_DIR, scratch_aux_dir / "01_SP3")
     shutil.copytree(_paths.CLK_DIR, scratch_aux_dir / "02_CLK")
 
 
-def _build_overlay(scratch_dir: Path) -> Path:
-    """Merge the tracked recipe with this run's environment-specific paths.
+def _write_settings(scratch_dir: Path) -> Path:
+    """Write the run's settings file: the tracked recipe plus this run's paths.
 
     The tracked recipe (_rosalia_v3_04_recipe.yaml) deliberately omits
     `gnss_site_data_root`, the storage paths and the log folder -- those are real absolute
-    paths that vary by machine/CI runner, injected here instead.
+    paths that vary by machine/CI runner, injected here instead. The result
+    is the complete `canvod-settings.yaml` of a configuration directory of
+    its own, returned for `--config-dir`.
     """
     recipe = yaml.safe_load(_RECIPE_PATH.read_text())
     recipe["sites"][_SITE_NAME]["gnss_site_data_root"] = str(_paths.ROSALIA)
@@ -102,9 +112,12 @@ def _build_overlay(scratch_dir: Path) -> Path:
     recipe["processing"].setdefault("logging", {})["log_dir"] = str(
         scratch_dir / "logs"
     )
-    overlay_path = scratch_dir / "overlay.yaml"
-    overlay_path.write_text(yaml.safe_dump(recipe, sort_keys=False))
-    return overlay_path
+    config_dir = scratch_dir / "config"
+    config_dir.mkdir()
+    (config_dir / "canvod-settings.yaml").write_text(
+        yaml.safe_dump(recipe, sort_keys=False)
+    )
+    return config_dir
 
 
 def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "MyIcechunkStore", Path]:
@@ -126,22 +139,11 @@ def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "
     if _cached is not None:
         return _cached
 
-    if _paths.MONOREPO_ROOT is None:
-        raise RuntimeError(
-            "build_rosalia_store()/build_rosalia_vod_store() require a local "
-            "canvodpy monorepo checkout with a configured "
-            "config/canvod-settings.yaml (run `canvodpy config init` there "
-            "once if you haven't) -- `canvodpy run` always merges its "
-            "--config overlay on top of that file, it never stands alone. "
-            "Not available from a standalone demo/ clone, pooch cache, or "
-            "Zenodo download."
-        )
-
     _paths.ensure_data()  # no-op if an earlier cell already resolved it
 
     scratch_dir = Path(tempfile.mkdtemp(prefix="canvodpy_demo_rosalia_store_"))
     _seed_aux_cache(scratch_dir / "aux")
-    overlay_path = _build_overlay(scratch_dir)
+    config_dir = _write_settings(scratch_dir)
 
     cmd = [
         sys.executable,
@@ -154,25 +156,16 @@ def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "
         _DATE,
         "--end",
         _DATE,
-        "--config",
-        str(overlay_path),
+        "--config-dir",
+        str(config_dir),
     ]
     if n_workers is not None:
         cmd += ["--workers", str(n_workers)]
     _last_cmd = cmd
 
-    # cwd=MONOREPO_ROOT: canvod-config's find_monorepo_root() walks up from
-    # the subprocess's cwd looking for the nearest `.git` to locate the
-    # (never-committed, machine-local) base config/canvod-settings.yaml the
-    # --config overlay above merges onto. Without this, the subprocess
-    # inherits marimo's own cwd (wherever `marimo edit/run/export` was
-    # invoked from, typically demo/) -- and demo/ is itself a separate git
-    # submodule with its own `.git`, so find_monorepo_root() stops there,
-    # finds no config/ subdirectory, falls back to the XDG default
-    # (~/.config/canvodpy/), and fails with a confusing "Settings file not
-    # found" error that has nothing to do with the actual overlay recipe.
+    # cwd=scratch_dir: the run must not depend on where marimo was started.
     result = subprocess.run(
-        cmd, capture_output=True, text=True, cwd=_paths.MONOREPO_ROOT
+        cmd, capture_output=True, text=True, cwd=scratch_dir
     )
     _last_stdout = result.stdout
     _last_stderr = result.stderr
@@ -186,23 +179,11 @@ def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "
     from canvod.config import load_config
     from canvod.store import MyIcechunkStore
 
-    # Resolve the real store paths from the merged config rather than
-    # guessing directory names: gnss_store_name/vod_store_name default to
-    # "rinex"/"vod", but a local base config/canvod-settings.yaml can (and
-    # in practice does, at least on one dev machine -- discovered the hard
-    # way) override them to something else entirely. The overlay above
-    # only sets stores_root_dir/aux_data_dir, so any such override in the
-    # base file survives the merge untouched.
-    #
-    # config_dir=MONOREPO_ROOT/"config" explicitly, same reason as cwd=
-    # above: this call runs in-process (marimo's own cwd, typically demo/),
-    # not the subprocess, so find_monorepo_root()'s default lookup would
-    # hit the exact same demo/.git-stops-the-walk issue here too.
-    merged_config = load_config(
-        config_dir=_paths.MONOREPO_ROOT / "config", config_file=overlay_path
-    )
-    store_path = merged_config.processing.storage.get_gnss_store_path(_SITE_NAME)
-    vod_store_path = merged_config.processing.storage.get_vod_store_path(_SITE_NAME)
+    # Resolve the store paths from the settings the run used rather than
+    # guessing directory names.
+    settings = load_config(config_dir=config_dir)
+    store_path = settings.processing.storage.get_gnss_store_path(_SITE_NAME)
+    vod_store_path = settings.processing.storage.get_vod_store_path(_SITE_NAME)
     store = MyIcechunkStore(store_path=store_path)
     vod_store = MyIcechunkStore(store_path=vod_store_path)
     _cached = (store, store_path, vod_store, vod_store_path)

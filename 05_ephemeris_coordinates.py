@@ -80,8 +80,10 @@ def _():
     The augmentation pipeline works in two steps:
 
     1. **Preprocessing**: download SP3 orbit and CLK clock files for the
-       observation date, interpolate satellite ECEF positions to the
-       observation sampling rate (5 s), and cache the result as a Zarr store.
+       observation day $n$ and for the days $n-1$ and $n+1$, interpolate
+       satellite ECEF positions to the observation sampling rate (5 s), and
+       cache the result as a Zarr store. The two shouldering days increase
+       the interpolation accuracy at the beginning and the end of day $n$.
 
     2. **Augmentation**: for each observation epoch, compute the satellite
        position in the receiver's local East-North-Up (ENU) frame, then
@@ -524,7 +526,7 @@ def _(SP3_DIR, mo):
 
     _sp3_info = ""
     if _sp3_files:
-        _sp3_info = f"`{_sp3_files[0].name}`"
+        _sp3_info = "<br>".join(f"`{_f.name}`" for _f in _sp3_files)
     else:
         _sp3_info = "(no SP3 files in test data)"
 
@@ -538,12 +540,19 @@ def _(SP3_DIR, mo):
 
     | Property | Value |
     |----------|-------|
-    | **SP3 file** | {_sp3_info} |
+    | **SP3 files** | {_sp3_info} |
+    | **Days** | $n-1$, $n$, $n+1$ (1 h of each neighboring day) |
     | **SP3 interval** | 5 minutes (288 positions per day) |
     | **Target interval** | 5 seconds (17,280 positions per day) |
     | **Method** | `scipy.CubicHermiteSpline` (piecewise cubic) |
     | **Uses SP3 velocities** | Yes (as Hermite derivatives) |
     | **Clock method** | Piecewise linear with jump detection |
+
+    The orbits and clocks of the two shouldering days, $n-1$ and $n+1$,
+    are fetched as well, and one hour of each is joined to day $n$. This
+    increases the interpolation accuracy at the beginning and the end of
+    the day: from a single daily file, no samples would be available
+    beyond the day's edges, and the spline would not fit as well there.
 
     The Hermite spline uses both SP3 positions and velocities as boundary
     conditions for each cubic segment.  This produces C1-continuous
