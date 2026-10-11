@@ -286,7 +286,7 @@ def _(AUX_DATA_DIR, mo, np):
     |----------|-------|-------|-------|
     {chr(10).join(_var_rows)}
 
-    The `X`, `Y`, `Z` variables are satellite ECEF coordinates in metres,
+    The `X`, `Y`, `Z` variables are satellite ECEF coordinates in meters,
     interpolated from the 5-minute SP3 samples to the 5-second observation grid.
     `Vx`, `Vy`, `Vz` are velocity components computed by central differencing
     of the position time series.  `clock_offset` is the satellite clock
@@ -326,7 +326,7 @@ def _(mo):
 
     | Coordinate | Symbol | Range | Convention |
     |-----------|--------|-------|------------|
-    | **Range** | $r$ | > 0 | Distance in metres |
+    | **Range** | $r$ | > 0 | Distance in meters |
     | **Polar angle** | $\theta$ | [0, $\pi$] | 0 = overhead, $\pi/2$ = horizon |
     | **Azimuth** | $\phi$ | [0, $2\pi$) | 0 = North, $\pi/2$ = East (navigation) |
 
@@ -433,7 +433,7 @@ def _(ds_aux, ds_single, mo, np, rx_pos):
     |----------|-------|-------|-------------|
     | `theta` | (epoch, sid) | radians | Polar angle |
     | `phi` | (epoch, sid) | radians | Azimuth |
-    | `r` | (epoch, sid) | metres | Range to satellite |
+    | `r` | (epoch, sid) | meters | Range to satellite |
 
     **Dataset dimensions**: `{dict(ds_augmented.sizes)}`
     **Data variables**: {list(ds_augmented.data_vars)}
@@ -545,7 +545,7 @@ def _(SP3_DIR, mo):
     | **SP3 interval** | 5 minutes (289 positions per daily file, 00:00 to 24:00) |
     | **Target interval** | 5 seconds (17,280 positions per day) |
     | **Method** | `scipy.CubicHermiteSpline` (piecewise cubic) |
-    | **Uses SP3 velocities** | Yes (as Hermite derivatives) |
+    | **Velocities** | Computed from the SP3 positions (central differences), used as Hermite derivatives |
     | **Clock method** | Piecewise linear with jump detection |
 
     The orbits and clocks of the two shouldering days, $n-1$ and $n+1$,

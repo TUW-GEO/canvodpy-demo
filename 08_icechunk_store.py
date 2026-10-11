@@ -168,7 +168,7 @@ def _(build_rosalia_vod_store, mo):
     retrieval algorithms.
 
     ```python
-    vod_store = MyIcechunkStore(store_path=Path("stores/my_site_vod"))
+    vod_store = MyIcechunkStore(store_path=Path("stores/my_site_vod"), store_type="vod_store")
     ```
 
     | Property | Value |

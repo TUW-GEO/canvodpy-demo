@@ -185,7 +185,7 @@ def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "
     store_path = settings.processing.storage.get_gnss_store_path(_SITE_NAME)
     vod_store_path = settings.processing.storage.get_vod_store_path(_SITE_NAME)
     store = MyIcechunkStore(store_path=store_path)
-    vod_store = MyIcechunkStore(store_path=vod_store_path)
+    vod_store = MyIcechunkStore(store_path=vod_store_path, store_type="vod_store")
     _cached = (store, store_path, vod_store, vod_store_path)
     return _cached
 
