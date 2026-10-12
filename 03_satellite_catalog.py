@@ -411,10 +411,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [02 — RINEX Reading](./02_rinex_reading.py)
-    | **Next**: [04 — SBF Reading](./04_sbf_reading.py)
+    **Previous**: [02 · RINEX Reading](./02_rinex_reading.py)
+    | **Next**: [04 · SBF Reading](./04_sbf_reading.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

@@ -305,14 +305,14 @@ def _(mo):
 
     | Notebook | Topic |
     |----------|-------|
-    | [02 — RINEX Reading](./02_rinex_reading.py) | Deep dive into the RINEX reader |
-    | [05 — Ephemeris & Coordinates](./05_ephemeris_coordinates.py) | SP3/CLK, ECEF → spherical |
-    | [07 — VOD Retrieval](./07_vod_retrieval.py) | Full VOD derivation explained |
-    | [08 — Icechunk Store](./08_icechunk_store.py) | Persist results in a versioned store |
-    | [16 — Single-Day Workflow](./16_workflow_single_day.py) | Production pipeline, all 96 files |
-    | [13 — Running the Pipeline (CLI)](./13_cli_pipeline.py) | The `canvodpy run` command-line interface |
+    | [02 · RINEX Reading](./02_rinex_reading.py) | Deep dive into the RINEX reader |
+    | [05 · Ephemeris & Coordinates](./05_ephemeris_coordinates.py) | SP3/CLK, ECEF → spherical |
+    | [07 · VOD Retrieval](./07_vod_retrieval.py) | Full VOD derivation explained |
+    | [08 · Icechunk Store](./08_icechunk_store.py) | Persist results in a versioned store |
+    | [16 · Single-Day Workflow](./16_workflow_single_day.py) | Production pipeline, all 96 files |
+    | [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py) | The `canvodpy run` command-line interface |
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """)
     return
 

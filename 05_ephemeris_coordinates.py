@@ -577,10 +577,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [04 — SBF Reading](./04_sbf_reading.py)
-    | **Next**: [06 — Hemispheric Grids](./06_hemispheric_grids.py)
+    **Previous**: [04 · SBF Reading](./04_sbf_reading.py)
+    | **Next**: [06 · Hemispheric Grids](./06_hemispheric_grids.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

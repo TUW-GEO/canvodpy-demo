@@ -217,10 +217,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [12 — API Overview](./12_api_overview.py)
-    | **Next**: [14 — Site Pipeline](./14_site_pipeline.py)
+    **Previous**: [12 · API Overview](./12_api_overview.py)
+    | **Next**: [14 · Site Pipeline](./14_site_pipeline.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

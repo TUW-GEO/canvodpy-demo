@@ -655,12 +655,12 @@ def _(fig_explorer):
 def _(mo):
     mo.md(
         r"""
-    —
+    ---
 
-    **Previous**: [09 — Store Metadata](./09_store_metadata.py)
-    | **Next**: [11 — Configuration](./11_configuration.py)
+    **Previous**: [09 · Store Metadata](./09_store_metadata.py)
+    | **Next**: [11 · Configuration](./11_configuration.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

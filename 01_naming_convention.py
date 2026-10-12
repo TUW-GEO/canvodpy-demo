@@ -334,9 +334,9 @@ def _(mo):
     With canonical names, every file is unambiguously identified, and
     overlapping or misattributed files stop a run before any data is read.
 
-    **Next**: [02 — RINEX Reading](./02_rinex_reading.py)
+    **Next**: [02 · RINEX Reading](./02_rinex_reading.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """)
     return
 

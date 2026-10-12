@@ -1120,10 +1120,10 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Previous**: [17 — Batch Processing](./17_workflow_batch_processing.py)
-    | **Next**: [19 — Grid Exploration](./19_grid_exploration.py)
+    **Previous**: [17 · Batch Processing](./17_workflow_batch_processing.py)
+    | **Next**: [19 · Grid Exploration](./19_grid_exploration.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """)
     return
 

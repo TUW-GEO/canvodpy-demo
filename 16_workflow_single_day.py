@@ -405,10 +405,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [14 — Site Pipeline](./14_site_pipeline.py)
-    | **Next**: [17 — Batch Processing](./17_workflow_batch_processing.py)
+    **Previous**: [14 · Site Pipeline](./14_site_pipeline.py)
+    | **Next**: [17 · Batch Processing](./17_workflow_batch_processing.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

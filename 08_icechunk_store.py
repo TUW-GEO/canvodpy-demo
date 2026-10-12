@@ -399,10 +399,10 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Previous**: [07 — VOD Retrieval](./07_vod_retrieval.py)
-    | **Next**: [09 — Store Metadata](./09_store_metadata.py)
+    **Previous**: [07 · VOD Retrieval](./07_vod_retrieval.py)
+    | **Next**: [09 · Store Metadata](./09_store_metadata.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """)
     return
 

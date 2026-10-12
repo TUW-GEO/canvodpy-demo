@@ -547,10 +547,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [03 — Satellite Catalog](./03_satellite_catalog.py)
-    | **Next**: [05 — Ephemeris & Coordinates](./05_ephemeris_coordinates.py)
+    **Previous**: [03 · Satellite Catalog](./03_satellite_catalog.py)
+    | **Next**: [05 · Ephemeris & Coordinates](./05_ephemeris_coordinates.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 
