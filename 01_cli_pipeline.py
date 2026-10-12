@@ -5,7 +5,7 @@
 # ]
 #
 # [tool.marimo.opengraph]
-# title = "13 · Running the Pipeline (CLI)"
+# title = "01 · Running the Pipeline (CLI)"
 # description = "canvodpy run: the recommended command-line interface for production ingestion. Covers date ranges, auto-resume, multi-site runs, dry-run previews, and the ephemeris-source/VOD-calculator flags."
 # ///
 
@@ -27,11 +27,11 @@ def _():
         r"""
     # Running the Pipeline: the CLI
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_cli_pipeline.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/01_cli_pipeline.py?mode=edit)
 
     `canvodpy run` is the recommended way to run production ingestion. It
     wraps the exact same code path as `Site(...).pipeline().process_range()`
-    (covered in the [next notebook](./14_site_pipeline.py)), adding
+    (covered in [18 · Site Pipeline](./18_site_pipeline.py)), adding
     resumability and a live progress display on top.
 
     ```bash
@@ -217,8 +217,7 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [12 · API Overview](./12_api_overview.py)
-    | **Next**: [14 · Site Pipeline](./14_site_pipeline.py)
+    **Next**: [02 · Configuration](./02_configuration.py)
 
     *canVODpy · Apache 2.0*
     """

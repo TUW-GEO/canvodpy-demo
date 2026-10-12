@@ -14,7 +14,7 @@
 # canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "04 · SBF Binary Reading"
+# title = "06 · SBF Binary Reading"
 # description = "Read Septentrio Binary Format (SBF) files into xarray Datasets. Access raw SNR, PVT solutions, DOP values, and satellite visibility from binary GNSS logs."
 # ///
 
@@ -39,7 +39,7 @@ def _():
         r"""
     # SBF Binary Reading
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/04_sbf_reading.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/06_sbf_reading.py?mode=edit)
 
     This notebook demonstrates how to read **Septentrio Binary Format (SBF)**
     files using the `SbfReader` class from **canvod-readers**.
@@ -547,8 +547,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [03 · Satellite Catalog](./03_satellite_catalog.py)
-    | **Next**: [05 · Ephemeris & Coordinates](./05_ephemeris_coordinates.py)
+    **Previous**: [05 · RINEX Reading](./05_rinex_reading.py)
+    | **Next**: [07 · Satellite Catalog](./07_satellite_catalog.py)
 
     *canVODpy · Apache 2.0*
     """

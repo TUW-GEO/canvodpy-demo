@@ -33,7 +33,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "16 · Single-Day Workflow"
+# title = "19 · Single-Day Workflow"
 # description = "End-to-end GNSS-T processing for a single day: read RINEX files, augment with SP3 ephemeris, assign to a hemispheric grid, and retrieve VOD."
 # ///
 
@@ -53,7 +53,7 @@ def _():
         r"""
     # Single-Day Processing Workflow
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/16_workflow_single_day.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/19_workflow_single_day.py?mode=edit)
 
     This notebook walks through a complete single-day GNSS-T processing
     pipeline **step by step**, calling the `canvod-*` packages directly to
@@ -405,8 +405,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [14 · Site Pipeline](./14_site_pipeline.py)
-    | **Next**: [17 · Batch Processing](./17_workflow_batch_processing.py)
+    **Previous**: [18 · Site Pipeline](./18_site_pipeline.py)
+    | **Next**: [20 · Batch Processing](./20_workflow_batch_processing.py)
 
     *canVODpy · Apache 2.0*
     """

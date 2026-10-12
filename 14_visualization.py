@@ -31,7 +31,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "10 · Visualization"
+# title = "14 · Visualization"
 # description = "Visualise VOD and hemispheric grid data in 2D polar and 3D hemispherical plots. Interactive sky-view maps of vegetation transmittance per grid cell."
 # ///
 
@@ -51,7 +51,7 @@ def _():
         r"""
     # Hemispheric Visualization
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/10_visualization.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_visualization.py?mode=edit)
 
     The **canvod-viz** package provides 2D and 3D visualization of
     hemispheric grids and the data mapped onto them.  Two rendering
@@ -657,8 +657,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [09 · Store Metadata](./09_store_metadata.py)
-    | **Next**: [11 · Configuration](./11_configuration.py)
+    **Previous**: [13 · Store Operations](./13_workflow_store_operations.py)
+    | **Next**: [15 · Grid Exploration](./15_grid_exploration.py)
 
     *canVODpy · Apache 2.0*
     """

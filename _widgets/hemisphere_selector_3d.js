@@ -72,9 +72,9 @@ function render({ model, el }) {
 
     const layout = {
       scene: {
-        xaxis: { title: "X", range: [-1.1, 1.1] },
-        yaxis: { title: "Y", range: [-1.1, 1.1] },
-        zaxis: { title: "Z", range: [0, 1.1] },
+        xaxis: { title: "East", range: [-1.1, 1.1] },
+        yaxis: { title: "North", range: [-1.1, 1.1] },
+        zaxis: { title: "Up", range: [0, 1.1] },
         aspectmode: "cube",
         camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
       },

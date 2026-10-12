@@ -33,7 +33,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "07 · VOD Retrieval"
+# title = "10 · VOD Retrieval"
 # description = "Retrieve Vegetation Optical Depth from GNSS transmittance using the Tau-Omega radiative transfer model. Align canopy and reference SNR to compute VOD per sky cell."
 # ///
 
@@ -58,7 +58,7 @@ def _():
         r"""
     # Vegetation Optical Depth Retrieval
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/07_vod_retrieval.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/10_vod_retrieval.py?mode=edit)
 
     The **canvod-vod** package implements the core scientific algorithm of
     GNSS Transmissometry: computing **Vegetation Optical Depth (VOD)** from
@@ -429,7 +429,7 @@ def _(mo):
     signals.  For production workflows, compute VOD for a configured site
     with `canvodpy run`, or from Python with `Site(...).vod`, which reads
     the data from the site's Icechunk store (see
-    [14 · Site Pipeline](./14_site_pipeline.py)).
+    [18 · Site Pipeline](./18_site_pipeline.py)).
     """
     )
 
@@ -447,8 +447,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [06 · Hemispheric Grids](./06_hemispheric_grids.py)
-    | **Next**: [08 · Icechunk Store](./08_icechunk_store.py)
+    **Previous**: [09 · Hemispheric Grids](./09_hemispheric_grids.py)
+    | **Next**: [11 · Icechunk Store](./11_icechunk_store.py)
 
     *canVODpy · Apache 2.0*
     """

@@ -32,7 +32,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "19 · Grid Exploration"
+# title = "15 · Grid Exploration"
 # description = "Interactive explorer for canVODpy's hemispheric grid schemes. Compare equal-area, equal-angle, geodesic, and Fibonacci partitions at different resolutions."
 # ///
 
@@ -52,7 +52,7 @@ def _():
         r"""
     # Interactive Hemispheric Grid Exploration
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/19_grid_exploration.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/15_grid_exploration.py?mode=edit)
 
     Explore per-cell VOD data on the hemispheric equal-area grid.
     Select cells by clicking on the 3D or 2D view to inspect timeseries
@@ -93,8 +93,9 @@ def _(np):
     theta = grid.grid["theta"].to_numpy()  # zenith, radians
     phi = grid.grid["phi"].to_numpy()  # azimuth, radians
 
-    cell_x = np.sin(theta) * np.cos(phi)
-    cell_y = np.sin(theta) * np.sin(phi)
+    # East-North-Up, as in canvod.viz: azimuth is clockwise from North
+    cell_x = np.sin(theta) * np.sin(phi)  # East
+    cell_y = np.sin(theta) * np.cos(phi)  # North
     cell_z = np.cos(theta)
 
     return cell_x, cell_y, cell_z, grid, phi, theta
@@ -372,7 +373,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [18 · Store Operations](./18_workflow_store_operations.py) | **Next**: [20 · 3D Grid Gallery](./20_grid_3d_gallery.py)
+    **Previous**: [14 · Visualization](./14_visualization.py)
+    | **Next**: [16 · 3D Grid Gallery](./16_grid_3d_gallery.py)
 
     *canVODpy · Apache 2.0*
     """

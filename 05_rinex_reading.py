@@ -14,7 +14,7 @@
 # canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "02 · RINEX v3 Observation Reading"
+# title = "05 · RINEX v3 Observation Reading"
 # description = "Read RINEX v3.04 GNSS observation files into xarray Datasets. Explore SNR, Doppler, pseudorange, and carrier-phase observables across all constellations."
 # ///
 
@@ -36,7 +36,7 @@ def _():
         r"""
     # RINEX v3.04 Observation Reading
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/02_rinex_reading.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/05_rinex_reading.py?mode=edit)
 
     This notebook introduces the **canvod-readers** package and demonstrates how
     to read RINEX v3.04 observation files into `xarray.Dataset` objects.
@@ -716,7 +716,8 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Next**: [03 · Satellite Catalog](./03_satellite_catalog.py)
+    **Previous**: [04 · Naming Convention](./04_naming_convention.py)
+    | **Next**: [06 · SBF Reading](./06_sbf_reading.py)
 
     *canVODpy · Apache 2.0*
     """)

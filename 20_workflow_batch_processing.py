@@ -5,7 +5,7 @@
 # ]
 #
 # [tool.marimo.opengraph]
-# title = "17 · Batch Processing Workflows"
+# title = "20 · Batch Processing Workflows"
 # description = "Process multiple days of GNSS-T data in parallel worker processes. Covers date-range iteration, store appends, and strategies for large-scale canopy monitoring."
 # ///
 
@@ -25,7 +25,7 @@ def _():
         r"""
     # Batch Processing Workflows
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_workflow_batch_processing.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/20_workflow_batch_processing.py?mode=edit)
 
     This notebook demonstrates various batch processing patterns:
 
@@ -247,7 +247,7 @@ def _(mo):
     ```
 
     Alternatively, assign cells to a dataset yourself, at the resolution
-    you choose (see [16 · Single-Day Workflow](./16_workflow_single_day.py)):
+    you choose (see [19 · Single-Day Workflow](./19_workflow_single_day.py)):
 
     ```python
     from canvod.grids import add_cell_ids_to_ds_fast, create_hemigrid
@@ -349,8 +349,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [16 · Single-Day Workflow](./16_workflow_single_day.py)
-    | **Next**: [18 · Store Operations](./18_workflow_store_operations.py)
+    **Previous**: [19 · Single-Day Workflow](./19_workflow_single_day.py)
+    | **Next**: [21 · Your Own VOD Calculator](./21_plugins.py)
 
     *canVODpy · Apache 2.0*
     """

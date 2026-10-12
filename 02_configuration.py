@@ -14,7 +14,7 @@
 # canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "11 · Configuration & Utilities"
+# title = "02 · Configuration & Utilities"
 # description = "Configure canVODpy processing parameters using Pydantic models. Explore site definitions, VOD analysis configs, and the shared utilities layer."
 # ///
 
@@ -34,7 +34,7 @@ def _():
         r"""
     # Configuration and Utilities
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/11_configuration.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/02_configuration.py?mode=edit)
 
     Two layers make every run specified and observable:
 
@@ -627,8 +627,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [10 · Visualization](./10_visualization.py)
-    | **Next**: [12 · API Overview](./12_api_overview.py)
+    **Previous**: [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py)
+    | **Next**: [03 · Speedrun: Full Pipeline](./03_convenience_speedrun.py)
 
     *canVODpy · Apache 2.0*
     """

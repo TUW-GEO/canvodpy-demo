@@ -31,7 +31,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "12 · API Overview"
+# title = "17 · API Overview"
 # description = "Survey canVODpy's supported surfaces: the canvodpy run CLI for production use and Site.pipeline(), the Python entry point it wraps."
 # ///
 
@@ -51,7 +51,7 @@ def _():
         r"""
     # canvodpy API Overview
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/12_api_overview.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_api_overview.py?mode=edit)
 
     canvodpy has **two supported ways to run or script the pipeline**.
     Both produce the same scientific results (the same VOD values from
@@ -114,7 +114,7 @@ def _(mo):
     few production-oriented flags (`--ephemeris-source`, `--vod-calculator`,
     `--workers`, `--days-per-batch`).
 
-    See [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py) for a full
+    See [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py) for a full
     walkthrough of the flags.
     """
     )
@@ -153,7 +153,7 @@ def _(mo):
     deployments that ingest nightly and recompute VOD on a different
     schedule.
 
-    See [14 · Site Pipeline](./14_site_pipeline.py) for the full walkthrough.
+    See [18 · Site Pipeline](./18_site_pipeline.py) for the full walkthrough.
     """
     )
 
@@ -231,7 +231,7 @@ def _(mo):
     | Script a run in Python: loop over sites, embed in a notebook | `Site(...).pipeline()` |
     | Recompute VOD separately from ingestion | `Site(...).vod` (`VodComputer`) |
     | Orchestrate with Airflow | The optional `canvod-airflow` extension (`canvodpy.workflows.tasks`) |
-    | Inspect or modify an intermediate step for research | The `canvod-*` packages directly, see [16 · Single-Day Workflow](./16_workflow_single_day.py) |
+    | Inspect or modify an intermediate step for research | The `canvod-*` packages directly, see [19 · Single-Day Workflow](./19_workflow_single_day.py) |
     | Extend with a custom reader/grid/calculator | Factories: `VODFactory.register()` (this session) |
     | Use your own reader or VOD calculator in `canvodpy run` | A plugin package (entry points), see [21 · Your Own VOD Calculator](./21_plugins.py) |
 
@@ -244,8 +244,8 @@ def _(mo):
 
     The following notebooks demonstrate each surface in detail:
 
-    - [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py)
-    - [14 · Site Pipeline](./14_site_pipeline.py)
+    - [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py)
+    - [18 · Site Pipeline](./18_site_pipeline.py)
     """
     )
 
@@ -263,8 +263,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [11 · Configuration](./11_configuration.py)
-    | **Next**: [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py)
+    **Previous**: [16 · 3D Grid Gallery](./16_grid_3d_gallery.py)
+    | **Next**: [18 · Site Pipeline](./18_site_pipeline.py)
 
     *canVODpy · Apache 2.0*
     """

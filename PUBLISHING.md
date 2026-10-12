@@ -34,25 +34,25 @@ Format:
 
 ### Notebook list
 
-- [x] `00_convenience_speedrun.py`: Speedrun: Full Pipeline
-- [x] `01_naming_convention.py`: Naming Convention & Validation
-- [x] `02_rinex_reading.py`: RINEX v3 Observation Reading
-- [x] `03_satellite_catalog.py`: Satellite Catalog
-- [x] `04_sbf_reading.py`: SBF Binary Reading
-- [x] `05_ephemeris_coordinates.py`: Ephemeris & Coordinate Augmentation
-- [x] `06_hemispheric_grids.py`: Hemispheric Grids
-- [x] `07_vod_retrieval.py`: VOD Retrieval
-- [x] `08_icechunk_store.py`: Icechunk Store
-- [x] `09_store_metadata.py`: Store Metadata & FAIR Compliance
-- [x] `10_visualization.py`: Visualization
-- [x] `11_configuration.py`: Configuration & Utilities
-- [x] `12_api_overview.py`: API Overview
-- [x] `13_cli_pipeline.py`: Running the Pipeline (CLI)
-- [x] `14_site_pipeline.py`: Site Pipeline
-- [x] `16_workflow_single_day.py`: Single-Day Workflow
-- [x] `17_workflow_batch_processing.py`: Batch Processing Workflows
-- [x] `18_workflow_store_operations.py`: Store Operations
-- [x] `19_grid_exploration.py`: Grid Exploration
+- [x] `01_cli_pipeline.py`: Running the Pipeline (CLI)
+- [x] `02_configuration.py`: Configuration & Utilities
+- [x] `03_convenience_speedrun.py`: Speedrun: Full Pipeline
+- [x] `04_naming_convention.py`: Naming Convention & Validation
+- [x] `05_rinex_reading.py`: RINEX v3 Observation Reading
+- [x] `06_sbf_reading.py`: SBF Binary Reading
+- [x] `07_satellite_catalog.py`: Satellite Catalog
+- [x] `08_ephemeris_coordinates.py`: Ephemeris & Coordinate Augmentation
+- [x] `09_hemispheric_grids.py`: Hemispheric Grids
+- [x] `10_vod_retrieval.py`: VOD Retrieval
+- [x] `11_icechunk_store.py`: Icechunk Store
+- [x] `12_store_metadata.py`: Store Metadata & FAIR Compliance
+- [x] `13_workflow_store_operations.py`: Store Operations
+- [x] `14_visualization.py`: Visualization
+- [x] `15_grid_exploration.py`: Grid Exploration
+- [x] `17_api_overview.py`: API Overview
+- [x] `18_site_pipeline.py`: Site Pipeline
+- [x] `19_workflow_single_day.py`: Single-Day Workflow
+- [x] `20_workflow_batch_processing.py`: Batch Processing Workflows
 
 ---
 
@@ -70,17 +70,17 @@ def _():
 ```
 
 Notebooks that need this (read files from `TEST_DATA`):
-- [x] `00_convenience_speedrun.py`
-- [x] `02_rinex_reading.py`
-- [x] `04_sbf_reading.py`
-- [x] `05_ephemeris_coordinates.py`
-- [x] `07_vod_retrieval.py`
-- [x] `08_icechunk_store.py`
-- [ ] `13_cli_pipeline.py`: shell/documentation only, no real data
-- [ ] `14_site_pipeline.py`: uses `"my_site"` placeholder, no real data
-- [x] `16_workflow_single_day.py`
-- [ ] `17_workflow_batch_processing.py`: uses `"my_site"` placeholder, no real data
-- [x] `18_workflow_store_operations.py`
+- [ ] `01_cli_pipeline.py`: shell/documentation only, no real data
+- [x] `03_convenience_speedrun.py`
+- [x] `05_rinex_reading.py`
+- [x] `06_sbf_reading.py`
+- [x] `08_ephemeris_coordinates.py`
+- [x] `10_vod_retrieval.py`
+- [x] `11_icechunk_store.py`
+- [x] `13_workflow_store_operations.py`
+- [ ] `18_site_pipeline.py`: uses `"my_site"` placeholder, no real data
+- [x] `19_workflow_single_day.py`
+- [ ] `20_workflow_batch_processing.py`: uses `"my_site"` placeholder, no real data
 
 ---
 
