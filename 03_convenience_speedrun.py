@@ -45,6 +45,7 @@ app = marimo.App(
     width="medium",
     app_title="Speedrun: Full Pipeline",
     css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -54,6 +55,11 @@ def _():
 
     mo.md(
         r"""
+    <p align="center" class="canvod-logo">
+      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
+    </p>
+
     # canVODpy Speedrun
 
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/03_convenience_speedrun.py?mode=edit)
