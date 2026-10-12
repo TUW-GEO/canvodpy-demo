@@ -14,7 +14,7 @@
 #
 # [tool.marimo.opengraph]
 # title = "09 · Store Metadata & FAIR Compliance"
-# description = "Attach rich DataCite, ACDD, and STAC provenance metadata to canVODpy stores. Validate FAIR compliance across identity, spatial, temporal, and instrument sections."
+# description = "How a canVODpy store describes itself: repository metadata, snapshot summary and commit metadata, checked against the zarr conventions, ACDD, DataCite and STAC."
 # ///
 
 import marimo
@@ -37,18 +37,17 @@ def _():
 
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/09_store_metadata.py?mode=edit)
 
-    The **canvod-store-metadata** package attaches rich, standards-compliant
-    provenance metadata to every Icechunk store.  This metadata enables
-    **FAIR** (Findable, Accessible, Interoperable, Reusable) data
-    management and supports automated cataloguing via STAC (SpatioTemporal
-    Asset Catalog).
+    Every canVODpy store describes itself: who made it, with which
+    software and settings, for which site and receivers, and which period
+    it covers. The package **canvod-store-metadata** writes this
+    description and checks it against the metadata standards, so the
+    stores are findable, accessible, interoperable, and reusable (FAIR).
 
-    The metadata schema comprises **11 sections** with approximately
-    **90 fields**, validated against three international standards:
+    The field names follow three standards:
 
-    - **DataCite 4.5** — persistent identifier and citation metadata
-    - **ACDD 1.3** — Attribute Convention for Dataset Discovery
-    - **STAC 1.1** — SpatioTemporal Asset Catalog
+    - **DataCite 4.5**: identifier and citation metadata
+    - **ACDD 1.3**: the Attribute Convention for Data Discovery
+    - **STAC 1.1**: the SpatioTemporal Asset Catalog
 
     ---
 
@@ -59,36 +58,91 @@ def _():
 
 @app.cell
 def _(mo):
+    mo.md(r"""
+    ## Three parts, each where it belongs
+
+    A store's metadata has three parts:
+
+    | Part | Where | What it holds | Changes |
+    |---|---|---|---|
+    | **Repository metadata** | Icechunk's repository metadata, on no branch and in no snapshot | What describes the store as a whole: identity, creator, publisher and license, site and position, receivers, references | Fixed fields never; the others only by amendment |
+    | **Snapshot summary** | Root attributes of each snapshot | What the snapshot holds: time coverage, per-receiver counts, time range and position | Written by every commit |
+    | **Commit metadata** | Icechunk's metadata of each commit | How the commit was made: software versions, environment, settings | Written by every commit |
+
+    The **fixed fields** say which store this is: the store id, UUID,
+    store type, source format, naming authority, catalog link, and
+    creation date. The store id is `{site}-{gnss|vod}`, from the site
+    name in lowercase.
+
+    Every commit writes the snapshot summary in the same commit as the
+    data, so it can't disagree with the data. Every commit also copies
+    the repository metadata into the root attributes as CF and ACDD
+    global attributes, so tools that read only the root group, such as
+    xarray, see it.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
     from canvod.store_metadata import StoreMetadata
 
     _sections = [
-        ("identity", "Store title, DOI, version, description"),
-        ("creator", "Author ORCID, institution, ROR, email"),
-        ("publisher", "Publisher name, URL, contact"),
-        ("temporal", "Start/end dates, processing timestamp"),
-        ("spatial", "Site coordinates, country, bounding box"),
-        ("instruments", "Receiver model, antenna, firmware"),
-        ("processing", "Software versions, pipeline parameters"),
-        ("environment", "Python version, OS, dependencies"),
-        ("config", "Frozen snapshot of processing configuration"),
-        ("references", "Publications, URLs, related datasets"),
-        ("summaries", "Statistics, quality indicators, data volume"),
+        (
+            "identity",
+            "Store id, UUID, naming authority, title, description, keywords",
+            "Repository metadata",
+        ),
+        (
+            "creator",
+            "Name, email, ORCID, institution and its ROR ID",
+            "Repository metadata",
+        ),
+        ("publisher", "Publisher name and URL, license", "Repository metadata"),
+        (
+            "temporal",
+            "Created; updated, first and last stored epoch",
+            "Created: repository metadata; the rest: snapshot summary",
+        ),
+        (
+            "spatial",
+            "Site, latitude, longitude, altitude; bounding box",
+            "Site and position: repository metadata; bounding box: snapshot summary",
+        ),
+        (
+            "instruments",
+            "Receivers: type, directory, hardware; epochs, signals, position",
+            "Receivers: repository metadata; counts and position: snapshot summary",
+        ),
+        ("references", "Publications, funding, related stores", "Repository metadata"),
+        (
+            "summaries",
+            "Number of epochs and signals, constellations, variables",
+            "Snapshot summary",
+        ),
+        ("processing", "Software versions", "Commit metadata"),
+        (
+            "environment",
+            "Host, operating system, hash and text of uv.lock",
+            "Commit metadata",
+        ),
+        ("config", "The settings and their hash", "Commit metadata"),
     ]
 
-    _rows = "\n".join(f"| `{s}` | {d} |" for s, d in _sections)
+    _rows = "\n".join(f"| `{s}` | {d} | {p} |" for s, d, p in _sections)
 
     mo.md(
         f"""
-    ## Metadata sections
+    ## Sections
 
-    The `StoreMetadata` Pydantic model organises metadata into 11 sections:
+    `read_metadata()` combines the three parts of one snapshot into one
+    `StoreMetadata`:
 
-    | Section | Contents |
-    |---------|----------|
+    | Section | Contents | Part |
+    |---------|----------|------|
     {_rows}
 
-    Each section is a nested Pydantic model with field-level validation,
-    defaults, and documentation.
+    Each section is a Pydantic model.
     """
     )
     return (StoreMetadata,)
@@ -96,8 +150,10 @@ def _(mo):
 
 @app.cell
 def _(StoreMetadata, mo):
+    from canvod.store_metadata import validate_all
     from canvod.store_metadata.schema import (
         Creator,
+        Publisher,
         SiteInfo,
         SpatialExtent,
         StoreIdentity,
@@ -106,118 +162,77 @@ def _(StoreMetadata, mo):
 
     _example = StoreMetadata(
         identity=StoreIdentity(
-            id="example_site-gnss",
+            id="examplesite-gnss",
+            uuid="00000000-0000-4000-8000-000000000001",
             naming_authority="edu.example",
+            stac_link=(
+                "../../gnss-observations/edu.example.examplesite-gnss/"
+                "edu.example.examplesite-gnss.json"
+            ),
             title="Example GNSS-T Observations",
+            description="L-band SNR observations from paired GNSS receivers",
             store_type="gnss_store",
             source_format="rinex3",
-            description="L-band SNR observations from paired GNSS receivers",
+            keywords=["GNSS", "VOD", "forest"],
         ),
         creator=Creator(
             name="J. Doe",
             email="j.doe@example.edu",
             institution="Example University",
         ),
+        publisher=Publisher(name="Example University", license="CC-BY-4.0"),
         temporal=TemporalExtent(
             created="2025-01-01T00:00:00Z",
             updated="2025-01-01T23:59:55Z",
         ),
         spatial=SpatialExtent(
-            site=SiteInfo(name="Example Site"),
+            site=SiteInfo(name="ExampleSite"),
             geospatial_lat=48.0,
             geospatial_lon=16.0,
             geospatial_alt_m=400.0,
+            bbox=[16.0, 48.0, 16.0, 48.0],
+            extent_temporal_interval=[["2025-01-01T00:00:00Z", "2025-01-01T23:59:55Z"]],
         ),
     )
 
-    _dict = _example.model_dump(exclude_none=True)
-    _n_fields = sum(len(v) if isinstance(v, dict) else 1 for v in _dict.values())
-
-    mo.md(
-        f"""
-    ## Building metadata
-
-    ```python
-    from canvod.store_metadata import StoreMetadata
-    from canvod.store_metadata.schema import (
-        StoreIdentity, Creator, TemporalExtent, SpatialExtent,
-    )
-
-    metadata = StoreMetadata(
-        identity=StoreIdentity(id="my_site-gnss", naming_authority="edu.example", title="My GNSS-T Store", store_type="gnss_store", source_format="rinex3", ...),
-        creator=Creator(name="J. Doe", email="j.doe@example.edu", institution="My University", ...),
-        temporal=TemporalExtent(created="2025-01-01T00:00:00Z", updated="2025-01-01T00:00:00Z", ...),
-        spatial=SpatialExtent(site="My Site", geospatial_lat=48.0, ...),
-    )
-    ```
-
-    The example above populates {_n_fields} fields.  Optional sections
-    (instruments, processing, environment, etc.) are auto-populated by
-    collector functions when available.
-    """
-    )
-    return
-
-
-@app.cell
-def _(StoreMetadata, mo):
-    from canvod.store_metadata import validate_all
-    from canvod.store_metadata.schema import (
-        Creator as _C,
-    )
-    from canvod.store_metadata.schema import (
-        SiteInfo as _Si,
-    )
-    from canvod.store_metadata.schema import (
-        SpatialExtent as _Sp,
-    )
-    from canvod.store_metadata.schema import (
-        StoreIdentity as _Id,
-    )
-    from canvod.store_metadata.schema import (
-        TemporalExtent as _Te,
-    )
-
-    _meta = StoreMetadata(
-        identity=_Id(
-            id="test_site-gnss",
-            title="Test",
-            store_type="gnss_store",
-            source_format="rinex3",
-        ),
-        creator=_C(name="Test", email="test@example.com", institution="Test"),
-        temporal=_Te(created="2025-01-01T00:00:00Z", updated="2025-01-01T00:00:00Z"),
-        spatial=_Sp(site=_Si(name="Test")),
-    )
-
-    _results = validate_all(_meta)
-
+    _failures = validate_all(_example, recommended=False)
+    _all = validate_all(_example)
     _rows = []
-    for _standard, _errors in _results.items():
-        _status = "PASS" if not _errors else f"{len(_errors)} issues"
+    for _standard, _issues in _all.items():
+        _failed = len(_failures[_standard])
+        _status = "PASS" if not _failed else f"{_failed} failures"
+        _advice = len(_issues) - _failed
+        if _advice:
+            _status += f", {_advice} recommendations"
         _rows.append(f"| `{_standard}` | {_status} |")
 
     mo.md(
         f"""
-    ## Multi-standard validation
+    ## Checking against the standards
 
-    `validate_all()` checks metadata against all supported standards
-    and returns a dictionary of results:
+    `validate_all()` returns a list of messages per standard. With
+    `recommended=False` it lists only failures: what a standard
+    requires, or what ACDD 1.3 highly recommends. A store created by
+    canVODpy has none. Without it, the lists also hold the ACDD
+    recommendations, marked `[recommended]`, and the FAIR advice:
 
     ```python
     from canvod.store_metadata import validate_all
 
-    results = validate_all(metadata)
-    # {{"datacite": [...], "acdd": [...], "stac": [...], "fair": [...]}}
+    failures = validate_all(metadata, recommended=False)
+    # {{"zarr_conventions": [], "acdd": [], "datacite": [], "stac": [], "fair": []}}
     ```
+
+    The example metadata, built by hand:
 
     | Standard | Result |
     |----------|--------|
     {chr(10).join(_rows)}
 
-    Missing optional fields are reported as warnings, not errors.
-    The validators are designed to guide users toward complete metadata
-    without blocking data ingestion.
+    Runs never build the metadata by hand. `collect_metadata()` builds it
+    from the settings, and a store is not created without a naming
+    authority, a description of the site's stores, a publisher, and a
+    license.
     """
     )
     return
@@ -226,52 +241,39 @@ def _(StoreMetadata, mo):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Store I/O
+    ## Reading the metadata
 
-    Metadata is stored in the Zarr root attributes under the key
-    `canvod_metadata`.  The I/O functions handle serialisation and
-    deserialisation:
+    Runs write the metadata themselves: the repository metadata before
+    the first write to a store, the snapshot summary and the commit
+    metadata with every commit.
 
     ```python
-    from canvod.store_metadata import (
-        write_metadata,   # Write to store
-        read_metadata,    # Read from store
-        update_metadata,  # Merge updates
-        metadata_exists,  # Check presence
-    )
+    from canvod.store_metadata import metadata_exists, read_metadata, show_metadata
 
-    # Write
-    write_metadata(store_path, metadata, branch="main")
-
-    # Read back
-    meta = read_metadata(store_path, branch="main")
-
-    # Update specific fields (dotted keys supported)
-    update_metadata(store_path, {"temporal.end": "2025-12-31"})
-
-    # Check
     if metadata_exists(store_path):
-        ...
+        meta = read_metadata(store_path)                          # tip of main
+        old = read_metadata(store_path, snapshot_id=snapshot_id)  # one snapshot
+
+    show_metadata(store_path)  # all sections, amendments, and the commit log
     ```
 
-    ### Automatic collection
+    The history of a store is its commit log; `show_metadata()` lists it.
 
-    The `collect_metadata()` function auto-populates as many fields as
-    possible from the processing environment:
+    ## Changing the description
 
-    - Python version, OS, installed packages (environment section)
-    - canvodpy version, pipeline parameters (processing section)
-    - Site configuration (spatial, instruments sections)
-    - Current timestamp (temporal section)
+    Amendable fields change only by amendment, with a reason. Each
+    changed field is recorded with its old and new value, the reason,
+    who, and when:
 
-    ```python
-    from canvod.store_metadata import collect_metadata
-
-    metadata = collect_metadata(
-        config=site_config,
-        datasets={"canopy": ds_canopy, "reference": ds_reference},
-    )
+    ```bash
+    canvodpy store amend ExampleSite --store gnss \
+      --set identity.title="Example site GNSS-T observations" \
+      --reason "Clearer title"
     ```
+
+    A store written before the repository metadata is moved to the
+    current form once, with `canvodpy store migrate-metadata`; runs refuse
+    it until then.
     """)
     return
 
@@ -279,26 +281,24 @@ def _(mo):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## STAC catalog integration
+    ## Listing the stores of a directory
 
-    For multi-site deployments, `scan_stores()` discovers all Icechunk
-    stores in a directory tree and extracts their metadata into a
-    catalogue:
+    `scan_stores()` finds the Icechunk stores in a directory tree and
+    lists their metadata, one row per store:
 
     ```python
+    from pathlib import Path
+
     from canvod.store_metadata import scan_stores, write_stac_catalog
 
-    # Scan all stores under a root directory
-    inventory = scan_stores(Path("/data/gnss_stores/"))
+    inventory = scan_stores(Path("/data/stores/"))
 
-    # Write STAC catalog for web-based discovery
-    write_stac_catalog(inventory, Path("/data/stac_catalog/"))
+    # STAC catalog at /data/stores/catalog.json, a collection next to each store
+    write_stac_catalog(Path("/data/stores/"))
     ```
 
-    STAC (SpatioTemporal Asset Catalog) is a widely adopted standard
-    for geospatial data discovery.  The generated catalog can be served
-    by any STAC API implementation (e.g. stac-fastapi) for web-based
-    search and access.
+    STAC is a widely used standard for finding geospatial data; any STAC
+    browser or STAC API can read the catalog.
     """)
     return
 

@@ -672,17 +672,23 @@ def _(mo):
     ## Store-wide metadata -- full schema, by standard
 
     Distinct from the per-file metadata ledger above: `canvod-store-metadata`
-    attaches rich provenance to the *store itself* across **11 sections**
-    (identity, creator, publisher, temporal, spatial, instruments,
-    processing, environment, config, references, summaries -- see
-    `schema.py` for the full ~90-field Pydantic model). The `canvodpy` CLI
-    writes this automatically on every run.
+    describes the *store itself*, in three parts (see notebook 09):
 
-    Every row below is this **live store's actual metadata** -- real values
-    written by `collect_metadata()` from the `rosalia_v3_04` recipe, not a
-    synthetic example. A field showing `(not set)` means the schema
-    supports it but nothing in the current recipe/collector populates it
-    yet -- that gap is real, not hidden.
+    - the **repository metadata** (identity, creator, publisher, site,
+      receivers, references), written once when the store is created and
+      changed only by amendment (`canvodpy store amend`, with a reason);
+    - the **snapshot summary** (time coverage, counts, per-receiver
+      position), written by every commit in the same commit as the data;
+    - the **commit metadata** (`processing`, `environment`, `config`),
+      recorded by every commit.
+
+    `read_metadata()` combines the three for one snapshot into 11
+    sections. Every row below is this **live store's actual metadata**:
+    the repository metadata `collect_metadata()` built from the
+    `rosalia_v3_04` recipe, and the summary and commit metadata of the
+    last commit. A field showing `(not set)` is in the schema but not
+    set for this store. The history of the store is its commit log,
+    shown further up.
 
     ### How to read the "Standard" column
 
@@ -712,7 +718,9 @@ def _(mo, store_path):
 
     _STANDARD_MAP: dict[str, str] = {
         # identity
-        "identity.id": "DataCite (identifier) · STAC (id) · FAIR F1",
+        "identity.id": "DataCite (identifier) · ACDD (id) · STAC (id) · FAIR F1",
+        "identity.uuid": "Internal (root attribute canvod:uuid) · FAIR F1",
+        "identity.stac_link": "Zarr convention stac (link to the catalog item)",
         "identity.title": "DataCite (title) · ACDD (title) · STAC (title)",
         "identity.description": "ACDD (summary) · STAC (description) · FAIR F2",
         "identity.store_type": "Internal",
@@ -736,7 +744,7 @@ def _(mo, store_path):
         "publisher.name": "DataCite (publisher)",
         "publisher.type": "DataCite (publisherType)",
         "publisher.url": "ACDD (publisher_url)",
-        "publisher.license": "ACDD (license) · STAC (license) · FAIR R1.1",
+        "publisher.license": "Zarr convention license · STAC (license) · FAIR R1.1",
         "publisher.license_uri": "STAC (license link)",
         # temporal
         "temporal.created": "DataCite (date: Created) · ACDD (date_created)",
@@ -749,7 +757,7 @@ def _(mo, store_path):
         "temporal.time_coverage_resolution": "ACDD (time_coverage_resolution)",
         # spatial
         "spatial.site.name": "Internal",
-        "spatial.site.description": "ACDD (summary, per-site)",
+        "spatial.site.description": "Internal",
         "spatial.site.country": "Internal",
         "spatial.geospatial_lat": "ACDD (geospatial_lat_min/max) · FAIR F2",
         "spatial.geospatial_lon": "ACDD (geospatial_lon_min/max) · FAIR F2",
@@ -758,7 +766,7 @@ def _(mo, store_path):
         "spatial.geospatial_lat_max": "ACDD (geospatial_lat_max)",
         "spatial.geospatial_lon_min": "ACDD (geospatial_lon_min)",
         "spatial.geospatial_lon_max": "ACDD (geospatial_lon_max)",
-        "spatial.geospatial_vertical_crs": "ACDD (geospatial_bounds_crs)",
+        "spatial.geospatial_vertical_crs": "Zarr convention proj",
         "spatial.bbox": "STAC (bbox) · FAIR F4",
         "spatial.extent_temporal_interval": "STAC (temporal extent)",
         # instruments
@@ -770,8 +778,8 @@ def _(mo, store_path):
         "processing.python": "Internal · FAIR R1.2",
         "processing.uv_version": "Internal · FAIR R1.2",
         "processing.level": "Internal (processing level)",
-        "processing.lineage": "ACDD (source)",
-        "processing.facility": "ACDD (institution)",
+        "processing.lineage": "Internal",
+        "processing.facility": "Internal",
         "processing.datetime": "Internal",
         # environment
         "environment.hostname": "Internal · FAIR R1.2",
@@ -801,14 +809,13 @@ def _(mo, store_path):
         "references.publications": "DataCite (relatedIdentifiers) · FAIR I3",
         "references.funding": "DataCite (fundingReferences)",
         # summaries
-        "summaries.total_epochs": "ACDD (summary statistics) · Internal",
-        "summaries.total_sids": "ACDD (summary statistics) · Internal",
-        "summaries.constellations": "ACDD (summary statistics) · Internal",
-        "summaries.variables": "ACDD (summary statistics) · Internal",
-        "summaries.temporal_resolution_s": "ACDD (summary statistics) · Internal",
-        "summaries.file_count": "ACDD (summary statistics) · Internal",
-        "summaries.store_size_mb": "ACDD (summary statistics) · Internal",
-        "summaries.history": "Internal",
+        "summaries.total_epochs": "Internal",
+        "summaries.total_sids": "Internal",
+        "summaries.constellations": "Internal",
+        "summaries.variables": "Internal",
+        "summaries.temporal_resolution_s": "Internal",
+        "summaries.file_count": "Internal",
+        "summaries.store_size_mb": "Internal",
     }
 
     def _fmt_value(v):
@@ -911,13 +918,14 @@ def _(mo, store_path):
             "references",
             "summaries",
         ):
-            _all_rows.extend(
-                _rows_for(_sec, getattr(store_metadata, _sec).model_dump(mode="json"))
-            )
+            _section_dict = getattr(store_metadata, _sec).model_dump(mode="json")
+            # Deprecated: the history of a store is its commit log.
+            _section_dict.pop("history", None)
+            _all_rows.extend(_rows_for(_sec, _section_dict))
         full_metadata_table = mo.ui.table(
             _all_rows,
             page_size=20,
-            label=f"{len(_all_rows)} populated metadata fields across all 11 sections",
+            label=f"{len(_all_rows)} metadata fields across 11 sections",
         )
     else:
         store_metadata = None
