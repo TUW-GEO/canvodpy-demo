@@ -19,18 +19,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "18 · Store Operations"
@@ -55,7 +55,7 @@ def _():
         r"""
     # Store Operations
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/18_workflow_store_operations.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/18_workflow_store_operations.py?mode=edit)
 
     A comprehensive, hands-on tour of everything `MyIcechunkStore`
     (`canvod-store`) and its companion `canvod-store-metadata` package can
@@ -351,7 +351,9 @@ def _(mo):
     A small synthetic dataset, built inline (not real GNSS data) purely
     to demonstrate `write_initial_group()` without touching any of the
     real ingested groups. Written to the `demo/scratch` branch, so
-    `main` is completely unaffected.
+    `main` is completely unaffected. Its epochs are marked as GPS time
+    (`epoch.attrs["time_system"] = "GPS"`): a store holds GPS time only and
+    refuses data that doesn't record its time scale.
     """)
     return
 
@@ -372,6 +374,9 @@ def _(demo_branch, store):
             {"S1C": (("epoch", "sid"), snr)},
             coords={"epoch": epochs, "sid": sids},
         )
+        # The store holds GPS time only, and refuses epochs that don't
+        # record their time scale.
+        ds["epoch"].attrs["time_system"] = "GPS"
         ds.attrs["File Hash"] = "demo0000deadbeef"
         return ds
 
@@ -541,7 +546,7 @@ def _(mo):
 
     1. **File hash match**: the SHA-256 hash of each RINEX/SBF file is
        recorded in the metadata ledger.  If the same file is ingested
-       again, it is silently skipped.
+       again, it is skipped, and the ledger records the skip.
 
     2. **Temporal overlap**: the start and end timestamps of each ingested
        file are compared against the existing data.  Files that overlap
@@ -570,14 +575,14 @@ def _(mo):
     mo.md(r"""
     ## Creating a new store
 
-    The `create_rinex_store()` and `create_vod_store()` factory functions
+    The `create_gnss_store()` and `create_vod_store()` factory functions
     initialise new Icechunk repositories with the appropriate configuration:
 
     ```python
-    from canvod.store import create_rinex_store, create_vod_store
+    from canvod.store import create_gnss_store, create_vod_store
 
     # For raw observation data
-    obs_store = create_rinex_store(Path("/data/my_site/observations.icechunk"))
+    gnss_store = create_gnss_store(Path("/data/my_site/observations.icechunk"))
 
     # For VOD products
     vod_store = create_vod_store(Path("/data/my_site/vod.icechunk"))
@@ -689,7 +694,6 @@ def _(mo):
     | **ACDD** | Attribute Convention for Dataset Discovery 1.3 | NetCDF/CF-style discovery attributes: summary, keywords, coverage, platform |
     | **STAC** | SpatioTemporal Asset Catalog 1.1 | Web-catalog fields: id, bbox, temporal extent, license |
     | **FAIR** | FAIR data principles (sub-principles `F1`-`F4`, `A1`-`A2`, `I1`-`I3`, `R1.1`-`R1.3`) | Cross-cutting findability/accessibility/interoperability/reusability -- see `validate_fair()` |
-    | **W3C PROV** | W3C PROV-O | Provenance: what produced this store, when, from what config |
     | **Internal** | canvodpy-specific | No external standard; operational/debugging value only |
 
     ```python
@@ -762,13 +766,13 @@ def _(mo, store_path):
         "instruments.instruments": "ACDD (instrument)",
         "instruments.receivers": "Internal (canvodpy-specific)",
         # processing
-        "processing.software": "W3C PROV (wasGeneratedBy) · FAIR R1.2",
+        "processing.software": "Internal · FAIR R1.2",
         "processing.python": "Internal · FAIR R1.2",
         "processing.uv_version": "Internal · FAIR R1.2",
-        "processing.level": "Internal (canvodpy API level)",
-        "processing.lineage": "ACDD (source) · W3C PROV",
+        "processing.level": "Internal (processing level)",
+        "processing.lineage": "ACDD (source)",
         "processing.facility": "ACDD (institution)",
-        "processing.datetime": "W3C PROV (generatedAtTime)",
+        "processing.datetime": "Internal",
         # environment
         "environment.hostname": "Internal · FAIR R1.2",
         "environment.os": "Internal · FAIR R1.2",
@@ -782,13 +786,13 @@ def _(mo, store_path):
         "environment.pyproject_toml_text": "FAIR R1.2 (reproducibility)",
         "environment.uv_lock_text": "FAIR R1.2 (reproducibility)",
         # config
-        "config.processing": "W3C PROV (frozen config) · Internal",
-        "config.preprocessing": "W3C PROV (frozen config) · Internal",
-        "config.aux_data": "W3C PROV (frozen config) · Internal",
-        "config.compression": "W3C PROV (frozen config) · Internal",
-        "config.icechunk": "W3C PROV (frozen config) · Internal",
-        "config.sids": "W3C PROV (frozen config) · Internal",
-        "config.config_hash": "W3C PROV (checksum) · Internal",
+        "config.processing": "Internal",
+        "config.preprocessing": "Internal",
+        "config.aux_data": "Internal",
+        "config.compression": "Internal",
+        "config.icechunk": "Internal",
+        "config.sids": "Internal",
+        "config.config_hash": "Internal",
         # references
         "references.software_repository": "FAIR R1.2 · Internal",
         "references.documentation": "Internal",
@@ -804,7 +808,7 @@ def _(mo, store_path):
         "summaries.temporal_resolution_s": "ACDD (summary statistics) · Internal",
         "summaries.file_count": "ACDD (summary statistics) · Internal",
         "summaries.store_size_mb": "ACDD (summary statistics) · Internal",
-        "summaries.history": "W3C PROV (activity log)",
+        "summaries.history": "Internal",
     }
 
     def _fmt_value(v):
@@ -1037,15 +1041,18 @@ def _(mo):
 
     The `TemporalAggregate` operation (from `canvod-ops`) handles all of
     this correctly — it groups by `(time_bin, sid)` before computing the
-    mean or median, and averages geometry coords per-SID:
+    mean or median, and aggregates `phi` and `theta` per SID:
 
     ```python
     from canvod.ops import TemporalAggregate
 
-    op = TemporalAggregate(freq="1min", method="mean")
+    op = TemporalAggregate(freq="1min", method="mean", integer_method="first")
     ds_agg, result = op(ds)
     # Each SID is aggregated independently within each 1-minute bin.
-    # Coordinates (phi, theta) are also averaged per-SID (centroid).
+    # phi and theta are aggregated per SID like the other variables;
+    # phi as an angle, so a satellite crossing north does not average to south.
+    # Integer flags (LLI, SSI) cannot be averaged: each bin takes the
+    # first, last or middle value, as integer_method sets.
     # sid-only coords (e.g. sv, band) are preserved unchanged.
     ```
 

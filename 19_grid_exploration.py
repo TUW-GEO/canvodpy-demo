@@ -18,18 +18,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "19 · Grid Exploration"
@@ -52,7 +52,7 @@ def _():
         r"""
     # Interactive Hemispheric Grid Exploration
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/19_grid_exploration.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/19_grid_exploration.py?mode=edit)
 
     Explore per-cell VOD data on the hemispheric equal-area grid.
     Select cells by clicking on the 3D or 2D view to inspect timeseries
@@ -360,7 +360,7 @@ def _(mo):
     ---
     **Note:** This notebook uses synthetic data for demonstration.
     To use real data, open an Icechunk store and pass actual per-cell
-    timeseries datasets via `AnalysisStorage.load_percell_timeseries()`.
+    timeseries datasets via `canvod.store.AnalysisStorage.load_percell_timeseries()`.
     """
     )
     return

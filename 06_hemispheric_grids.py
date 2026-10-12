@@ -17,18 +17,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "06 · Hemispheric Grids"
@@ -56,7 +56,7 @@ def _():
         r"""
     # Hemispheric Grids
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/06_hemispheric_grids.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/06_hemispheric_grids.py?mode=edit)
 
     The **canvod-grids** package discretises the upper hemisphere into grid
     cells for spatially resolved VOD retrieval.  Each GNSS observation is
@@ -267,20 +267,22 @@ def _(mo):
     ## Assigning observations to grid cells
 
     Once a dataset has been augmented with $\phi$ and $\theta$ coordinates,
-    each observation is assigned to the nearest grid cell.  The assignment
-    uses a **KDTree** projected onto Cartesian coordinates for $O(n \log m)$
-    lookups, where $n$ is the number of observations and $m$ is the number
-    of grid cells.
+    each observation is assigned to the grid cell that contains it. Each
+    grid type is looked up by its own cell boundaries: theta band and phi
+    sector for the ring grids (`equal_area`, `equal_angle`,
+    `equirectangular`), the spherical triangle for `htm` and `geodesic`,
+    the pixel for `healpix` and the Voronoi cell for `fibonacci`.
 
     ```python
-    from canvod.grids import add_cell_ids_to_vod_fast
+    from canvod.grids import add_cell_ids_to_ds_fast
 
-    ds = add_cell_ids_to_vod_fast(ds, grid, grid_name="equal_area_2deg")
+    ds = add_cell_ids_to_ds_fast(ds, grid, grid_name="equal_area_2deg")
     # Adds: ds["cell_id_equal_area_2deg"] with shape (epoch, sid)
     ```
 
-    Observations with non-finite $\phi$ or $\theta$ (below horizon,
-    missing ephemeris) receive `NaN` cell IDs.
+    Observations outside the grid (below the horizon or the grid's
+    `cutoff_theta`) or with non-finite $\phi$ or $\theta$ (missing
+    ephemeris) receive `NaN` cell IDs.
     """
     )
 

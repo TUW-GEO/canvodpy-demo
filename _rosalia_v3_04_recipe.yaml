@@ -1,4 +1,4 @@
-# Overlay-config recipe for the "rosalia_v3_04" site: real Rosalia RINEX
+# Settings recipe for the "rosalia_v3_04" site: real Rosalia RINEX
 # v3.04 test data (DOY 2025-001, canopy + reference receivers), used to
 # build a live Icechunk store for demo/08_icechunk_store.py and
 # demo/18_workflow_store_operations.py (see demo/_live_store.py).
@@ -12,8 +12,8 @@
 # those are inherently environment-specific (real paths on whoever's
 # machine/CI runner is generating the store) and are injected by the
 # caller (build_rosalia_store() in _live_store.py) on top of this template
-# before it's written out as a full overlay YAML and passed to
-# `canvodpy run --config`.
+# before it's written out as the complete canvod-settings.yaml of a scratch
+# configuration directory and passed to `canvodpy run --config-dir`.
 #
 # processing.metadata / processing.references below feed canvod-store-metadata's
 # collect_metadata() (see packages/canvod-store-metadata/src/canvod/store_metadata/
@@ -43,11 +43,6 @@ processing:
     publisher: "TU Wien — CLIMERS"
     publisher_url: https://www.tuwien.at/en/mg/geo/climers
     naming_authority: eu.canvodpy
-    store_description: >-
-      Reference GNSS-T store for the Rosalia beech forest site, built live
-      from real RINEX v3.04 raw data (DOY 2025-001, canopy + reference
-      receivers) via the canvodpy CLI. Used as a working demo/CI fixture for
-      canvod-store -- not the production Rosalia data stream.
   references:
     software_repository: https://github.com/nfb2021/canvodpy
     documentation: https://github.com/nfb2021/canvodpy/tree/main/docs
@@ -64,6 +59,11 @@ processing:
 
 sites:
   rosalia_v3_04:
+    store_description: >-
+      Reference GNSS-T store for the Rosalia beech forest site, built live
+      from real RINEX v3.04 raw data (DOY 2025-001, canopy + reference
+      receivers) via the canvodpy CLI. Used as a working demo/CI fixture for
+      canvod-store -- not the production Rosalia data stream.
     description: >-
       Beech forest GNSS-T research site — reference test dataset
       (canvodpy-test-data submodule, DOY 2025-001), not the live stream

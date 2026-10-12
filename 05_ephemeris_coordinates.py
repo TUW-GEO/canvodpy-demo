@@ -19,18 +19,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "05 · Ephemeris & Coordinate Augmentation"
@@ -60,7 +60,7 @@ def _():
         r"""
     # Ephemeris and Coordinate Augmentation
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/05_ephemeris_coordinates.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/05_ephemeris_coordinates.py?mode=edit)
 
     The **canvod-auxiliary** package augments GNSS observation datasets with
     satellite geometry — the azimuth and polar angle from the receiver
@@ -80,8 +80,10 @@ def _():
     The augmentation pipeline works in two steps:
 
     1. **Preprocessing**: download SP3 orbit and CLK clock files for the
-       observation date, interpolate satellite ECEF positions to the
-       observation sampling rate (5 s), and cache the result as a Zarr store.
+       observation day $n$ and for the days $n-1$ and $n+1$, interpolate
+       satellite ECEF positions to the observation sampling rate (5 s), and
+       cache the result as a Zarr store. The two shouldering days increase
+       the interpolation accuracy at the beginning and the end of day $n$.
 
     2. **Augmentation**: for each observation epoch, compute the satellite
        position in the receiver's local East-North-Up (ENU) frame, then
@@ -221,7 +223,7 @@ def _(mo):
     |-------------|---------|----------------|----------|
     | **Final** | 12--18 days | ~2 cm | Archival analysis |
     | **Rapid** | 17--41 hours | ~2--3 cm | Near-real-time |
-    | **Ultra-rapid** | 3--9 hours | ~5 cm | Operational |
+    | **Ultra-rapid** | 3--9 hours | ~5 cm | Not supported: refused in the settings |
     | **Broadcast** | Real-time | ~1--2 m | SBF fast path |
 
     For GNSS-T at 2-degree grid resolution, even broadcast ephemeris is
@@ -260,7 +262,9 @@ def _(AUX_DATA_DIR, mo, np):
     import xarray as xr
 
     _zarr_path = AUX_DATA_DIR / "aux_2025001.zarr"
-    ds_aux = xr.open_zarr(str(_zarr_path), decode_timedelta=False)
+    ds_aux = xr.open_zarr(
+        str(_zarr_path), decode_timedelta=False, consolidated=False
+    )
 
     _var_rows = []
     for _v in ds_aux.data_vars:
@@ -284,8 +288,8 @@ def _(AUX_DATA_DIR, mo, np):
     |----------|-------|-------|-------|
     {chr(10).join(_var_rows)}
 
-    The `X`, `Y`, `Z` variables are satellite ECEF coordinates in metres,
-    interpolated from SP3 15-minute samples to the 5-second observation grid.
+    The `X`, `Y`, `Z` variables are satellite ECEF coordinates in meters,
+    interpolated from the 5-minute SP3 samples to the 5-second observation grid.
     `Vx`, `Vy`, `Vz` are velocity components computed by central differencing
     of the position time series.  `clock_offset` is the satellite clock
     correction interpolated from CLK 30-second samples.
@@ -324,7 +328,7 @@ def _(mo):
 
     | Coordinate | Symbol | Range | Convention |
     |-----------|--------|-------|------------|
-    | **Range** | $r$ | > 0 | Distance in metres |
+    | **Range** | $r$ | > 0 | Distance in meters |
     | **Polar angle** | $\theta$ | [0, $\pi$] | 0 = overhead, $\pi/2$ = horizon |
     | **Azimuth** | $\phi$ | [0, $2\pi$) | 0 = North, $\pi/2$ = East (navigation) |
 
@@ -431,7 +435,7 @@ def _(ds_aux, ds_single, mo, np, rx_pos):
     |----------|-------|-------|-------------|
     | `theta` | (epoch, sid) | radians | Polar angle |
     | `phi` | (epoch, sid) | radians | Azimuth |
-    | `r` | (epoch, sid) | metres | Range to satellite |
+    | `r` | (epoch, sid) | meters | Range to satellite |
 
     **Dataset dimensions**: `{dict(ds_augmented.sizes)}`
     **Data variables**: {list(ds_augmented.data_vars)}
@@ -524,7 +528,7 @@ def _(SP3_DIR, mo):
 
     _sp3_info = ""
     if _sp3_files:
-        _sp3_info = f"`{_sp3_files[0].name}`"
+        _sp3_info = "<br>".join(f"`{_f.name}`" for _f in _sp3_files)
     else:
         _sp3_info = "(no SP3 files in test data)"
 
@@ -538,22 +542,24 @@ def _(SP3_DIR, mo):
 
     | Property | Value |
     |----------|-------|
-    | **SP3 file** | {_sp3_info} |
-    | **SP3 interval** | 5 minutes (288 positions per day) |
+    | **SP3 files** | {_sp3_info} |
+    | **Days** | $n-1$, $n$, $n+1$ (1 h of each neighboring day) |
+    | **SP3 interval** | 5 minutes (289 positions per daily file, 00:00 to 24:00) |
     | **Target interval** | 5 seconds (17,280 positions per day) |
     | **Method** | `scipy.CubicHermiteSpline` (piecewise cubic) |
-    | **Uses SP3 velocities** | Yes (as Hermite derivatives) |
+    | **Velocities** | Computed from the SP3 positions (central differences), used as Hermite derivatives |
     | **Clock method** | Piecewise linear with jump detection |
+
+    The orbits and clocks of the two shouldering days, $n-1$ and $n+1$,
+    are fetched as well, and one hour of each is joined to day $n$. This
+    increases the interpolation accuracy at the beginning and the end of
+    the day: from a single daily file, no samples would be available
+    beyond the day's edges, and the spline would not fit as well there.
 
     The Hermite spline uses both SP3 positions and velocities as boundary
     conditions for each cubic segment.  This produces C1-continuous
     trajectories (continuous position and velocity) without the Runge
     phenomenon that affects high-degree polynomial fits.
-
-    For reference: the alternative tool gnssvod uses `numpy.polyfit`
-    degree-16 on 4-hour windows.  Both approaches are valid and produce
-    angular differences of approximately 0.002 degrees — 1000x smaller
-    than the 2-degree grid cell size.
     """
     )
 

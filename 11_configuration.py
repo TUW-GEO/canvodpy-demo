@@ -10,8 +10,8 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "11 · Configuration & Utilities"
@@ -34,13 +34,13 @@ def _():
         r"""
     # Configuration and Utilities
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/11_configuration.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/11_configuration.py?mode=edit)
 
     Two layers make every run specified and observable:
 
     1. **Configuration** (`canvod-config`) — Pydantic models that define
        every tuneable parameter of the canvodpy pipeline, loaded from YAML
-    2. **Utilities and stage timing** (`canvod-utils`, `canvodpy.logging`)
+    2. **Utilities and stage timing** (`canvod-utils`)
        — date and hashing helpers, and timed pipeline stages
 
     Together they ensure that the pipeline is both reproducible
@@ -355,19 +355,23 @@ def _(ProcessingParams, mo):
     |-----------|---------|-------------|
     {_rows}
 
-    The `resource_mode` setting determines how Dask workers are
-    allocated:
+    The `resource_mode` setting decides how many worker processes a
+    run starts:
 
-    - **`auto`**: the pipeline inspects available CPU cores and RAM,
-      then chooses worker count and memory limits automatically
-    - **`manual`**: the user specifies `n_max_threads`,
-      `max_memory_gb`, and optionally `cpu_affinity`
+    - **`auto`**: one worker per CPU core, minus two for the operating
+      system (at least one)
+    - **`manual`**: the user sets the number of workers with
+      `n_max_threads`, and optionally the CPU cores (`cpu_affinity`)
+      and the priority (`nice_priority`) of the workers
+
+    canVODpy doesn't limit memory; to lower the memory a run needs,
+    use fewer workers or a smaller `days_per_batch`.
 
     ```python
     params = ProcessingParams(
         resource_mode="manual",
         n_max_threads=4,
-        max_memory_gb=16.0,
+        nice_priority=10,
         ephemeris_source="broadcast",
     )
     ```
@@ -388,27 +392,29 @@ def _(StorageConfig, mo):
         r"""
     ## Storage strategies
 
-    The `StorageConfig` model defines how the pipeline handles
-    pre-existing data in Icechunk stores:
+    `gnss_store_strategy` of the `StorageConfig` model sets what a run
+    does with a file that is already in the GNSS store (same file hash,
+    or an overlapping epoch range). New files are always written:
 
     | Strategy | Behaviour |
     |----------|-----------|
-    | `skip` | If the store already has data for this day, skip entirely |
-    | `append` | Append new epochs; deduplication guards prevent duplicates |
-    | `overwrite` | Delete existing data for the day, then write fresh |
+    | `skip` | Default: leave the stored data unchanged; the log book records the skip |
+    | `overwrite` | Replace the stored epochs of the file's range with the new data |
+    | `unsafe_append` | Write the data again, without any duplicate check |
 
     ```python
     storage = StorageConfig(
         stores_root_dir=Path("/data/stores"),
-        rinex_store_strategy="append",
-        vod_store_strategy="overwrite",
+        gnss_store_strategy="skip",
     )
     ```
 
-    The **append** strategy is the recommended default for production:
-    it is idempotent (re-running the same day is safe) and preserves
-    previously ingested data.  The three-layer deduplication system
-    in `canvod-store` ensures that no duplicate epochs enter the store.
+    **skip** is the recommended setting: re-running a day leaves the
+    stored data unchanged. Use **overwrite** to correct data already
+    stored, e.g. after a processing bug was fixed. The strategy applies to
+    the GNSS store only: a VOD result is always skipped if the VOD store
+    already holds one from the same source files or an overlapping epoch
+    range. To recompute VOD, write to a new VOD store.
     """
     )
 
@@ -558,7 +564,7 @@ def _(mo):
     run that crashes still has a timing record:
 
     ```python
-    from canvodpy.logging.stage_timer import stage_timer
+    from canvod.utils.logging import stage_timer
 
     with stage_timer("rinex.process_file", file=path.name):
         ...

@@ -19,18 +19,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "07 · VOD Retrieval"
@@ -58,17 +58,14 @@ def _():
         r"""
     # Vegetation Optical Depth Retrieval
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/07_vod_retrieval.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/07_vod_retrieval.py?mode=edit)
 
     The **canvod-vod** package implements the core scientific algorithm of
     GNSS Transmissometry: computing **Vegetation Optical Depth (VOD)** from
     paired canopy and reference receiver observations.
 
     VOD quantifies the attenuation of L-band microwave signals as they
-    pass through a vegetation canopy.  Unlike optical remote sensing indices
-    (such as NDVI), L-band signals penetrate the entire canopy volume,
-    making VOD sensitive to total above-ground biomass, canopy water
-    content, and vegetation structure.
+    pass through a vegetation canopy.
 
     ---
 
@@ -168,7 +165,11 @@ def _(AUX_DATA_DIR, ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, np, xr):
     )
 
     # Load auxiliary data
-    _aux = xr.open_zarr(str(AUX_DATA_DIR / "aux_2025001.zarr"), decode_timedelta=False)
+    _aux = xr.open_zarr(
+        str(AUX_DATA_DIR / "aux_2025001.zarr"),
+        decode_timedelta=False,
+        consolidated=False,
+    )
 
     # Augment canopy
     _rx = ECEFPosition.from_ds_metadata(ds_can_raw)
@@ -321,27 +322,20 @@ def _(mo, np):
         r"""
     ## Interpreting VOD values
 
-    VOD is dimensionless and theoretically non-negative.  Its physical
-    interpretation depends on the signal frequency and canopy type:
+    VOD is dimensionless. It follows from the transmissivity
+    $T = 10^{\Delta\mathrm{SNR}/10}$ as $\mathrm{VOD} = -\ln(T)\cos\theta$:
 
-    | VOD range | Interpretation |
-    |-----------|----------------|
-    | 0.0 | No attenuation (open sky) |
-    | 0.0 -- 0.3 | Low biomass (grassland, sparse canopy) |
-    | 0.3 -- 0.8 | Moderate biomass (deciduous forest, crops) |
-    | 0.8 -- 2.0 | Dense canopy (tropical forest, conifers) |
-    | > 2.0 | Very dense / wet canopy |
-    | < 0 | Negative: SNR gain through canopy (scattering, multipath) |
+    - $\Delta\mathrm{SNR} < 0$ (the canopy receiver records a weaker signal
+      than the reference): $T < 1$ and VOD is positive.
+    - $\Delta\mathrm{SNR} = 0$: $T = 1$ and VOD is 0.
+    - $\Delta\mathrm{SNR} > 0$ (the canopy receiver records a stronger
+      signal): $T > 1$ and VOD is negative.
 
-    Negative VOD values can occur when the canopy receiver receives a
-    *stronger* signal than the reference — typically due to constructive
-    multipath reflections from the ground or canopy surfaces.  These are
-    physically meaningful observations (not noise) and are retained in
-    the dataset.
+    canVODpy keeps negative values; it does not clip or remove them.
 
-    **Typical uncertainty**: approximately 0.1 for L-band forest canopy
-    measurements over 15 minutes, decreasing with temporal and spatial
-    averaging.
+    What a VOD value means for the vegetation depends on the signal
+    frequency, the canopy and the site. See the literature on GNSS-T VOD
+    for your vegetation type before you interpret absolute values.
     """
     )
 

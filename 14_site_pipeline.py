@@ -25,7 +25,7 @@ def _():
         r"""
     # Site Pipeline
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_site_pipeline.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_site_pipeline.py?mode=edit)
 
     `Site(...).pipeline()` is canvodpy's Python-native surface for running
     the pipeline — the exact same code path the `canvodpy run` CLI wraps
@@ -116,7 +116,7 @@ def _(mo):
     ```
 
     `compute_bulk()` reads canopy and reference data from the Icechunk
-    RINEX store for the specified date range, then computes VOD.  This
+    GNSS store for the specified date range, then computes VOD.  This
     decouples ingestion from retrieval: data can be ingested nightly,
     and VOD recomputed weekly or on demand.
     """
@@ -203,7 +203,7 @@ def _(mo):
     # or just `canvodpy run --site my_site` on a schedule)
     with site.pipeline(n_workers=4) as pipe:
         for date_key, datasets in pipe.process_range("2025032", "2025032"):
-            pass  # data is now in the Icechunk RINEX store
+            pass  # data is now in the GNSS store
 
     # Stage 2: weekly VOD computation (triggered separately)
     result = site.vod.compute_bulk(

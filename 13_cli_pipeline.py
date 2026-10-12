@@ -27,7 +27,7 @@ def _():
         r"""
     # Running the Pipeline — the CLI
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_cli_pipeline.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_cli_pipeline.py?mode=edit)
 
     `canvodpy run` is the recommended way to run production ingestion. It
     wraps the exact same code path as `Site(...).pipeline().process_range()`
@@ -200,10 +200,6 @@ def _(mo):
     is read from the main file. Useful on shared/HPC machines where
     resource limits vary per job but the base configuration is
     version-controlled.
-
-    Any configuration value can also be overridden per-invocation via
-    environment variables (`CANVOD__PROCESSING__PARAMS__DAYS_PER_BATCH=7`,
-    etc.) — see the Configuration guide for the full mechanism.
     """
     )
 

@@ -8,9 +8,9 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "03 · Satellite Catalog"
@@ -38,7 +38,7 @@ def _():
         r"""
     # Satellite Catalog — IGS SINEX Metadata
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/03_satellite_catalog.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/03_satellite_catalog.py?mode=edit)
 
     The **SatelliteCatalog** provides comprehensive satellite metadata from
     the IGS `igs_satellite_metadata.snx` SINEX file, maintained by DLR on
@@ -320,9 +320,9 @@ def _(catalog, date, mo):
     $$f_{{L1}} = 1602.0 + k \\times 0.5625 \\text{{ MHz}}$$
     $$f_{{L2}} = 1246.0 + k \\times 0.4375 \\text{{ MHz}}$$
 
-    where $k$ is the channel number.  The SBF reader resolves these
-    frequencies from a live `ChannelStatus` cache; the catalog provides
-    the ground-truth assignment for validation.
+    where $k$ is the channel number.  The SBF reader takes $k$ from the
+    MeasEpoch block of each observation; the catalog provides the
+    ground-truth assignment for validation.
     """
     )
 

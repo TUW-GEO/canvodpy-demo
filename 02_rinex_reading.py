@@ -9,9 +9,9 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "02 · RINEX v3 Observation Reading"
@@ -36,7 +36,7 @@ def _():
         r"""
     # RINEX v3.04 Observation Reading
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/02_rinex_reading.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/02_rinex_reading.py?mode=edit)
 
     This notebook introduces the **canvod-readers** package and demonstrates how
     to read RINEX v3.04 observation files into `xarray.Dataset` objects.
@@ -106,7 +106,7 @@ def _(ROSALIA_CANOPY_DIR, mo):
     |-------|-------|---------|
     | `ROSA01TUW` | Site=ROSA, Rx=01, Agency=TUW | Canopy receiver |
     | `R` | | RINEX format |
-    | `20250010000` | 2025, DOY 001, 00:00 UTC | Start of observation window |
+    | `20250010000` | 2025, DOY 001, 00:00 GPS time | Start of observation window |
     | `15M` | 15 minutes | File duration |
     | `05S` | 5 seconds | Sampling interval |
     | `AA` | All observables, all constellations | Content descriptor |
@@ -298,6 +298,49 @@ def _(ds_single, mo):
     The dataset is intentionally sparse: not every satellite is visible at
     every epoch.  Values are `NaN` where a satellite was below the horizon
     or not tracked.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    ### Validated and unvalidated parsing
+
+    `to_ds()` validates every epoch by default. Pydantic models check the
+    epoch line, the satellite IDs and the satellite count, and every
+    observation field must be blank or hold a readable value. Epochs that
+    fail are dropped, and the reader logs how many and at which lines.
+
+    ```python
+    ds = reader.to_ds(keep_data_vars=["SNR"])                       # validated (default)
+    ds = reader.to_ds(keep_data_vars=["SNR"], parser="validated")   # the same, explicit
+    ```
+
+    An unvalidated fast parser exists for files you have checked yourself.
+    It is shown here, not run:
+
+    ```python
+    ds = reader.to_ds(keep_data_vars=["SNR"], parser="unvalidated_fast")
+    # UnvalidatedParserWarning: DANGEROUS: the unvalidated fast RINEX v3 parser ...
+    ```
+
+    /// danger | The unvalidated parser is your responsibility
+    It slices fixed columns without any check, so a corrupted record can
+    enter the dataset as partial or wrong values. canVODpy takes no
+    responsibility for its results. For a valid file both parsers give the
+    identical dataset. In a configuration file, the choice is
+    `processing.params.rinex_v3_parser` (`validated` by default).
+    ///
+
+    ### Time scale of the epochs
+
+    Epochs are stored as written in the file, in the time system of its
+    `TIME OF FIRST OBS` header record. The epoch coordinate records it:
+
+    ```python
+    ds["epoch"].attrs["time_system"]   # e.g. "GPS"; RINEX "GLO" is recorded as "UTC"
+    ```
     """)
     return
 

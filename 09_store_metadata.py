@@ -8,9 +8,9 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "09 · Store Metadata & FAIR Compliance"
@@ -35,7 +35,7 @@ def _():
         r"""
     # Store Metadata and FAIR Compliance
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/09_store_metadata.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/09_store_metadata.py?mode=edit)
 
     The **canvod-store-metadata** package attaches rich, standards-compliant
     provenance metadata to every Icechunk store.  This metadata enables
@@ -106,9 +106,10 @@ def _(StoreMetadata, mo):
 
     _example = StoreMetadata(
         identity=StoreIdentity(
-            id="example_site/rinex_store",
+            id="example_site-gnss",
+            naming_authority="edu.example",
             title="Example GNSS-T Observations",
-            store_type="rinex_store",
+            store_type="gnss_store",
             source_format="rinex3",
             description="L-band SNR observations from paired GNSS receivers",
         ),
@@ -143,7 +144,7 @@ def _(StoreMetadata, mo):
     )
 
     metadata = StoreMetadata(
-        identity=StoreIdentity(id="my_site/rinex_store", title="My GNSS-T Store", store_type="rinex_store", source_format="rinex3", ...),
+        identity=StoreIdentity(id="my_site-gnss", naming_authority="edu.example", title="My GNSS-T Store", store_type="gnss_store", source_format="rinex3", ...),
         creator=Creator(name="J. Doe", email="j.doe@example.edu", institution="My University", ...),
         temporal=TemporalExtent(created="2025-01-01T00:00:00Z", updated="2025-01-01T00:00:00Z", ...),
         spatial=SpatialExtent(site="My Site", geospatial_lat=48.0, ...),
@@ -179,9 +180,9 @@ def _(StoreMetadata, mo):
 
     _meta = StoreMetadata(
         identity=_Id(
-            id="test_site/rinex_store",
+            id="test_site-gnss",
             title="Test",
-            store_type="rinex_store",
+            store_type="gnss_store",
             source_format="rinex3",
         ),
         creator=_C(name="Test", email="test@example.com", institution="Test"),

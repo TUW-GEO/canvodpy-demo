@@ -8,8 +8,8 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "fc3b2fe8fac9c36fa1997ad6e2d898663e0a2384" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "01 · Naming Convention & Validation"
@@ -38,7 +38,7 @@ def _(mo):
     mo.md(r"""
     # Naming Convention and File Validation
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/01_naming_convention.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/01_naming_convention.py?mode=edit)
 
     GNSS-Transmissometry campaigns generate thousands of files across
     multiple receivers, days, and sampling intervals.  Without a strict
@@ -88,11 +88,11 @@ def _(mo):
     | `_R_` | 3 | Separator (RINEX convention) | |
     | **YYYY** | 4 | Year | `2025` |
     | **DOY** | 3 | Day of year (001--366) | `001` |
-    | **HHMM** | 4 | Start hour and minute (UTC) | `0000` |
+    | **HHMM** | 4 | Start hour and minute (GPS time) | `0000` |
     | **PER** | 3 | File duration (`15M`, `01H`, `01D`) | `15M` |
     | **SMP** | 3 | Sampling interval (`05S`, `01S`) | `05S` |
     | **PH** | 2 | Reserved; ignored during parsing | `AA` |
-    | **TYPE** | 3+ | File extension (`rnx`, `sbf`, `nmea`) | `rnx` |
+    | **TYPE** | 2-8 | File type (`rnx`, `sbf`, `nmea`, or a reader plugin's own) | `rnx` |
 
     This convention extends the
     [IGS long-name standard](http://acc.igs.org/misc/rinex304.pdf)
@@ -264,7 +264,7 @@ def _(CanVODFilename, ROSALIA_CANOPY_DIR, mo):
     The canopy receiver directory contains **{len(_files)}** RINEX files
     covering DOY 2025-001 (1 January 2025).
 
-    | File | Start (UTC) | Period |
+    | File | Start (GPS time) | Period |
     |------|-------------|--------|
     {chr(10).join(_first_five)}
     | ... | | |

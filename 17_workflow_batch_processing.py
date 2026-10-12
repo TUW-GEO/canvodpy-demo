@@ -6,7 +6,7 @@
 #
 # [tool.marimo.opengraph]
 # title = "17 · Batch Processing Workflows"
-# description = "Process multiple days of GNSS-T data in parallel using Dask. Covers date-range iteration, store appends, and strategies for large-scale canopy monitoring."
+# description = "Process multiple days of GNSS-T data in parallel worker processes. Covers date-range iteration, store appends, and strategies for large-scale canopy monitoring."
 # ///
 
 import marimo
@@ -25,7 +25,7 @@ def _():
         r"""
     # Batch Processing Workflows
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_workflow_batch_processing.py)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_workflow_batch_processing.py?mode=edit)
 
     This notebook demonstrates various batch processing patterns:
 
@@ -34,9 +34,8 @@ def _():
     - Configuring **temporal aggregation** and grid parameters
     - **Resource management** for long-running pipelines
 
-    All examples use the L2 API (`Site`, `Pipeline`, `workflow`)
-    which provides the right balance of control and convenience for
-    batch operations.
+    All examples use `Site` and `Pipeline`, the Python counterpart of
+    `canvodpy run`.
 
     ---
 
@@ -77,9 +76,10 @@ def _(mo):
     | `start` | First date (YYYYDOY format) |
     | `end` | Last date (YYYYDOY format, inclusive) |
 
-    The generator pattern means that only one day's data is in memory
-    at a time.  After each iteration, the datasets are committed to
-    the Icechunk store and released.
+    The pipeline writes each day to the Icechunk store itself and
+    yields the days of a batch once the whole batch is written.  It
+    holds the days of one batch in memory at a time; `days_per_batch`
+    sets their number (default 1).
     """
     )
 
@@ -150,45 +150,73 @@ def _(mo):
         r"""
     ## Temporal aggregation
 
-    `canvodpy run` and `Site(...).pipeline()` store observations at their
-    full time resolution.  To aggregate a dataset to a coarser time
-    resolution, apply the `canvod-ops` pipeline to it; it reads its
-    settings from the `processing.preprocessing` section of
-    `config/canvod-settings.yaml`:
+    `canvodpy run`, `Site(...).pipeline()` and Airflow store observations
+    at the receiver's sampling interval, unless the optional
+    `processing.preprocessing` section of `canvod-settings.yaml` sets a
+    temporal aggregation. Then each receiver's observations of a day are
+    aggregated into time bins before they are written to the GNSS store.
+    Nothing is aggregated unless it is set:
 
     ```yaml
-    preprocessing:
-      temporal_aggregation:
-        enabled: true
-        freq: "1min"      # Pandas offset alias
-        method: "mean"    # or "median"
+    processing:
+      preprocessing:
+        temporal_aggregation:
+          freq: "1min"             # whole number + "s", "min" or "h"; divides one day
+          method: "mean"           # "mean" or "median" (floating-point variables)
+          integer_method: "first"  # "first", "last" or "middle" (integer flags)
     ```
 
-    ```python
-    from canvod.ops import build_default_pipeline
+    All three settings are required. Bins start at 00:00 and are labeled
+    with their start; a bin that spans two files is aggregated from both.
+    Keep the setting for the life of a store: writing differently
+    aggregated data into an existing store stops with an error.
 
-    ops = build_default_pipeline()   # reads processing.preprocessing
+    To aggregate a dataset yourself, apply a `canvod-ops` pipeline to it:
+
+    ```python
+    from canvod.ops import Pipeline, TemporalAggregate
+
+    ops = Pipeline(
+        [TemporalAggregate(freq="1min", method="mean", integer_method="first")]
+    )
     ds_aggregated, result = ops(ds)
     ```
 
     | Frequency | Epochs per day | Use case |
     |-----------|---------------|----------|
-    | `"5s"` | 17,280 | Full resolution (no aggregation) |
+    | `"5s"` | 17,280 | Full resolution of the test data (no aggregation) |
     | `"30s"` | 2,880 | Reduced noise, moderate resolution |
-    | `"1min"` | 1,440 | Standard for daily VOD maps |
+    | `"1min"` | 1,440 | Daily VOD maps |
     | `"5min"` | 288 | Coarse monitoring |
     | `"15min"` | 96 | Matches file boundaries |
 
-    Temporal aggregation reduces noise by averaging multiple
-    observations within each time window.  The trade-off is loss
-    of temporal resolution for rapid vegetation dynamics (e.g.
-    rain interception, dew formation).
+    Temporal aggregation reduces noise by combining the observations
+    within each bin.  The trade-off is loss of temporal resolution for
+    rapid vegetation dynamics (e.g. rain interception, dew formation).
 
-    The `method` parameter controls how observations within each
-    window are combined:
+    `method` sets how the floating-point variables of a bin are combined:
 
-    - **`mean`**: arithmetic mean (default, lower noise)
+    - **`mean`**: arithmetic mean (lower noise)
     - **`median`**: more robust to outliers (multipath spikes)
+
+    Integer variables such as LLI and SSI are flags and codes, which
+    cannot be averaged: each bin takes their `first`, `last` or `middle`
+    value in time order, as `integer_method` sets.
+
+    The settings are recorded in the log book of the GNSS store. A store
+    group never mixes data preprocessed with different settings: `canvodpy
+    run` compares the settings with the stores before it processes any
+    data and stops on a mismatch. Keep the setting for the life of a store,
+    or write to a new store.
+
+    To aggregate a dataset yourself in Python:
+
+    ```python
+    from canvod.ops import TemporalAggregate
+
+    op = TemporalAggregate(freq="1min", method="mean", integer_method="first")
+    ds_aggregated, result = op(ds)
+    ```
     """
     )
 
@@ -206,26 +234,36 @@ def _(mo):
         r"""
     ## Grid configuration
 
-    `canvodpy run` does not assign grid cells; you assign them to a
-    VOD dataset yourself, at the resolution you choose (see
-    [16 — Single-Day Workflow](./16_workflow_single_day.py)):
+    `canvodpy run` assigns grid cells only if `processing.preprocessing`
+    sets a grid. The cells are then added to the observations, after the
+    temporal aggregation, before they are written to the GNSS store:
 
-    ```python
-    from canvod.grids import add_cell_ids_to_vod_fast, create_hemigrid
-
-    grid = create_hemigrid("equal_area", angular_resolution=5.0)
-    ds = add_cell_ids_to_vod_fast(ds_vod, grid, grid_name="equal_area_5deg")
+    ```yaml
+    processing:
+      preprocessing:
+        grid_assignment:
+          grid_type: "equal_area"
+          angular_resolution: 5.0  # degrees (0 < value <= 90)
     ```
 
-    | Resolution | Cells | Obs per cell (1 day) | Best for |
-    |------------|-------|---------------------|----------|
-    | 1° | ~10,300 | ~2 | Maximum spatial detail |
-    | 2° | ~2,600 | ~7 | Standard analysis |
-    | 5° | ~400 | ~45 | Robust averages |
-    | 10° | ~100 | ~180 | Coarse monitoring |
+    Alternatively, assign cells to a dataset yourself, at the resolution
+    you choose (see [16 — Single-Day Workflow](./16_workflow_single_day.py)):
 
-    The observation count per cell assumes ~18,000 valid observations
-    per day from ~100 visible satellites across GPS and Galileo.
+    ```python
+    from canvod.grids import add_cell_ids_to_ds_fast, create_hemigrid
+
+    grid = create_hemigrid("equal_area", angular_resolution=5.0)
+    ds = add_cell_ids_to_ds_fast(ds_vod, grid, grid_name="equal_area_5deg")
+    ```
+
+    Each observation goes to the cell that contains it.
+
+    | Resolution | Cells (`equal_area`) | Best for |
+    |------------|-------|----------|
+    | 1° | 26,263 | Maximum spatial detail |
+    | 2° | 6,563 | Standard analysis |
+    | 5° | 1,051 | Robust averages |
+    | 10° | 263 | Coarse monitoring |
     """
     )
 
@@ -243,34 +281,30 @@ def _(mo):
         r"""
     ## Resource management
 
-    For long-running batch jobs, resource parameters prevent the
-    pipeline from overwhelming the system:
+    For long-running batch jobs, these arguments limit how much of
+    the machine the pipeline uses:
 
     ```python
     with site.pipeline(
-        n_workers=4,              # Dask workers
-        batch_hours=6.0,          # Process in 6-hour batches
-        max_memory_gb=16.0,       # Soft RAM limit per worker
-        cpu_affinity=[0, 1, 2, 3],# Pin to specific cores
-        nice_priority=10,         # Lower scheduling priority
-        threads_per_worker=2,     # Threads per Dask worker
+        n_workers=4,           # worker processes
+        days_per_batch=2,      # days the workers process together
+        threads_per_worker=1,  # threads of numerical libraries per worker
     ) as pipe:
         for date, data in pipe.process_range("2025001", "2025365"):
             pass
     ```
 
-    | Parameter | Default | Description |
-    |-----------|---------|-------------|
-    | `n_workers` | auto | Number of Dask workers |
-    | `batch_hours` | 24.0 | File grouping window |
-    | `max_memory_gb` | auto | Soft RAM limit per worker |
-    | `cpu_affinity` | None | Pin workers to CPU cores |
-    | `nice_priority` | 0 | Unix nice value (0-19) |
-    | `threads_per_worker` | auto | Threads within each worker |
+    | Argument | Default | Description |
+    |----------|---------|-------------|
+    | `n_workers` | from the settings | Number of worker processes |
+    | `days_per_batch` | from the settings (1) | Days the workers process together |
+    | `threads_per_worker` | from the settings (1) | Threads that numerical libraries use in each worker |
 
-    The `batch_hours` parameter controls how files are grouped for
-    processing.  With `batch_hours=6.0`, a 24-hour day is processed
-    in four batches of ~24 files each, reducing peak memory usage.
+    The CPU cores and the priority of the workers come from
+    `cpu_affinity` and `nice_priority` under `processing.params` in
+    `canvod-settings.yaml`.  canVODpy doesn't limit memory; to lower
+    the memory a run needs, use fewer workers or a smaller
+    `days_per_batch`.
     """
     )
 
@@ -296,7 +330,7 @@ def _(mo):
 
     ```bash
     canvodpy dashboard                      # log directory from canvod-settings.yaml
-    canvodpy dashboard --logs-dir ./.logs   # or an explicit one
+    canvodpy dashboard --logs-dir /path/to/logs   # or an explicit one
     ```
     """
     )
