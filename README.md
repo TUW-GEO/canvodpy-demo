@@ -1,7 +1,7 @@
 <!-- Python & Package Manager -->
 [![Python](https://img.shields.io/badge/python-3.14-blue.svg)](https://www.python.org/)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-[![marimo](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo)
+[![marimo](https://marimo.io/shield.svg)](https://canvodpy.eu/notebooks/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 <!-- Identity -->
@@ -23,11 +23,16 @@ Interactive [marimo](https://marimo.io) notebooks for the [canVODpy](https://git
 
 ---
 
-## Run in the browser (no installation)
+## Look at the notebooks in your browser (no installation)
 
-Open any notebook directly in [marimo molab](https://molab.marimo.io/github/nfb2021/canvodpy-demo); no local installation is required.
+Each notebook in the [table below](#notebooks) has a molab link that opens
+it in your browser in [marimo molab](https://molab.marimo.io/). The copies
+on [canvodpy.eu/notebooks](https://canvodpy.eu/notebooks/) also show their
+results: they were run on the test data when the site was built.
 
-Notebooks that read real GNSS data automatically download the test dataset (~1.7 GB) from Zenodo on first run and cache it; no manual file upload is required.
+To run a notebook yourself, see the next section. Notebooks that read real
+GNSS data download the test dataset (~1.7 GB) from Zenodo the first time
+and cache it.
 
 ---
 
