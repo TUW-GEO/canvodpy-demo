@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- Link-preview image of one notebook, 1200 x 630 px. make_images.py
+     opens this page once per notebook (#<number>|<title>) and saves a
+     screenshot. A background.png next to this file replaces the plain
+     background. The logo loads from the canvodpy repository, the only
+     copy of the logo files. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    background: #183128;
+    background-size: cover;
+    color: #E1E6B9;
+    display: flex;
+    align-items: center;
+  }
+  body.custom { background-image: url("background.png"); }
+  .logo { flex: 0 0 470px; display: flex; justify-content: center; }
+  .logo img { width: 400px; }
+  .rule { width: 2px; height: 360px; background: #5D7D5B; }
+  .text { flex: 1; padding: 0 70px 0 60px; }
+  .series { font-size: 30px; letter-spacing: 0.02em; color: #ABC8A4; margin-bottom: 18px; }
+  .number { font-size: 120px; font-weight: 700; line-height: 1; color: #C4D7A4; margin-bottom: 16px; }
+  .title { font-size: 56px; font-weight: 500; line-height: 1.12; }
+</style>
+</head>
+<body>
+  <div class="logo"><img src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt=""></div>
+  <div class="rule"></div>
+  <div class="text">
+    <div class="series">canVODpy demo notebooks</div>
+    <div class="number" id="number"></div>
+    <div class="title" id="title"></div>
+  </div>
+<script>
+  const [number, title] = decodeURIComponent(location.hash.slice(1)).split("|");
+  document.getElementById("number").textContent = number;
+  document.getElementById("title").textContent = title;
+  const probe = new Image();
+  probe.onload = () => document.body.classList.add("custom");
+  probe.src = "background.png";
+</script>
+</body>
+</html>

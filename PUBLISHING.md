@@ -10,8 +10,10 @@ Working checklist for preparing all notebooks for molab, gallery, and thumbnails
   reads repo files, triggers Pooch/Zenodo download for test data.
 - **Gallery**: rendered by `marimo run ./` (locally) and on molab. Driven by OpenGraph
   metadata in each notebook's PEP 723 header + thumbnail images.
-- **Thumbnails**: generated via `marimo export thumbnail ./` using Playwright/Chromium.
-  Stored at `__marimo__/assets/<stem>/opengraph.png`. Not committed to git.
+- **Thumbnails**: one link-preview image per notebook, made by
+  `python _opengraph/make_images.py` (headless Chrome) from
+  `_opengraph/template.html`: the logo, the notebook's number and title.
+  Stored at `__marimo__/assets/<stem>/opengraph.png` and committed.
 
 ---
 
@@ -91,22 +93,20 @@ gallery display. Removed `__marimo__/` from `.gitignore`.
 
 ---
 
-## Step 4: Generate thumbnails
+## Step 4: Generate thumbnails ✓
 
-Requires Playwright + Chromium. Run once locally after notebooks are stable:
+Every notebook has a link-preview image (1200 × 630 px) at
+`__marimo__/assets/<stem>/opengraph.png`: marimo shows it when a notebook
+link is shared and on the notebook's card in a gallery. Remake them after
+a notebook title changes, or after replacing the background:
 
 ```bash
-uv run playwright install chromium
-uv run marimo export thumbnail ./
+python _opengraph/make_images.py   # needs Google Chrome (or --chrome PATH)
 ```
 
-Thumbnails land at `__marimo__/assets/<stem>/opengraph.png` (1200×630 px).
-Regenerate whenever a notebook's output changes significantly.
-
-Options:
-- `--execute`: run notebook before screenshotting (slower but live output)
-- `--scale 3`: higher resolution
-- `--overwrite`: replace existing thumbnails
+The images come from `_opengraph/template.html`. A
+`_opengraph/background.png` (1200 × 630 px) replaces its plain green
+background; the logo loads from the canvodpy repository.
 
 ---
 
