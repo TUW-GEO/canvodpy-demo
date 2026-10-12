@@ -372,9 +372,9 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [18 — Store Operations](./18_workflow_store_operations.py) | **Next**: [20 — 3D Grid Gallery](./20_grid_3d_gallery.py)
+    **Previous**: [18 · Store Operations](./18_workflow_store_operations.py) | **Next**: [20 · 3D Grid Gallery](./20_grid_3d_gallery.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
     return

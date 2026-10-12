@@ -135,7 +135,7 @@ def _(mo):
     A calculator gets two datasets: the canopy receiver's and the
     reference receiver's, each with `SNR`, `theta` and `phi` on the
     dimensions `(epoch, sid)`. As in
-    [07 — VOD Retrieval](./07_vod_retrieval.py), we read one file per
+    [07 · VOD Retrieval](./07_vod_retrieval.py), we read one file per
     receiver and add the angles of each satellite from the orbits.
     """
     )
@@ -466,9 +466,9 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [20 — 3D Grid Gallery](./20_grid_3d_gallery.py)
+    **Previous**: [20 · 3D Grid Gallery](./20_grid_3d_gallery.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

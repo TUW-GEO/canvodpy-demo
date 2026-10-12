@@ -308,10 +308,10 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Previous**: [08 — Icechunk Store](./08_icechunk_store.py)
-    | **Next**: [10 — Visualization](./10_visualization.py)
+    **Previous**: [08 · Icechunk Store](./08_icechunk_store.py)
+    | **Next**: [10 · Visualization](./10_visualization.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """)
     return
 

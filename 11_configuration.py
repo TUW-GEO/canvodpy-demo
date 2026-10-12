@@ -625,12 +625,12 @@ def _(mo):
 def _(mo):
     mo.md(
         r"""
-    —
+    ---
 
-    **Previous**: [10 — Visualization](./10_visualization.py)
-    | **Next**: [12 — API Overview](./12_api_overview.py)
+    **Previous**: [10 · Visualization](./10_visualization.py)
+    | **Next**: [12 · API Overview](./12_api_overview.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

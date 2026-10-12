@@ -386,10 +386,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [05 — Ephemeris & Coordinates](./05_ephemeris_coordinates.py)
-    | **Next**: [07 — VOD Retrieval](./07_vod_retrieval.py)
+    **Previous**: [05 · Ephemeris & Coordinates](./05_ephemeris_coordinates.py)
+    | **Next**: [07 · VOD Retrieval](./07_vod_retrieval.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

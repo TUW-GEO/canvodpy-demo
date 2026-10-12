@@ -247,7 +247,7 @@ def _(mo):
     ```
 
     Alternatively, assign cells to a dataset yourself, at the resolution
-    you choose (see [16 — Single-Day Workflow](./16_workflow_single_day.py)):
+    you choose (see [16 · Single-Day Workflow](./16_workflow_single_day.py)):
 
     ```python
     from canvod.grids import add_cell_ids_to_ds_fast, create_hemigrid
@@ -349,10 +349,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [16 — Single-Day Workflow](./16_workflow_single_day.py)
-    | **Next**: [18 — Store Operations](./18_workflow_store_operations.py)
+    **Previous**: [16 · Single-Day Workflow](./16_workflow_single_day.py)
+    | **Next**: [18 · Store Operations](./18_workflow_store_operations.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

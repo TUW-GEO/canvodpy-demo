@@ -429,7 +429,7 @@ def _(mo):
     signals.  For production workflows, compute VOD for a configured site
     with `canvodpy run`, or from Python with `Site(...).vod`, which reads
     the data from the site's Icechunk store (see
-    [14 — Site Pipeline](./14_site_pipeline.py)).
+    [14 · Site Pipeline](./14_site_pipeline.py)).
     """
     )
 
@@ -447,10 +447,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [06 — Hemispheric Grids](./06_hemispheric_grids.py)
-    | **Next**: [08 — Icechunk Store](./08_icechunk_store.py)
+    **Previous**: [06 · Hemispheric Grids](./06_hemispheric_grids.py)
+    | **Next**: [08 · Icechunk Store](./08_icechunk_store.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

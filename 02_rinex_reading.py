@@ -716,9 +716,9 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Next**: [03 — Satellite Catalog](./03_satellite_catalog.py)
+    **Next**: [03 · Satellite Catalog](./03_satellite_catalog.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """)
     return
 

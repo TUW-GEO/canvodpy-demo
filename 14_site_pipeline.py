@@ -236,12 +236,12 @@ def _(mo):
 def _(mo):
     mo.md(
         r"""
-    —
+    ---
 
-    **Previous**: [13 — Running the Pipeline (CLI)](./13_cli_pipeline.py)
-    | **Next**: [16 — Single-Day Workflow](./16_workflow_single_day.py)
+    **Previous**: [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py)
+    | **Next**: [16 · Single-Day Workflow](./16_workflow_single_day.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 

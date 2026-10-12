@@ -114,7 +114,7 @@ def _(mo):
     few production-oriented flags (`--ephemeris-source`, `--vod-calculator`,
     `--workers`, `--days-per-batch`).
 
-    See [13 — Running the Pipeline (CLI)](./13_cli_pipeline.py) for a full
+    See [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py) for a full
     walkthrough of the flags.
     """
     )
@@ -153,7 +153,7 @@ def _(mo):
     deployments that ingest nightly and recompute VOD on a different
     schedule.
 
-    See [14 — Site Pipeline](./14_site_pipeline.py) for the full walkthrough.
+    See [14 · Site Pipeline](./14_site_pipeline.py) for the full walkthrough.
     """
     )
 
@@ -207,7 +207,7 @@ def _(mo):
     as entry points (`canvodpy.readers`, `canvodpy.vod_calculators`).
     Installed plugins are registered when canvodpy is imported, so they
     appear in the table above and in `canvodpy run --vod-calculator`.
-    [21 — Your Own VOD Calculator](./21_plugins.py) shows both ways.
+    [21 · Your Own VOD Calculator](./21_plugins.py) shows both ways.
     """
     )
 
@@ -231,9 +231,9 @@ def _(mo):
     | Script a run in Python — loop over sites, embed in a notebook | `Site(...).pipeline()` |
     | Recompute VOD separately from ingestion | `Site(...).vod` (`VodComputer`) |
     | Orchestrate with Airflow | The optional `canvod-airflow` extension (`canvodpy.workflows.tasks`) |
-    | Inspect or modify an intermediate step for research | The `canvod-*` packages directly, see [16 — Single-Day Workflow](./16_workflow_single_day.py) |
+    | Inspect or modify an intermediate step for research | The `canvod-*` packages directly, see [16 · Single-Day Workflow](./16_workflow_single_day.py) |
     | Extend with a custom reader/grid/calculator | Factories: `VODFactory.register()` (this session) |
-    | Use your own reader or VOD calculator in `canvodpy run` | A plugin package (entry points), see [21 — Your Own VOD Calculator](./21_plugins.py) |
+    | Use your own reader or VOD calculator in `canvodpy run` | A plugin package (entry points), see [21 · Your Own VOD Calculator](./21_plugins.py) |
 
     The CLI and `Site(...).pipeline()` share the same implementation — you
     can mix them freely. A common pattern: use the CLI for scheduled
@@ -244,8 +244,8 @@ def _(mo):
 
     The following notebooks demonstrate each surface in detail:
 
-    - [13 — Running the Pipeline (CLI)](./13_cli_pipeline.py)
-    - [14 — Site Pipeline](./14_site_pipeline.py)
+    - [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py)
+    - [14 · Site Pipeline](./14_site_pipeline.py)
     """
     )
 
@@ -263,10 +263,10 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [11 — Configuration](./11_configuration.py)
-    | **Next**: [13 — Running the Pipeline (CLI)](./13_cli_pipeline.py)
+    **Previous**: [11 · Configuration](./11_configuration.py)
+    | **Next**: [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py)
 
-    *canVODpy — Apache 2.0*
+    *canVODpy · Apache 2.0*
     """
     )
 
