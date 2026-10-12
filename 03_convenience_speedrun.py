@@ -34,7 +34,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "00 · Speedrun: Full Pipeline"
+# title = "03 · Speedrun: Full Pipeline"
 # description = "Raw GNSS files to Vegetation Optical Depth in five steps. Runs the complete GNSS-T pipeline on real Rosalia test data using canVODpy's convenience API."
 # ///
 
@@ -56,7 +56,7 @@ def _():
         r"""
     # canVODpy Speedrun
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/00_convenience_speedrun.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/03_convenience_speedrun.py?mode=edit)
 
     Raw GNSS files → Vegetation Optical Depth in five cells.
 
@@ -72,9 +72,9 @@ def _():
     | **4** | Inspect results and plot VOD vs polar angle |
 
     > For the conceptual background see the
-    > [VOD Retrieval notebook](./07_vod_retrieval.py).
+    > [VOD Retrieval notebook](./10_vod_retrieval.py).
     > For production pipelines with configuration see
-    > [Single-Day Workflow](./16_workflow_single_day.py).
+    > [Single-Day Workflow](./19_workflow_single_day.py).
 
     ---
     """
@@ -235,8 +235,10 @@ def _(ds_vod, mo, np):
     | **Std** | {np.std(_v):.3f} |
     | **Range** | [{np.min(_v):.3f}, {np.max(_v):.3f}] |
 
-    Typical L-band VOD for a temperate forest canopy: **0.3 – 0.8**.
-    Negative values indicate constructive multipath (physically meaningful, not noise).
+    VOD is negative where the canopy receiver recorded a stronger signal
+    than the reference ($T > 1$); canVODpy keeps these values. What a
+    value means for the vegetation depends on the frequency, the canopy
+    and the site: see [10 · VOD Retrieval](./10_vod_retrieval.py).
     """
     )
     return
@@ -305,12 +307,15 @@ def _(mo):
 
     | Notebook | Topic |
     |----------|-------|
-    | [02 · RINEX Reading](./02_rinex_reading.py) | Deep dive into the RINEX reader |
-    | [05 · Ephemeris & Coordinates](./05_ephemeris_coordinates.py) | SP3/CLK, ECEF → spherical |
-    | [07 · VOD Retrieval](./07_vod_retrieval.py) | Full VOD derivation explained |
-    | [08 · Icechunk Store](./08_icechunk_store.py) | Persist results in a versioned store |
-    | [16 · Single-Day Workflow](./16_workflow_single_day.py) | Production pipeline, all 96 files |
-    | [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py) | The `canvodpy run` command-line interface |
+    | [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py) | The `canvodpy run` command-line interface |
+    | [05 · RINEX Reading](./05_rinex_reading.py) | Deep dive into the RINEX reader |
+    | [08 · Ephemeris & Coordinates](./08_ephemeris_coordinates.py) | SP3/CLK, ECEF → spherical |
+    | [10 · VOD Retrieval](./10_vod_retrieval.py) | Full VOD derivation explained |
+    | [11 · Icechunk Store](./11_icechunk_store.py) | Persist results in a versioned store |
+    | [19 · Single-Day Workflow](./19_workflow_single_day.py) | Production pipeline, all 96 files |
+
+    **Previous**: [02 · Configuration](./02_configuration.py)
+    | **Next**: [04 · Naming Convention](./04_naming_convention.py)
 
     *canVODpy · Apache 2.0*
     """)

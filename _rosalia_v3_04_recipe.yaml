@@ -1,7 +1,7 @@
 # Settings recipe for the "rosalia_v3_04" site: real Rosalia RINEX
 # v3.04 test data (DOY 2025-001, canopy + reference receivers), used to
-# build a live Icechunk store for demo/08_icechunk_store.py and
-# demo/18_workflow_store_operations.py (see demo/_live_store.py).
+# build a live Icechunk store for demo/11_icechunk_store.py and
+# demo/13_workflow_store_operations.py (see demo/_live_store.py).
 #
 # Decided interactively via dev/rosalia_store_metadata.py (untracked,
 # canvodpy superproject) -- see ~/.claude/plans/dazzling-finding-peacock.md

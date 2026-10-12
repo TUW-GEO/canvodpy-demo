@@ -13,7 +13,7 @@
 # canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "03 · Satellite Catalog"
+# title = "07 · Satellite Catalog"
 # description = "Query the IGS SatelliteCatalog for PRN metadata: SVN, block type, transmit power, mass, orbital plane, and GLONASS frequency channel."
 # ///
 
@@ -38,7 +38,7 @@ def _():
         r"""
     # Satellite Catalog: IGS SINEX Metadata
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/03_satellite_catalog.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/07_satellite_catalog.py?mode=edit)
 
     The **SatelliteCatalog** provides comprehensive satellite metadata from
     the IGS `igs_satellite_metadata.snx` SINEX file, maintained by DLR on
@@ -411,8 +411,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [02 · RINEX Reading](./02_rinex_reading.py)
-    | **Next**: [04 · SBF Reading](./04_sbf_reading.py)
+    **Previous**: [06 · SBF Reading](./06_sbf_reading.py)
+    | **Next**: [08 · Ephemeris & Coordinates](./08_ephemeris_coordinates.py)
 
     *canVODpy · Apache 2.0*
     """

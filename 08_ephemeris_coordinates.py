@@ -33,7 +33,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "05 · Ephemeris & Coordinate Augmentation"
+# title = "08 · Ephemeris & Coordinate Augmentation"
 # description = "Augment GNSS observations with precise SP3/CLK satellite ephemeris. Transform ECEF positions to receiver-relative spherical coordinates (polar angle θ, azimuth φ)."
 # ///
 
@@ -60,7 +60,7 @@ def _():
         r"""
     # Ephemeris and Coordinate Augmentation
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/05_ephemeris_coordinates.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/08_ephemeris_coordinates.py?mode=edit)
 
     The **canvod-auxiliary** package augments GNSS observation datasets with
     satellite geometry: the azimuth and polar angle from the receiver
@@ -577,8 +577,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [04 · SBF Reading](./04_sbf_reading.py)
-    | **Next**: [06 · Hemispheric Grids](./06_hemispheric_grids.py)
+    **Previous**: [07 · Satellite Catalog](./07_satellite_catalog.py)
+    | **Next**: [09 · Hemispheric Grids](./09_hemispheric_grids.py)
 
     *canVODpy · Apache 2.0*
     """

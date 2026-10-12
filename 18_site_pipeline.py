@@ -5,7 +5,7 @@
 # ]
 #
 # [tool.marimo.opengraph]
-# title = "14 · Site Pipeline"
+# title = "18 · Site Pipeline"
 # description = "Process a full GNSS-T site with Site().pipeline().process_range() -- the same code path the canvodpy CLI runs. Combines configuration, file discovery, storage, and VOD retrieval in a production-ready workflow."
 # ///
 
@@ -25,7 +25,7 @@ def _():
         r"""
     # Site Pipeline
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_site_pipeline.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/18_site_pipeline.py?mode=edit)
 
     `Site(...).pipeline()` is canvodpy's Python-native surface for running
     the pipeline, the exact same code path the `canvodpy run` CLI wraps
@@ -238,8 +238,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [13 · Running the Pipeline (CLI)](./13_cli_pipeline.py)
-    | **Next**: [16 · Single-Day Workflow](./16_workflow_single_day.py)
+    **Previous**: [17 · API Overview](./17_api_overview.py)
+    | **Next**: [19 · Single-Day Workflow](./19_workflow_single_day.py)
 
     *canVODpy · Apache 2.0*
     """

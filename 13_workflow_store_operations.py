@@ -33,7 +33,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "18 · Store Operations"
+# title = "13 · Store Operations"
 # description = "Read, write, branch, and query Icechunk stores. Covers temporal aggregation, store snapshots, metadata queries, and the operational pipeline layer."
 # ///
 
@@ -55,7 +55,7 @@ def _():
         r"""
     # Store Operations
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/18_workflow_store_operations.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_workflow_store_operations.py?mode=edit)
 
     A comprehensive, hands-on tour of everything `MyIcechunkStore`
     (`canvod-store`) and its companion `canvod-store-metadata` package can
@@ -63,7 +63,7 @@ def _():
     native rich rendering, and store-wide provenance metadata.
 
     Every operation below runs against the **same live store** built for
-    notebook 08; nothing here is illustrative-only.
+    [11 · Icechunk Store](./11_icechunk_store.py); nothing here is illustrative-only.
 
     **Test data**: this notebook builds the store live, at run time, by
     running the real `canvodpy` CLI against real Rosalia RINEX v3.04 data
@@ -672,7 +672,7 @@ def _(mo):
     ## Store-wide metadata -- full schema, by standard
 
     Distinct from the per-file metadata ledger above: `canvod-store-metadata`
-    describes the *store itself*, in three parts (see notebook 09):
+    describes the *store itself*, in three parts (see [12 · Store Metadata](./12_store_metadata.py)):
 
     - the **repository metadata** (identity, creator, publisher, site,
       receivers, references), written once when the store is created and
@@ -1128,8 +1128,8 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Previous**: [17 · Batch Processing](./17_workflow_batch_processing.py)
-    | **Next**: [19 · Grid Exploration](./19_grid_exploration.py)
+    **Previous**: [12 · Store Metadata](./12_store_metadata.py)
+    | **Next**: [14 · Visualization](./14_visualization.py)
 
     *canVODpy · Apache 2.0*
     """)

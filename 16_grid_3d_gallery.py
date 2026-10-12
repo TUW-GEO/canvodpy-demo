@@ -33,7 +33,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "20 · 3D Grid Gallery"
+# title = "16 · 3D Grid Gallery"
 # description = "Interactive 3D gallery comparing every implemented hemispheric grid type: empty geometry, shared random synthetic data, and per-cell sampled-volume as a biomass proxy."
 # ///
 
@@ -55,7 +55,7 @@ def _():
         r"""
     # 3D Grid Gallery
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/20_grid_3d_gallery.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/16_grid_3d_gallery.py?mode=edit)
 
     A side-by-side comparison of every hemispheric grid type
     `canvod-grids` implements, each rendered as an **interactive 3D
@@ -437,8 +437,8 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Previous**: [19 · Grid Exploration](./19_grid_exploration.py)
-    | **Next**: [21 · Your Own VOD Calculator](./21_plugins.py)
+    **Previous**: [15 · Grid Exploration](./15_grid_exploration.py)
+    | **Next**: [17 · API Overview](./17_api_overview.py)
 
     *canVODpy · Apache 2.0*
     """)

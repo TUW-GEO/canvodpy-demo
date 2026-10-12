@@ -12,7 +12,7 @@
 # canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "01 · Naming Convention & Validation"
+# title = "04 · Naming Convention & Validation"
 # description = "Parse and validate GNSS filenames against the IGS/RINEX naming convention. Explore the structured metadata encoded in every canVODpy filename."
 # ///
 
@@ -38,7 +38,7 @@ def _(mo):
     mo.md(r"""
     # Naming Convention and File Validation
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/01_naming_convention.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/04_naming_convention.py?mode=edit)
 
     GNSS-Transmissometry campaigns generate thousands of files across
     multiple receivers, days, and sampling intervals.  Without a strict
@@ -334,7 +334,8 @@ def _(mo):
     With canonical names, every file is unambiguously identified, and
     overlapping or misattributed files stop a run before any data is read.
 
-    **Next**: [02 · RINEX Reading](./02_rinex_reading.py)
+    **Previous**: [03 · Speedrun: Full Pipeline](./03_convenience_speedrun.py)
+    | **Next**: [05 · RINEX Reading](./05_rinex_reading.py)
 
     *canVODpy · Apache 2.0*
     """)

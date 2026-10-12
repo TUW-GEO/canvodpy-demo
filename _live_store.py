@@ -1,6 +1,6 @@
 """Build live Icechunk stores from real Rosalia RINEX v3.04 raw data.
 
-demo/08_icechunk_store.py and demo/18_workflow_store_operations.py both
+demo/11_icechunk_store.py and demo/13_workflow_store_operations.py both
 need a populated MyIcechunkStore to render their read-only demo cells
 (branches, groups, commit history, metadata ledger, root attrs). No
 pre-built store fixture is published: canvodpy-test-data commit 7da92ea
@@ -128,7 +128,7 @@ def _run_pipeline(n_workers: int | None = 2) -> tuple["MyIcechunkStore", Path, "
     `vod_analyses`) -- both are scratch Icechunk repositories under a
     freshly created `tempfile.mkdtemp()` directory, never inside the
     read-only `_paths.STORES_DIR` tree. Not cleaned up automatically (same
-    trade-off `00_convenience_speedrun.py` and `16_workflow_single_day.py`
+    trade-off `03_convenience_speedrun.py` and `19_workflow_single_day.py`
     already make re-decoding RINEX from scratch on every run: consistency
     over caching across kernel restarts). Cached for the remainder of this
     kernel session so re-importing/re-calling within one run doesn't

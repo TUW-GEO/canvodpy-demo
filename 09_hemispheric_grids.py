@@ -31,7 +31,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "06 · Hemispheric Grids"
+# title = "09 · Hemispheric Grids"
 # description = "Explore equal-area, equal-angle, geodesic, and Fibonacci hemispheric grid schemes used to bin GNSS-T observations by sky position."
 # ///
 
@@ -56,7 +56,7 @@ def _():
         r"""
     # Hemispheric Grids
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/06_hemispheric_grids.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/09_hemispheric_grids.py?mode=edit)
 
     The **canvod-grids** package discretises the upper hemisphere into grid
     cells for spatially resolved VOD retrieval.  Each GNSS observation is
@@ -386,8 +386,8 @@ def _(mo):
         r"""
     ---
 
-    **Previous**: [05 · Ephemeris & Coordinates](./05_ephemeris_coordinates.py)
-    | **Next**: [07 · VOD Retrieval](./07_vod_retrieval.py)
+    **Previous**: [08 · Ephemeris & Coordinates](./08_ephemeris_coordinates.py)
+    | **Next**: [10 · VOD Retrieval](./10_vod_retrieval.py)
 
     *canVODpy · Apache 2.0*
     """

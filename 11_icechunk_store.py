@@ -33,7 +33,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "08 · Icechunk Store"
+# title = "11 · Icechunk Store"
 # description = "Write, read, and version GNSS-T datasets in a cloud-native Icechunk/Zarr store. Explore branching, snapshots, and deduplication guardrails."
 # ///
 
@@ -55,7 +55,7 @@ def _():
         r"""
     # Versioned GNSS Data Storage with Icechunk
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/08_icechunk_store.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/11_icechunk_store.py?mode=edit)
 
     The **canvod-store** package provides a versioned, transactional storage
     layer built on **Icechunk**, a Git-like version control system for
@@ -399,8 +399,8 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Previous**: [07 · VOD Retrieval](./07_vod_retrieval.py)
-    | **Next**: [09 · Store Metadata](./09_store_metadata.py)
+    **Previous**: [10 · VOD Retrieval](./10_vod_retrieval.py)
+    | **Next**: [12 · Store Metadata](./12_store_metadata.py)
 
     *canVODpy · Apache 2.0*
     """)

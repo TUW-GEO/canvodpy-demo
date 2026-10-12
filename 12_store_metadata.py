@@ -13,7 +13,7 @@
 # canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "09 · Store Metadata & FAIR Compliance"
+# title = "12 · Store Metadata & FAIR Compliance"
 # description = "How a canVODpy store describes itself: repository metadata, snapshot summary and commit metadata, checked against the zarr conventions, ACDD, DataCite and STAC."
 # ///
 
@@ -35,7 +35,7 @@ def _():
         r"""
     # Store Metadata and FAIR Compliance
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/09_store_metadata.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/12_store_metadata.py?mode=edit)
 
     Every canVODpy store describes itself: who made it, with which
     software and settings, for which site and receivers, and which period
@@ -308,8 +308,8 @@ def _(mo):
     mo.md(r"""
     ---
 
-    **Previous**: [08 · Icechunk Store](./08_icechunk_store.py)
-    | **Next**: [10 · Visualization](./10_visualization.py)
+    **Previous**: [11 · Icechunk Store](./11_icechunk_store.py)
+    | **Next**: [13 · Store Operations](./13_workflow_store_operations.py)
 
     *canVODpy · Apache 2.0*
     """)
