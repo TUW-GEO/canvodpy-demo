@@ -48,8 +48,8 @@ def _():
     (e.g. PolaRx5, AsteRx).  Unlike the ASCII-based RINEX format, SBF stores
     observations as packed binary blocks, which makes it more compact and
     faster to write in real-time.  Each SBF file contains the same
-    fundamental observables as its RINEX counterpart — pseudorange, carrier
-    phase, Doppler, and SNR — but also includes **receiver-computed
+    fundamental observables as its RINEX counterpart (pseudorange, carrier
+    phase, Doppler, and SNR) but also includes **receiver-computed
     metadata** that RINEX does not carry:
 
     - **Satellite visibility** (azimuth and elevation from the receiver firmware)

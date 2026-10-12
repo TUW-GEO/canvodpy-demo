@@ -1,10 +1,10 @@
 """Resolve test data directory for demo notebooks.
 
 Resolution order (checked in order):
-  1. Monorepo    — ../packages/canvod-readers/tests/test_data/valid/  (dev)
-  2. Pooch cache — ~/.cache/canvodpy/canvodpy-test-data-v0.1.0/       (default)
-  3. Standalone  — ./test_data/valid/                                  (manual clone)
-  4. Download    — Zenodo DOI 10.5281/zenodo.19708759 via ensure_data()
+  1. Monorepo:    ../packages/canvod-readers/tests/test_data/valid/  (dev)
+  2. Pooch cache: ~/.cache/canvodpy/canvodpy-test-data-v0.1.0/       (default)
+  3. Standalone:  ./test_data/valid/                                  (manual clone)
+  4. Download:    Zenodo DOI 10.5281/zenodo.19708759 via ensure_data()
 
 Paths 1–3 resolve immediately at import. Path 4 is deferred: TEST_DATA is
 set to None and resolved lazily via ensure_data() so notebooks can inject
@@ -82,7 +82,7 @@ def _zenodo_valid_dir(downloader=None) -> Path:
     if not found:
         raise FileNotFoundError(
             f"Could not find valid/ in extracted archive at {extract_dir}. "
-            "The archive structure may have changed — please file an issue."
+            "The archive structure may have changed; please file an issue."
         )
     return found[0]
 

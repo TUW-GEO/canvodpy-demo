@@ -207,7 +207,7 @@ def _(grid_2deg, mo, np):
     | **Min / Max** | {np.min(_sa):.6f} / {np.max(_sa):.6f} sr |
 
     A coefficient of variation (CV) near zero indicates that all cells
-    have nearly identical solid angles — the defining property of an
+    have nearly identical solid angles, the defining property of an
     equal-area grid.
     """
     )
@@ -235,7 +235,7 @@ def _(create_hemigrid, mo, np):
                 f"| `{_t}` | {_g.ncells:,} | {np.mean(_sa):.5f} | {_cv:.1f}% |"
             )
         except Exception as _e:
-            _rows.append(f"| `{_t}` | — | — | {_e} |")
+            _rows.append(f"| `{_t}` | n/a | n/a | {_e} |")
 
     mo.md(
         f"""

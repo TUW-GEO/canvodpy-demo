@@ -63,7 +63,7 @@ def _():
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/05_ephemeris_coordinates.py?mode=edit)
 
     The **canvod-auxiliary** package augments GNSS observation datasets with
-    satellite geometry — the azimuth and polar angle from the receiver
+    satellite geometry: the azimuth and polar angle from the receiver
     to each satellite at each epoch.
 
     These angles are essential for GNSS-T:
@@ -497,8 +497,8 @@ def _(mo):
 
     ### SbfBroadcastProvider
 
-    Extracts satellite geometry directly from the SBF `SatVisibility` block
-    — the receiver firmware computes azimuth and elevation in real time
+    Extracts satellite geometry directly from the SBF `SatVisibility` block;
+    the receiver firmware computes azimuth and elevation in real time
     using the broadcast navigation message.
 
     ```python

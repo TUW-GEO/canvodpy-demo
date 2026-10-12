@@ -38,16 +38,16 @@ def _():
 
     Two layers make every run specified and observable:
 
-    1. **Configuration** (`canvod-config`) — Pydantic models that define
+    1. **Configuration** (`canvod-config`): Pydantic models that define
        every tuneable parameter of the canvodpy pipeline, loaded from YAML
-    2. **Utilities and stage timing** (`canvod-utils`)
-       — date and hashing helpers, and timed pipeline stages
+    2. **Utilities and stage timing** (`canvod-utils`):
+       date and hashing helpers, and timed pipeline stages
 
     Together they ensure that the pipeline is both reproducible
     (every run is fully specified by its config) and observable
     (every step can be profiled without modifying scientific code).
 
-    —
+    ---
 
     """
     )
@@ -228,8 +228,8 @@ def _(
         f"""
     ## Building configuration programmatically
 
-    Configuration objects can be created in Python without YAML files
-    — useful for notebooks and testing:
+    Configuration objects can be created in Python without YAML files,
+    useful for notebooks and testing:
 
     ```python
     site = SiteConfig(
@@ -305,8 +305,8 @@ def _(AuxDataConfig, mo):
 
     For most GNSS-T applications at 2-degree grid resolution, the choice
     of ephemeris product has negligible impact on VOD results.  The angular
-    difference between broadcast and final orbits is approximately 0.1°
-    — 20 times smaller than the grid cell size.
+    difference between broadcast and final orbits is approximately 0.1°,
+    20 times smaller than the grid cell size.
     """
     )
 
@@ -536,7 +536,7 @@ def _(mo):
     # Returns: "a1b2c3d4e5f6g7h8" (16-character hex string)
     ```
 
-    The 16-character truncation provides 64 bits of entropy —
+    The 16-character truncation provides 64 bits of entropy,
     sufficient for deduplication within a single site (collision
     probability < $10^{-15}$ for 10,000 files).  The truncation
     keeps metadata compact in the Zarr store.

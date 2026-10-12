@@ -79,7 +79,7 @@ def _():
 
 
 # ---------------------------------------------------------------------------
-# Grid setup — create or load a hemispheric grid
+# Grid setup: create or load a hemispheric grid
 # ---------------------------------------------------------------------------
 
 

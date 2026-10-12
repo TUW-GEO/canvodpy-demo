@@ -440,7 +440,7 @@ def _(ds_single, mo, np):
     | **Mean** | {np.nanmean(_snr):.1f} dB-Hz |
     | **Dtype** | `{_snr.dtype}` |
 
-    The data is stored as `float32` (not `float64`) — a deliberate design
+    The data is stored as `float32` (not `float64`), a deliberate design
     choice that halves memory usage.  RINEX SNR values have approximately
     0.001 dB precision, so `float32` (7 significant digits) introduces at
     most ~2 x 10^-6 dB truncation error, which is 1000x below measurement

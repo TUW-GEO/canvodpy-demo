@@ -54,17 +54,17 @@ def _():
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/12_api_overview.py?mode=edit)
 
     canvodpy has **two supported ways to run or script the pipeline**.
-    Both produce the same scientific results — the same VOD values from
-    the same input data — but differ in where you invoke them from.
+    Both produce the same scientific results (the same VOD values from
+    the same input data) but differ in where you invoke them from.
 
     | Surface | Style | Entry point | Use case |
     |---------|-------|-------------|----------|
-    | **CLI** | Command-line | `canvodpy run --site ...` | Running production ingestion — recommended |
+    | **CLI** | Command-line | `canvodpy run --site ...` | Running production ingestion (recommended) |
     | **Site pipeline** | Python, object-oriented | `Site(...).pipeline()` | Python-native scripting; what the CLI wraps internally |
 
     Earlier versions of canvodpy exposed four numbered "API levels"
     (L1 convenience one-liners, L2 fluent method chaining, L3 site
-    pipelines, L4 functional). L1 and L2 are now deprecated — L1 was a
+    pipelines, L4 functional). L1 and L2 are now deprecated: L1 was a
     thin wrapper around exactly what `Site.pipeline()` already does, and
     L2's fluent chain was superfluous alongside it. L4,
     `canvodpy.functional`, is no longer maintained and gives different
@@ -89,7 +89,7 @@ def _():
 def _(mo):
     mo.md(
         r"""
-    ## CLI — running the pipeline
+    ## CLI: running the pipeline
 
     The recommended way to run canvodpy in production: a single command,
     resumable, no Python required.
@@ -108,8 +108,8 @@ def _(mo):
     uv run canvodpy run --site Rosalia --dry-run
     ```
 
-    The CLI is a thin wrapper around `Site(...).pipeline().process_range()`
-    — same code path, same guarantees. It adds resumability (auto-detects
+    The CLI is a thin wrapper around `Site(...).pipeline().process_range()`,
+    with the same code path and the same guarantees. It adds resumability (auto-detects
     the last committed date in the store), a live progress display, and a
     few production-oriented flags (`--ephemeris-source`, `--vod-calculator`,
     `--workers`, `--days-per-batch`).
@@ -131,7 +131,7 @@ def _(mo):
 def _(mo):
     mo.md(
         r"""
-    ## Site pipeline — Python-native scripting
+    ## Site pipeline: Python-native scripting
 
     `Site(...).pipeline()` is what the CLI calls internally. Use it
     directly when you need scripted control from Python: looping over
@@ -149,7 +149,7 @@ def _(mo):
     ```
 
     Once data is ingested, `site.vod` (a `VodComputer`) gives finer control
-    over VOD computation as a separate stage — useful for production
+    over VOD computation as a separate stage, useful for production
     deployments that ingest nightly and recompute VOD on a different
     schedule.
 
@@ -228,14 +228,14 @@ def _(mo):
     | If you want to... | Use |
     |-------------------|-----|
     | Run production ingestion, resumable, from a shell/cron | CLI: `canvodpy run` |
-    | Script a run in Python — loop over sites, embed in a notebook | `Site(...).pipeline()` |
+    | Script a run in Python: loop over sites, embed in a notebook | `Site(...).pipeline()` |
     | Recompute VOD separately from ingestion | `Site(...).vod` (`VodComputer`) |
     | Orchestrate with Airflow | The optional `canvod-airflow` extension (`canvodpy.workflows.tasks`) |
     | Inspect or modify an intermediate step for research | The `canvod-*` packages directly, see [16 · Single-Day Workflow](./16_workflow_single_day.py) |
     | Extend with a custom reader/grid/calculator | Factories: `VODFactory.register()` (this session) |
     | Use your own reader or VOD calculator in `canvodpy run` | A plugin package (entry points), see [21 · Your Own VOD Calculator](./21_plugins.py) |
 
-    The CLI and `Site(...).pipeline()` share the same implementation — you
+    The CLI and `Site(...).pipeline()` share the same implementation, so you
     can mix them freely. A common pattern: use the CLI for scheduled
     production runs, and `Site(...)` in an analysis notebook to open the
     stores the CLI wrote.

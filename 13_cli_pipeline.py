@@ -25,7 +25,7 @@ def _():
 
     mo.md(
         r"""
-    # Running the Pipeline — the CLI
+    # Running the Pipeline: the CLI
 
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_cli_pipeline.py?mode=edit)
 
@@ -61,7 +61,7 @@ def _(mo):
     # Process a specific range
     uv run canvodpy run --site Rosalia --start 2025001 --end 2025007
 
-    # Process new data only — auto-resume from the last processed date,
+    # Process new data only: auto-resume from the last processed date,
     # end defaults to today. This is what you want in a cron job.
     uv run canvodpy run --site Rosalia
 
@@ -103,7 +103,7 @@ def _(mo):
     uv run canvodpy run --site Rosalia OtherSite ThirdSite
     ```
 
-    Each site resolves its own resume point from its own store — sites
+    Each site resolves its own resume point from its own store; sites
     don't share a date range. The live progress display shows one row per
     `(site, receiver-group)` pair, known upfront, so a multi-site run
     shows the full picture from the start rather than only revealing the
@@ -138,7 +138,7 @@ def _(mo):
     | `--ephemeris-source` | `final` (agency SP3/CLK), `broadcast` (SBF SatVisibility) | from `canvod-settings.yaml` |
     | `--vod-calculator` | registered in `VODFactory` (currently `tau_omega`) | `tau_omega` |
 
-    Both flags are one-off overrides for a single invocation — they don't
+    Both flags are one-off overrides for a single invocation; they don't
     modify `canvod-settings.yaml`. Bake in a value there once you've
     settled on it for a site.
     """
@@ -170,7 +170,7 @@ def _(mo):
     `--days-per-batch` trades responsiveness for throughput: a bigger
     batch keeps the worker pool saturated longer per invocation (fewer
     sequential aux-data-prep stalls between waves), but the live progress
-    display can only advance once each batch's files finish writing — so
+    display can only advance once each batch's files finish writing, so
     very large batches on a big backfill can look quiet for a while before
     a burst of progress lands. Start small (`1`–`7`) and increase once you
     have a feel for how long a batch takes on your hardware.
@@ -195,7 +195,7 @@ def _(mo):
     uv run canvodpy run --site Rosalia --config cluster-overlay.yaml
     ```
 
-    Applies an overlay YAML on top of the main `canvod-settings.yaml` —
+    Applies an overlay YAML on top of the main `canvod-settings.yaml`:
     only the fields present in the overlay are changed, everything else
     is read from the main file. Useful on shared/HPC machines where
     resource limits vary per job but the base configuration is
