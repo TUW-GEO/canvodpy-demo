@@ -66,7 +66,7 @@ def _():
     a single API.  Lower-level access is available through
     `HemisphereVisualizer2D` and `HemisphereVisualizer3D`.
 
-    —
+    ---
 
     """
     )
@@ -123,7 +123,7 @@ def _(mo):
 
 
 # ---------------------------------------------------------------------------
-# Section: 2D polar plot — empty grid
+# Section: 2D polar plot, empty grid
 # ---------------------------------------------------------------------------
 
 
@@ -146,11 +146,11 @@ def _(grid, mo):
 
     mo.md(
         r"""
-    ## 2D polar projection — empty grid
+    ## 2D polar projection: empty grid
 
     `plot_2d()` renders the grid cells as patches on a polar axis.
     When no data array is provided, all cells are drawn with the same
-    fill colour — useful for inspecting grid geometry.
+    fill colour, useful for inspecting grid geometry.
 
     ```python
     from canvod.viz import HemisphereVisualizer, PolarPlotStyle
@@ -178,7 +178,7 @@ def _(fig_empty):
 
 
 # ---------------------------------------------------------------------------
-# Section: 2D polar plot — with data
+# Section: 2D polar plot, with data
 # ---------------------------------------------------------------------------
 
 
@@ -189,7 +189,7 @@ def _(grid, mo, np, viz):
     _data = np.cos(_theta_centres)  # cos(theta): 1 at zenith, 0 at horizon
 
     _style_data = PolarPlotStyle(  # type: ignore[unresolved-reference]
-        title="Simulated VOD — cos(θ) gradient",
+        title="Simulated VOD, cos(θ) gradient",
         figsize=(8, 8),
         cmap="YlGn",
         edgecolor="gray",
@@ -280,7 +280,7 @@ def _(grid, mo, np, viz):
 
     fig_3d = viz.plot_3d(
         data=_data_3d,
-        title="3D Hemisphere — cos(θ) gradient",
+        title="3D Hemisphere, cos(θ) gradient",
         colorscale="YlGn",
         opacity=0.85,
     )
@@ -361,7 +361,7 @@ def _(mo, viz):
     ```
 
     These overlays help interpret the 3D view by providing angular
-    reference lines — the same role that grid lines play on a
+    reference lines, the same role that grid lines play on a
     2D polar plot.
     """
     )
@@ -435,14 +435,14 @@ def _(grid, mo, np):
     fig2d, _ax2d = visualize_grid(
         grid,
         data=_data_conv,
-        title="visualize_grid() — one-liner 2D",
+        title="visualize_grid(): one-liner 2D",
         cmap="plasma",
     )
 
     fig3d_conv = visualize_grid_3d(
         grid,
         data=_data_conv,
-        title="visualize_grid_3d() — one-liner 3D",
+        title="visualize_grid_3d(): one-liner 3D",
         colorscale="Plasma",
     )
 
@@ -631,7 +631,7 @@ def _(grid, mo, np, viz):
     )
     ```
 
-    Dark mode uses a black background with lighter grid lines —
+    Dark mode uses a black background with lighter grid lines,
     useful for presentations and screen-based analysis.
     """
     )

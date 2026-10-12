@@ -8,7 +8,7 @@ Usage in a notebook setup cell::
 
     _paths.ensure_data(downloader=marimo_downloader)
 
-If data is already cached the downloader is never called — the call
+If data is already cached the downloader is never called; the call
 returns instantly with no UI rendered.
 """
 
@@ -51,7 +51,7 @@ def marimo_downloader(url: str, output_file: Path | str, _pooch) -> None:  # noq
                     f.write(chunk)
                     bar.update(len(chunk))
     else:
-        # Plain stream — tqdm fallback or no bar
+        # Plain stream: tqdm fallback or no bar
         with open(output_file, "wb") as f:
             for chunk in response.iter_content(chunk_size=chunk_size):
                 f.write(chunk)

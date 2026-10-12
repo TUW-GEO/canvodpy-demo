@@ -34,7 +34,7 @@
 # canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
-# title = "00 · Speedrun — Full Pipeline"
+# title = "00 · Speedrun: Full Pipeline"
 # description = "Raw GNSS files to Vegetation Optical Depth in five steps. Runs the complete GNSS-T pipeline on real Rosalia test data using canVODpy's convenience API."
 # ///
 
@@ -43,7 +43,7 @@ import marimo
 __generated_with = "0.23.4"
 app = marimo.App(
     width="medium",
-    app_title="Speedrun — Full Pipeline",
+    app_title="Speedrun: Full Pipeline",
     css_file="canvod_nordic.css",
 )
 
@@ -54,7 +54,7 @@ def _():
 
     mo.md(
         r"""
-    # canVODpy — Speedrun
+    # canVODpy Speedrun
 
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/00_convenience_speedrun.py?mode=edit)
 
@@ -62,7 +62,7 @@ def _():
 
     This notebook runs the complete GNSS Transmissometry pipeline on the
     bundled Rosalia test data (DOY 2025-001).  It uses the **direct API**
-    so every step is visible — no configuration files required.
+    so every step is visible and no configuration files are required.
 
     | Step | What happens |
     |------|--------------|
@@ -93,7 +93,7 @@ def _():
 @app.cell
 def _(mo):
     mo.md("""
-    ## Step 1 — Read RINEX observation files
+    ## Step 1: Read RINEX observation files
     """)
     return
 
@@ -121,8 +121,8 @@ def _(ds_can_raw, ds_ref_raw, mo):
     mo.md(f"""
     | Receiver | Epochs | SIDs | File |
     |----------|--------|------|------|
-    | **Canopy** | {ds_can_raw.sizes["epoch"]} | {ds_can_raw.sizes["sid"]} | `{ds_can_raw.attrs.get("source_file", "—")}` |
-    | **Reference** | {ds_ref_raw.sizes["epoch"]} | {ds_ref_raw.sizes["sid"]} | `{ds_ref_raw.attrs.get("source_file", "—")}` |
+    | **Canopy** | {ds_can_raw.sizes["epoch"]} | {ds_can_raw.sizes["sid"]} | `{ds_can_raw.attrs.get("source_file", "n/a")}` |
+    | **Reference** | {ds_ref_raw.sizes["epoch"]} | {ds_ref_raw.sizes["sid"]} | `{ds_ref_raw.attrs.get("source_file", "n/a")}` |
 
     Each dataset has dimensions `(epoch, sid)` where SID encodes
     satellite + frequency band + tracking code, e.g. `G01|L1|C`.
@@ -133,7 +133,7 @@ def _(ds_can_raw, ds_ref_raw, mo):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Step 2 — Augment with satellite geometry
+    ## Step 2: Augment with satellite geometry
 
     The auxiliary Zarr cache contains pre-interpolated ECEF satellite
     positions from COD final SP3/CLK products (5-min orbit, 30-s clock).
@@ -198,7 +198,7 @@ def _(ds_canopy, mo, np):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Step 3 — Compute VOD
+    ## Step 3: Compute VOD
 
     `TauOmegaZerothOrder.from_datasets()` aligns the two datasets on their
     shared `(epoch, sid)` pairs and applies the Tau-Omega formula:
@@ -245,7 +245,7 @@ def _(ds_vod, mo, np):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Step 4 — VOD vs polar angle
+    ## Step 4: VOD vs polar angle
 
     Each point is one `(epoch, sid)` observation.  The $\cos(\theta)$
     path-length correction is already included in the plotted VOD values.
@@ -284,7 +284,7 @@ def _(ds_vod, mo, np):
         )
     )
     fig.update_layout(
-        title="VOD vs Polar Angle — Rosalia, DOY 2025-001 (first 15 min)",
+        title="VOD vs Polar Angle, Rosalia, DOY 2025-001 (first 15 min)",
         xaxis_title="Polar angle θ (°)",
         yaxis_title="VOD",
         height=420,

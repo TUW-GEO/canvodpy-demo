@@ -127,7 +127,7 @@ def _(mo):
 
     For GNSS-T at 2-degree grid resolution, the choice of agency
     has **negligible impact** on VOD values.  The angular difference
-    between agencies is approximately 0.001° — three orders of
+    between agencies is approximately 0.001°, three orders of
     magnitude smaller than the grid cell size.
 
     The practical difference is **availability**: if one agency's FTP

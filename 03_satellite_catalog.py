@@ -36,7 +36,7 @@ def _():
 
     mo.md(
         r"""
-    # Satellite Catalog — IGS SINEX Metadata
+    # Satellite Catalog: IGS SINEX Metadata
 
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/03_satellite_catalog.py?mode=edit)
 
@@ -51,7 +51,7 @@ def _():
     physical spacecraft.
 
     The catalog also provides transmit power, satellite mass, orbital plane
-    and slot assignments, and GLONASS FDMA frequency channel numbers — all
+    and slot assignments, and GLONASS FDMA frequency channel numbers, all
     of which are relevant for precise GNSS-T analysis.
 
     ---
@@ -344,7 +344,7 @@ def _(catalog, date, mo):
     ## Catalog as Polars DataFrame
 
     `to_dataframe(on_date)` returns a snapshot of all active satellites
-    on a given date as a Polars DataFrame — one row per satellite.
+    on a given date as a Polars DataFrame, one row per satellite.
 
     **Shape**: {df_catalog.shape[0]} rows x {df_catalog.shape[1]} columns
 

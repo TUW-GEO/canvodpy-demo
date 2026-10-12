@@ -28,7 +28,7 @@ def _():
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_site_pipeline.py?mode=edit)
 
     `Site(...).pipeline()` is canvodpy's Python-native surface for running
-    the pipeline — the exact same code path the `canvodpy run` CLI wraps
+    the pipeline, the exact same code path the `canvodpy run` CLI wraps
     internally. Use it directly when you need scripted control: looping
     over sites, embedding a run inside a notebook, or customising resource
     limits per invocation.
@@ -45,11 +45,11 @@ def _():
 
     `process_range()` is a generator: it discovers files, augments with
     ephemeris, writes to the Icechunk store, and yields one
-    `(date_key, datasets)` pair per processed day — this is what the CLI's
+    `(date_key, datasets)` pair per processed day; this is what the CLI's
     reporter loop consumes to show live progress.
 
     Once data is ingested, `site.vod` (a `VodComputer`) gives finer-grained
-    control over VOD computation as a separate stage — covered below.
+    control over VOD computation as a separate stage, covered below.
 
     ---
 
@@ -68,7 +68,7 @@ def _():
 def _(mo):
     mo.md(
         r"""
-    ## VodComputer — VOD as a separate stage
+    ## VodComputer: VOD as a separate stage
 
     `site.vod` offers two computation strategies for when VOD retrieval is
     decoupled from ingestion (e.g. ingest nightly, recompute VOD weekly):
@@ -86,7 +86,7 @@ def _(mo):
     | `calculator` | VOD calculator type (default: `"tau_omega"`) |
     | `rechunk` | Optional rechunk parameters for store reads |
 
-    ### Strategy 1: `compute_day()` — inline
+    ### Strategy 1: `compute_day()`, inline
 
     ```python
     # Load data first, e.g. via pipe.process_range()
@@ -102,7 +102,7 @@ def _(mo):
     bring them into memory, then runs the VOD calculation.  This is
     the fastest path for single-day processing.
 
-    ### Strategy 2: `compute_bulk()` — from store
+    ### Strategy 2: `compute_bulk()`, from store
 
     ```python
     from datetime import datetime
@@ -172,7 +172,7 @@ def _(mo):
     | `reference_receiver` | Name of the reference receiver |
     | `description` | Human-readable description |
 
-    Multiple analyses can share the same reference receiver —
+    Multiple analyses can share the same reference receiver,
     a common setup when one open-sky receiver serves several
     below-canopy stations.
     """

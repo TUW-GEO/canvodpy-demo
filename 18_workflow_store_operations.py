@@ -63,11 +63,11 @@ def _():
     native rich rendering, and store-wide provenance metadata.
 
     Every operation below runs against the **same live store** built for
-    notebook 08 — nothing here is illustrative-only.
+    notebook 08; nothing here is illustrative-only.
 
     **Test data**: this notebook builds the store live, at run time, by
     running the real `canvodpy` CLI against real Rosalia RINEX v3.04 data
-    for DOY 2025-001 — no pre-built store fixture is shipped (see
+    for DOY 2025-001; no pre-built store fixture is shipped (see
     `_live_store.py` for why).
 
     ---
@@ -856,7 +856,7 @@ def _(mo, store_path):
                             "section": section_name,
                             "field": path,
                             "value": "(no receivers)",
-                            "standard": _STANDARD_MAP.get(path, "—"),
+                            "standard": _STANDARD_MAP.get(path, "n/a"),
                         }
                     )
                 for rcv_name, rcv in v.items():
@@ -877,7 +877,7 @@ def _(mo, store_path):
                             "section": section_name,
                             "field": path,
                             "value": "(none)",
-                            "standard": _STANDARD_MAP.get(path, "—"),
+                            "standard": _STANDARD_MAP.get(path, "n/a"),
                         }
                     )
                 for i, item in enumerate(v):
@@ -887,7 +887,7 @@ def _(mo, store_path):
                                 "section": section_name,
                                 "field": f"{path}[{i}].{ik}",
                                 "value": _fmt_value(iv),
-                                "standard": _STANDARD_MAP.get(path, "—"),
+                                "standard": _STANDARD_MAP.get(path, "n/a"),
                             }
                         )
                 continue
@@ -896,7 +896,7 @@ def _(mo, store_path):
                     "section": section_name,
                     "field": path,
                     "value": _fmt_value(v),
-                    "standard": _STANDARD_MAP.get(path, "—"),
+                    "standard": _STANDARD_MAP.get(path, "n/a"),
                 }
             )
         return _out
@@ -1034,7 +1034,7 @@ def _(mo):
     observes the canopy from a different sky position ($\theta$, $\phi$).
     Mixing VOD or SNR values across satellites within a time bin conflates
     **spatial** variability (different view angles through the canopy)
-    with **temporal** variability — producing a physically meaningless
+    with **temporal** variability, producing a physically meaningless
     average.
 
     #### Why geometry must also be averaged
@@ -1042,13 +1042,13 @@ def _(mo):
     When you average VOD over a time bin, the contributing observations
     came from many sky positions as the satellite moved.  The aggregated
     geometry ($\theta$, $\phi$) should be the **centroid** (mean) of those
-    positions — not the first observation's position, which is an arbitrary
+    positions, not the first observation's position, which is an arbitrary
     pick that doesn't represent the average.
 
     #### Recommended: `TemporalAggregate`
 
     The `TemporalAggregate` operation (from `canvod-ops`) handles all of
-    this correctly — it groups by `(time_bin, sid)` before computing the
+    this correctly: it groups by `(time_bin, sid)` before computing the
     mean or median, and aggregates `phi` and `theta` per SID:
 
     ```python

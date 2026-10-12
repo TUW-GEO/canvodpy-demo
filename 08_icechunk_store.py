@@ -58,7 +58,7 @@ def _():
     [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/08_icechunk_store.py?mode=edit)
 
     The **canvod-store** package provides a versioned, transactional storage
-    layer built on **Icechunk** — a Git-like version control system for
+    layer built on **Icechunk**, a Git-like version control system for
     N-dimensional arrays (Zarr v3).
 
     Each observation dataset is stored as a Zarr group inside an Icechunk
@@ -75,7 +75,7 @@ def _():
 
     **Test data**: this notebook builds the store live, at run time, by
     running the real `canvodpy` CLI against real Rosalia RINEX v3.04 data
-    for DOY 2025-001 (canopy + reference receivers) — no pre-built store
+    for DOY 2025-001 (canopy + reference receivers); no pre-built store
     fixture is shipped (see `_live_store.py` for why).
 
     """

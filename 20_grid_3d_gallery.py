@@ -61,20 +61,20 @@ def _():
     `canvod-grids` implements, each rendered as an **interactive 3D
     Plotly scene** (rotate by dragging, zoom with scroll) in three ways:
 
-    - **a) Empty grid** — the raw tessellation, uniformly coloured, to
+    - **a) Empty grid**: the raw tessellation, uniformly coloured, to
       compare cell shape and density
-    - **b) Synthetic data** — the same random per-cell values projected
+    - **b) Synthetic data**: the same random per-cell values projected
       onto each grid's own cells
-    - **c) Cell volume** — each cell's angular wedge volume out to an
+    - **c) Cell volume**: each cell's angular wedge volume out to an
       assumed sensing radius, a proxy for how much biomass a signal in
       that direction samples
-    - **d) 2D projection comparison** — the same synthetic data rendered
+    - **d) 2D projection comparison**: the same synthetic data rendered
       as a 2D matplotlib polar plot, orthographic vs equidistant, side
       by side for each grid type
 
     All grids are built at a common **5° angular resolution** via
     `canvod.grids.create_hemigrid()`. Every 3D scene always shows real
-    cell boundaries and the project's E/N/Up reference axes — see the
+    cell boundaries and the project's E/N/Up reference axes; see the
     note after the grid-building step for why.
     """
     )
@@ -114,7 +114,7 @@ def _(mo):
     _rows = "\n".join(
         f"| {GRID_LABELS[_t]} | `{_t}` | {grids[_t].ncells:,} | ✅ built |"
         if _t in grids
-        else f"| {GRID_LABELS[_t]} | `{_t}` | — | ⏭️ skipped: {_build_errors[_t]} |"
+        else f"| {GRID_LABELS[_t]} | `{_t}` | n/a | ⏭️ skipped: {_build_errors[_t]} |"
         for _t in GRID_LABELS
     )
 
@@ -143,13 +143,13 @@ def _(mo):
     x/y/z axes (`showbackground=False`) since raw sin/cos-projected
     coordinates aren't physically meaningful on their own.
     `HemisphereVisualizer3D.add_custom_axes()` draws artificial E/N/Up
-    axis lines and labels in their place — not real Plotly axes, but
+    axis lines and labels in their place, not real Plotly axes, but
     built to read as if they were. `add_spherical_overlays()` adds
     elevation rings and meridians as an angular reference grid.
     Without these, a 3D hemisphere plot has no orientation or scale
-    reference at all — every figure in this notebook applies both,
+    reference at all. Every figure in this notebook applies both,
     plus real cell-boundary wireframes (`show_wireframe=True`, fixed
-    2026-07-19 — previously a declared-but-unwired no-op parameter in
+    2026-07-19; previously a declared-but-unwired no-op parameter in
     `plot_hemisphere_surface`; cell edges were never actually drawn).
     """)
     return
@@ -181,7 +181,7 @@ def _(mo):
     ## Synthetic data
 
     Each grid gets independent random per-cell values from a fixed
-    seed — not a physically meaningful field, just enough variation to
+    seed, not a physically meaningful field, just enough variation to
     compare how each tessellation renders data.
     """)
     return
@@ -197,7 +197,7 @@ def _(grids, np):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Cell volume — a biomass-sampling proxy
+    ## Cell volume: a biomass-sampling proxy
 
     Grid cells are purely angular (theta, phi) partitions of the sky as
     seen from the antenna -- they have a solid angle but no inherent
@@ -231,7 +231,7 @@ def _(mo):
     spherical-Voronoi regions bounded by actual southern-hemisphere
     lattice points (needed to avoid the 4π double-counting bug fixed
     2026-07-19), so a handful of them genuinely dip a few degrees past
-    the horizon (verified: ~6° at 10° resolution, ~12° at 20° — worse
+    the horizon (verified: ~6° at 10° resolution, ~12° at 20°; worse
     at coarser resolutions, but nowhere near reaching the far pole).
     That's still enough to skew a colour range shared across grid
     types, which is why each tab below uses its **own** scale instead:
@@ -257,9 +257,9 @@ def _(grids):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## a) Empty grids — geometry only
+    ## a) Empty grids: geometry only
 
-    Uniform cell colour, no data — only the tessellation itself is
+    Uniform cell colour, no data; only the tessellation itself is
     visible: cell shape, density, and horizon coverage.
     """)
     return
@@ -272,7 +272,7 @@ def _(GRID_LABELS, HemisphereVisualizer3D, add_reference_frame, grids, mo):
         _viz = HemisphereVisualizer3D(_g)
         _fig = _viz.plot_hemisphere_surface(
             data=None,
-            title=f"{GRID_LABELS[_t]} — {_g.ncells:,} cells",
+            title=f"{GRID_LABELS[_t]}: {_g.ncells:,} cells",
             colorscale="Blues",
             opacity=0.85,
             show_wireframe=True,
@@ -293,7 +293,7 @@ def _(mo):
 
     Same random values everywhere, but **each tab has its own colour
     scale** (auto-scaled to that grid's own min/max) rather than one
-    shared range — a shared scale would compress everything toward one
+    shared range, since a shared scale would compress everything toward one
     colour once any grid has a wider spread than the others. The title
     on each figure shows its actual value range so the numbers stay
     comparable even though the colours aren't.
@@ -316,7 +316,7 @@ def _(
         _vals = synthetic_data[_t]
         _fig = _viz.plot_hemisphere_surface(
             data=_vals,
-            title=f"{GRID_LABELS[_t]} — synthetic data ({_vals.min():.2f}–{_vals.max():.2f})",
+            title=f"{GRID_LABELS[_t]}: synthetic data ({_vals.min():.2f}–{_vals.max():.2f})",
             colorscale="YlGn",
             opacity=0.95,
             show_wireframe=True,
@@ -333,17 +333,17 @@ def _(
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## c) Cell volume — biomass-sampling proxy
+    ## c) Cell volume: biomass-sampling proxy
 
     Colour now encodes each cell's own sampled volume, not a
     projection-distortion probe. **Each tab is scaled to its own
-    min/max**, not a shared range — with a shared scale, Fibonacci's
+    min/max**, not a shared range; with a shared scale, Fibonacci's
     few over-horizon outlier cells (see note above) would stretch the
     colour range so wide that every other grid's real distortion
     pattern gets compressed into one indistinguishable colour. The
     title on each figure shows its actual m³ range, so `equal_area`
     reading as visually flat *and* a tight title range together
-    confirm genuine uniformity — not just a coincidentally narrow
+    confirm genuine uniformity, not just a coincidentally narrow
     shared scale.
     """)
     return
@@ -364,7 +364,7 @@ def _(
         _vols = cell_volumes[_t]
         _fig = _viz.plot_hemisphere_surface(
             data=_vols,
-            title=f"{GRID_LABELS[_t]} — cell volume ({_vols.min():.1f}–{_vols.max():.1f} m³)",
+            title=f"{GRID_LABELS[_t]}: cell volume ({_vols.min():.1f}–{_vols.max():.1f} m³)",
             colorscale="Plasma",
             opacity=0.95,
             show_wireframe=True,
@@ -381,7 +381,7 @@ def _(
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## d) 2D projection comparison — orthographic vs equidistant
+    ## d) 2D projection comparison: orthographic vs equidistant
 
     Everything above is the interactive 3D scene. `canvod-viz` also ships
     a publication-quality 2D matplotlib renderer
@@ -389,17 +389,17 @@ def _(mo):
     it supports two different **theta → rho** radial mappings via
     `PolarPlotStyle.projection`:
 
-    - **orthographic** (`rho = sin(theta)`, the default) — mathematically
+    - **orthographic** (`rho = sin(theta)`, the default): mathematically
       the same view as looking straight down at the 3D hemisphere above
       from directly overhead: horizon cells compress toward the plot's
       rim, zenith cells stay spread out near the centre.
-    - **equidistant** (`rho = theta / (pi/2)`) — a *true* polar plot,
+    - **equidistant** (`rho = theta / (pi/2)`): a *true* polar plot,
       radius linear in the polar angle, so elevation rings are evenly
       spaced. This is the conventional GNSS-skyplot convention (e.g.
       RTKLIB), as opposed to a sphere-viewed-from-above projection.
 
     Same synthetic data as section (b), rendered both ways side by side
-    for each grid type — the tessellation and the data are identical;
+    for each grid type; the tessellation and the data are identical;
     only the radial mapping changes.
     """)
     return
@@ -420,7 +420,7 @@ def _(GRID_LABELS, grids, mo, synthetic_data):
         )
         for _ax, _proj in zip(_axes, ["orthographic", "equidistant"]):
             _style = PolarPlotStyle(
-                title=f"{GRID_LABELS[_t]} — {_proj}",
+                title=f"{GRID_LABELS[_t]}: {_proj}",
                 cmap="YlGn",
                 projection=_proj,
             )
