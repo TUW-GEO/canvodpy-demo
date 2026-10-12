@@ -686,3 +686,8 @@ body.dark-theme .xr-wrap .xr-index-data-in,
     scroll-behavior: auto !important;
   }
 }
+
+/* canVODpy logo above each notebook's title: one image per color scheme */
+.canvod-logo-dark { display: none; }
+.dark .canvod-logo-light, .dark-theme .canvod-logo-light { display: none; }
+.dark .canvod-logo-dark, .dark-theme .canvod-logo-dark { display: inline; }
