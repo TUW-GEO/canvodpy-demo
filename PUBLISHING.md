@@ -105,7 +105,7 @@ python _opengraph/make_images.py   # needs Google Chrome (or --chrome PATH)
 ```
 
 The images come from `_opengraph/template.html`. A
-`_opengraph/background.png` (1200 × 630 px) replaces its plain green
+`_opengraph/background.png` (1200 × 630 px) replaces its plain cream
 background; the logo loads from the canvodpy repository.
 
 ---
