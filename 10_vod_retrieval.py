@@ -389,9 +389,10 @@ def _(ds_canopy, ds_reference, mo, np, xr):
     | $T$ (transmittance) | Mean | {np.nanmean(_t_valid):.4f} |
     | $T$ | Range | [{np.nanmin(_t_valid):.4f}, {np.nanmax(_t_valid):.4f}] |
 
-    A transmittance of 1.0 means the signal passes through the canopy
-    unattenuated.  Values below 1.0 indicate absorption/scattering by
-    the canopy; values above 1.0 indicate constructive multipath.
+    A transmittance of 1.0 means the canopy receiver recorded the same
+    signal as the reference. The model reads values below 1.0 as
+    attenuation by the canopy. Values above 1.0 mean the canopy receiver
+    recorded a stronger signal than the reference.
     """
     )
 

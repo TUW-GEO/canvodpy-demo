@@ -235,8 +235,10 @@ def _(ds_vod, mo, np):
     | **Std** | {np.std(_v):.3f} |
     | **Range** | [{np.min(_v):.3f}, {np.max(_v):.3f}] |
 
-    Typical L-band VOD for a temperate forest canopy: **0.3 – 0.8**.
-    Negative values indicate constructive multipath (physically meaningful, not noise).
+    VOD is negative where the canopy receiver recorded a stronger signal
+    than the reference ($T > 1$); canVODpy keeps these values. What a
+    value means for the vegetation depends on the frequency, the canopy
+    and the site: see [10 · VOD Retrieval](./10_vod_retrieval.py).
     """
     )
     return
