@@ -332,17 +332,20 @@ def _(mo):
     mo.md(r"""
     ## Creating a new store
 
-    The `create_gnss_store()` and `create_vod_store()` factory functions
-    initialise new Icechunk repositories with the appropriate configuration:
+    You don't create a store yourself: `canvodpy run` creates a site's
+    stores when it first writes data, together with their metadata and
+    the Icechunk settings in `processing.icechunk`. Opening a store never
+    creates one, so a mistyped path fails with a `FileNotFoundError`
+    instead of leaving an empty store behind:
 
     ```python
-    from canvod.store import create_gnss_store, create_vod_store
+    from canvod.store import open_gnss_store, open_vod_store
 
-    # For raw observation data
-    gnss_store = create_gnss_store(Path("/data/my_site/observations.icechunk"))
+    # Raw observation data
+    gnss_store = open_gnss_store(Path("/data/my_site/rinex"))
 
-    # For VOD products
-    vod_store = create_vod_store(Path("/data/my_site/vod.icechunk"))
+    # VOD products
+    vod_store = open_vod_store(Path("/data/my_site/vod"))
     ```
 
     ### Writing data
