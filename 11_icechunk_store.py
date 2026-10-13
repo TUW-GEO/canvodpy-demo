@@ -126,8 +126,12 @@ def _(mo):
     | Property | Value |
     |----------|-------|
     | **Path** | `{store_path}` |
+    | **Site** | `{store.site_name}` |
     | **Branches** | {", ".join(f"`{b}`" for b in _branches)} |
     | **Groups** | {", ".join(f"`{g}`" for g in _groups) if _groups else "(empty)"} |
+
+    The store knows its site from its own metadata, not from the folder
+    it sits in, so moving or renaming the folder doesn't change it.
 
     This store was built by running the real `canvodpy` CLI as a
     subprocess (marimo notebooks can't run shell commands directly) --
