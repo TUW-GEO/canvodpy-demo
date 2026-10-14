@@ -365,6 +365,12 @@ def _(mo):
 
     The `append_to_group()` method handles all deduplication, epoch
     alignment, and SID padding automatically.
+
+    `canvodpy run` does not append. In a new GNSS store each processing
+    day gets one block of empty epoch slots, and every file is written
+    into its own slots, so writing a file again replaces it.
+    `append_to_group()` refuses a group made of day blocks; use it only on
+    groups you create yourself with `write_initial_group()`.
     """)
     return
 
