@@ -14,23 +14,25 @@
 #   "canvod-vod",
 #   "canvodpy",
 #   "zarr>=3.1.2",
-#   "pooch>=1.6",
 #   "marimo>=0.21.1",
+#   "pyyaml==6.0.3",
+#   "numpy==2.5.4",
+#   "xarray==2026.9.0",
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
 #
 # [tool.marimo.opengraph]
 # title = "21 · Your Own VOD Calculator"
@@ -90,10 +92,115 @@ def _():
 
 @app.cell
 def _():
-    import _paths
-    from _download import marimo_downloader
+    from canvodpy import demo_data
 
-    _paths.ensure_data(downloader=marimo_downloader)
+    root = demo_data("rinex")
+    root = demo_data("aux")
+    return root
+
+
+@app.cell
+def _(root):
+    import os
+
+    import yaml
+
+    config_dir = root / "config"
+    config_dir.mkdir(parents=True, exist_ok=True)
+
+    settings = {
+        "sites": {
+            "rosalia_v3_04": {
+                "store_description": (
+                    "Reference GNSS-T store for the Rosalia beech forest site,"
+                    " built live from real RINEX v3.04 raw data (DOY 2025-001)."
+                ),
+                "description": (
+                    "Beech forest GNSS-T research site, reference test dataset."
+                ),
+                "country": "AT",
+                "latitude": 47.7,
+                "longitude": 16.3,
+                "altitude_m": 680.0,
+                "gnss_site_data_root": str(root / "rinex_v3_04" / "01_Rosalia"),
+                "receivers": {
+                    "reference_01": {
+                        "type": "reference",
+                        "directory": "01_reference/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "paired_canopies": "all",
+                        "description": "Rosalia reference receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                    "canopy_01": {
+                        "type": "canopy",
+                        "directory": "02_canopy/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "description": "Rosalia canopy receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                },
+                "vod_analyses": {
+                    "canopy_01_vs_reference_01": {
+                        "canopy_receiver": "canopy_01",
+                        "reference_receiver": "reference_01",
+                    }
+                },
+            }
+        },
+        "processing": {
+            "metadata": {
+                "author": "Nicolas Bader",
+                "email": "nicolas.bader@geo.tuwien.ac.at",
+                "orcid": "0000-0002-9932-1925",
+                "institution": "TU Wien - Climate and Environmental Remote Sensing (CLIMERS)",
+                "institution_ror": "https://ror.org/04d836q62",
+                "department": "Department of Geodesy and Geoinformation",
+                "research_group": "CLIMERS",
+                "website": "https://www.tuwien.at/en/mg/geo/climers",
+                "license": "CC-BY-4.0",
+                "publisher": "TU Wien - CLIMERS",
+                "publisher_url": "https://www.tuwien.at/en/mg/geo/climers",
+                "naming_authority": "eu.canvodpy",
+            },
+            "references": {
+                "software_repository": "https://github.com/nfb2021/canvodpy",
+                "documentation": "https://github.com/nfb2021/canvodpy/tree/main/docs",
+                "publications": [],
+                "funding": [
+                    {
+                        "funder": "Austrian Science Fund (FWF)",
+                        "funder_ror": "https://ror.org/013tf3c58",
+                        "grant_number": "I 4489-N",
+                        "award_title": "CONSOLIDATION",
+                    },
+                    {
+                        "funder": "European Space Agency (ESA)",
+                        "funder_ror": "https://ror.org/03wd9za21",
+                        "grant_number": "4000146954/24/I-LR",
+                        "award_title": "SIRENE",
+                    },
+                ],
+            },
+            "storage": {
+                "stores_root_dir": str(root / "stores"),
+                "aux_data_dir": str(root / "aux_data"),
+                "shared_aux_cache_dir": None,
+            },
+            "logging": {"log_dir": str(root / "logs")},
+        },
+    }
+    (config_dir / "canvod-settings.yaml").write_text(
+        yaml.safe_dump(settings, sort_keys=False)
+    )
+    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
+    return config_dir
 
 
 # ---------------------------------------------------------------------------
@@ -150,39 +257,30 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(root, config_dir):
     import numpy as np
     import xarray as xr
-    from canvod.auxiliary import (
-        ECEFPosition,
-        add_spherical_coords_to_dataset,
-        compute_spherical_coordinates,
-    )
+    from canvod.auxiliary import ECEFPosition
+    from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
     from canvod.readers import Rnxv3Obs
 
-    from _paths import AUX_DATA_DIR, ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR
+    canopy_dir = root / "rinex_v3_04" / "01_Rosalia" / "02_canopy" / "01_GNSS" / "01_raw"
+    ref_dir = root / "rinex_v3_04" / "01_Rosalia" / "01_reference" / "01_GNSS" / "01_raw"
 
-    _aux = xr.open_zarr(str(AUX_DATA_DIR / "aux_2025001.zarr"), decode_timedelta=False)
+    aux_root = root / "aux_data"
+    provider = AgencyEphemerisProvider(
+        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
+    )
+    provider.preprocess_day("2025001", None)
 
     def _with_angles(fpath):
         ds = Rnxv3Obs(fpath=fpath).to_ds(
             keep_data_vars=["SNR"], write_global_attrs=True
         )
-        sids = np.intersect1d(ds.sid.values, _aux.sid.values)
-        epochs = np.intersect1d(ds.epoch.values, _aux.epoch.values)
-        aux = _aux.sel(sid=sids, epoch=epochs)
-        r, theta, phi = compute_spherical_coordinates(
-            aux["X"].values,
-            aux["Y"].values,
-            aux["Z"].values,
-            ECEFPosition.from_ds_metadata(ds),
-        )
-        return add_spherical_coords_to_dataset(
-            ds.sel(sid=sids, epoch=epochs), r, theta, phi
-        )
+        return provider.augment_dataset(ds, ECEFPosition.from_ds_metadata(ds))
 
-    ds_canopy = _with_angles(min(ROSALIA_CANOPY_DIR.glob("25001/*.rnx")))
-    ds_reference = _with_angles(min(ROSALIA_REFERENCE_DIR.glob("25001/*.rnx")))
+    ds_canopy = _with_angles(min(canopy_dir.glob("25001/*.rnx")))
+    ds_reference = _with_angles(min(ref_dir.glob("25001/*.rnx")))
 
     return ds_canopy, ds_reference, np, xr
 
