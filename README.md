@@ -31,8 +31,7 @@ on [canvodpy.eu/notebooks](https://canvodpy.eu/notebooks/) also show their
 results: they were run on the test data when the site was built.
 
 To run a notebook yourself, see the next section. Notebooks that read real
-GNSS data download the test dataset (~1.7 GB) from Zenodo the first time
-and cache it.
+GNSS data download the test data on first use and cache it locally.
 
 ---
 
@@ -50,19 +49,20 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-### 1. Clone
+### Way 1: in a clone
 
 ```bash
 git clone https://github.com/nfb2021/canvodpy-demo.git
 cd canvodpy-demo
 ```
 
-### 2. Run a notebook
-
-Each notebook declares its own dependencies via a PEP 723 header. `uv` installs them automatically on first run; no `uv sync` or manual dependency management required.
+Each notebook declares its own dependencies via a PEP 723 header, so `uv`
+installs them automatically on first run. No `uv sync` or manual dependency
+management is needed.
 
 ```bash
 # Interactive editing
+cd canvodpy-demo
 uvx marimo edit --sandbox 10_vod_retrieval.py
 
 # Read-only app
@@ -70,20 +70,32 @@ uvx marimo run --sandbox 10_vod_retrieval.py
 ```
 
 `uvx` and `--sandbox` together mean this never touches (or requires) any
-project-level virtual environment -- the notebook's own PEP 723 header
+project-level virtual environment: the notebook's own PEP 723 header
 declares everything it needs, installed into a throwaway venv.
 
-### 3. Test data
+### Way 2: as a single file
 
-Notebooks that read GNSS data download the test dataset (~1.7 GB) automatically from Zenodo on first run and cache it at `~/.cache/canvodpy/`. Subsequent runs are instant.
-
-To skip the download and use a local copy instead, clone the test data into `test_data/`:
+You do not need the repository at all. Give marimo the raw URL of one
+notebook on GitHub, and `--sandbox` builds a throwaway environment from the
+notebook's own PEP 723 header:
 
 ```bash
-git clone https://github.com/nfb2021/canvodpy-test-data.git test_data
+uvx marimo edit --sandbox https://raw.githubusercontent.com/nfb2021/canvodpy-demo/main/10_vod_retrieval.py
 ```
 
-`_paths.py` detects this directory automatically and skips the Zenodo download.
+Every notebook is self-contained: it declares its `canvod*` dependencies and
+their pinned revision, and it fetches its data with `canvodpy.demo_data()`.
+
+### Way 3: on molab
+
+Open a notebook from the [table](#notebooks) in molab, or browse the rendered
+copies at [canvodpy.eu/notebooks](https://canvodpy.eu/notebooks/).
+
+---
+
+marimo notebooks also run in the [VS Code marimo extension](https://marimo.io/docs/installation) and
+in containers; the sandbox image they use is documented in the
+[marimo sandbox-image docs](https://marimohub.docs.marimo.io/sandbox-image).
 
 ---
 
@@ -135,15 +147,22 @@ uv run marimo run demo/10_vod_retrieval.py
 
 ## Test data
 
-The notebooks use [canvodpy-test-data](https://github.com/nfb2021/canvodpy-test-data): real GNSS observations from Rosalia, Austria (DOY 2025-001), including RINEX v3.04, SBF binary files, precise SP3/CLK ephemerides, and a pre-built Icechunk store snapshot.
+Notebooks that read real GNSS data get it from `canvodpy.demo_data()`, which
+downloads it on first use into your platform's cache folder (Linux
+`~/.cache/canvodpy/demo`, macOS `~/Library/Caches/canvodpy/demo`, Windows
+`%LOCALAPPDATA%\canvodpy\demo`). Subsequent runs reuse the cached copy.
 
-Path resolution is handled automatically by `_paths.py`:
+The download is roughly 1 GB and contains, for the Rosalia, Austria site on
+DOY 2025-001:
 
-| Scenario | Expected location |
-|---|---|
-| molab / cloud | Zenodo auto-download (~1.7 GB, cached after first run) |
-| Standalone | `./test_data/`: clone canvodpy-test-data here |
-| Monorepo | `../packages/canvod-readers/tests/test_data/`: resolved automatically |
+- **RINEX v3.04** observations (~350 MB): a full day per receiver, for both the
+  reference and canopy receivers.
+- **SBF** binary observations (~190 MB): the first two hours of the day.
+- **Auxiliary data** (~350 MB): CODE final SP3 orbit and CLK clock files for
+  the day and its neighboring days, plus the pre-computed auxiliary Zarr
+  store.
+
+`demo_data()` needs no manual download and no cloned test-data repository.
 
 ---
 
