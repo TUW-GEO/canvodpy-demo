@@ -135,6 +135,8 @@ def _(root):
 
     import yaml
 
+    from canvod.utils import testing
+
     config_dir = root / "config"
     config_dir.mkdir(parents=True, exist_ok=True)
 
@@ -186,37 +188,24 @@ def _(root):
         },
         "processing": {
             "metadata": {
-                "author": "Nicolas Bader",
-                "email": "nicolas.bader@geo.tuwien.ac.at",
-                "orcid": "0000-0002-9932-1925",
-                "institution": "TU Wien - Climate and Environmental Remote Sensing (CLIMERS)",
-                "institution_ror": "https://ror.org/04d836q62",
-                "department": "Department of Geodesy and Geoinformation",
-                "research_group": "CLIMERS",
-                "website": "https://www.tuwien.at/en/mg/geo/climers",
+                "author": testing.PERSON_NAME,
+                "email": testing.PERSON_EMAIL,
+                "orcid": testing.PERSON_ORCID,
+                "institution": testing.INSTITUTION,
+                "institution_ror": "https://ror.org/" + testing.INSTITUTION_ROR,
+                "department": testing.DEPARTMENT,
+                "research_group": testing.RESEARCH_GROUP,
+                "website": testing.WEBSITE,
                 "license": "CC-BY-4.0",
-                "publisher": "TU Wien - CLIMERS",
-                "publisher_url": "https://www.tuwien.at/en/mg/geo/climers",
-                "naming_authority": "eu.canvodpy",
+                "publisher": testing.PUBLISHER,
+                "publisher_url": testing.WEBSITE,
+                "naming_authority": testing.NAMING_AUTHORITY,
             },
             "references": {
                 "software_repository": "https://github.com/nfb2021/canvodpy",
                 "documentation": "https://github.com/nfb2021/canvodpy/tree/main/docs",
                 "publications": [],
-                "funding": [
-                    {
-                        "funder": "Austrian Science Fund (FWF)",
-                        "funder_ror": "https://ror.org/013tf3c58",
-                        "grant_number": "I 4489-N",
-                        "award_title": "CONSOLIDATION",
-                    },
-                    {
-                        "funder": "European Space Agency (ESA)",
-                        "funder_ror": "https://ror.org/03wd9za21",
-                        "grant_number": "4000146954/24/I-LR",
-                        "award_title": "SIRENE",
-                    },
-                ],
+                "funding": [],
             },
             "storage": {
                 "stores_root_dir": str(root / "stores"),
