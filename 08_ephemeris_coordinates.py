@@ -122,13 +122,13 @@ def _(root):
     import os
     import shutil
     import tempfile
-    from pathlib import Path
+    import pathlib
 
     import yaml
 
     from canvod.utils import testing
 
-    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
+    work = pathlib.Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
     config_dir = work / "config"
     config_dir.mkdir(parents=True, exist_ok=True)
     aux_data_dir = work / "aux_data"

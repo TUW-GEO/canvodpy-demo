@@ -1064,10 +1064,10 @@ def _(mo):
 
 
 @app.cell
-def _(mo, store_path):
+def _(mo, metadata_exists, store_path):
     import json
 
-    from canvod.store_metadata import metadata_exists, store_item
+    from canvod.store_metadata import store_item
 
     _stac_json = (
         "No store metadata found."
