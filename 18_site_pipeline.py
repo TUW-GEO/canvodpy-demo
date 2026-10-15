@@ -1,8 +1,13 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
+#   "canvodpy",
 #   "marimo>=0.21.1",
+#   "pyyaml==6.0.3",
 # ]
+#
+# [tool.uv.sources]
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
 #
 # [tool.marimo.opengraph]
 # title = "18 · Site Pipeline"
@@ -68,6 +73,153 @@ def _():
     )
 
     return (mo,)
+
+
+@app.cell
+def _():
+    from canvodpy import demo_data
+
+    root = demo_data("rinex")
+    root = demo_data("aux")
+    return root
+
+
+@app.cell
+def _(root):
+    import os
+
+    import yaml
+
+    config_dir = root / "config"
+    config_dir.mkdir(parents=True, exist_ok=True)
+
+    settings = {
+        "sites": {
+            "rosalia_v3_04": {
+                "store_description": (
+                    "Reference GNSS-T store for the Rosalia beech forest site,"
+                    " built live from real RINEX v3.04 raw data (DOY 2025-001)."
+                ),
+                "description": (
+                    "Beech forest GNSS-T research site, reference test dataset."
+                ),
+                "country": "AT",
+                "latitude": 47.7,
+                "longitude": 16.3,
+                "altitude_m": 680.0,
+                "gnss_site_data_root": str(root / "rinex_v3_04" / "01_Rosalia"),
+                "receivers": {
+                    "reference_01": {
+                        "type": "reference",
+                        "directory": "01_reference/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "paired_canopies": "all",
+                        "description": "Rosalia reference receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                    "canopy_01": {
+                        "type": "canopy",
+                        "directory": "02_canopy/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "description": "Rosalia canopy receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                },
+                "vod_analyses": {
+                    "canopy_01_vs_reference_01": {
+                        "canopy_receiver": "canopy_01",
+                        "reference_receiver": "reference_01",
+                    }
+                },
+            }
+        },
+        "processing": {
+            "metadata": {
+                "author": "Nicolas Bader",
+                "email": "nicolas.bader@geo.tuwien.ac.at",
+                "orcid": "0000-0002-9932-1925",
+                "institution": "TU Wien - Climate and Environmental Remote Sensing (CLIMERS)",
+                "institution_ror": "https://ror.org/04d836q62",
+                "department": "Department of Geodesy and Geoinformation",
+                "research_group": "CLIMERS",
+                "website": "https://www.tuwien.at/en/mg/geo/climers",
+                "license": "CC-BY-4.0",
+                "publisher": "TU Wien - CLIMERS",
+                "publisher_url": "https://www.tuwien.at/en/mg/geo/climers",
+                "naming_authority": "eu.canvodpy",
+            },
+            "references": {
+                "software_repository": "https://github.com/nfb2021/canvodpy",
+                "documentation": "https://github.com/nfb2021/canvodpy/tree/main/docs",
+                "publications": [],
+                "funding": [
+                    {
+                        "funder": "Austrian Science Fund (FWF)",
+                        "funder_ror": "https://ror.org/013tf3c58",
+                        "grant_number": "I 4489-N",
+                        "award_title": "CONSOLIDATION",
+                    },
+                    {
+                        "funder": "European Space Agency (ESA)",
+                        "funder_ror": "https://ror.org/03wd9za21",
+                        "grant_number": "4000146954/24/I-LR",
+                        "award_title": "SIRENE",
+                    },
+                ],
+            },
+            "storage": {
+                "stores_root_dir": str(root / "stores"),
+                "aux_data_dir": str(root / "aux_data"),
+                "shared_aux_cache_dir": None,
+            },
+            "logging": {"log_dir": str(root / "logs")},
+        },
+    }
+    (config_dir / "canvod-settings.yaml").write_text(
+        yaml.safe_dump(settings, sort_keys=False)
+    )
+    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
+    return config_dir
+
+
+@app.cell
+def _(mo, config_dir, root):
+    from canvodpy import Site
+
+    site = Site("rosalia_v3_04")
+    data = site.pipeline(n_workers=2).process_date("2025001")
+
+    mo.md(
+        f"""
+    ## A real run on the demo data
+
+    This cell runs the site pipeline on the Rosalia demo data that
+    `demo_data()` downloaded (DOY 2025-001, canopy + reference), using the
+    settings written above. It writes the site's GNSS store into the demo
+    cache.
+
+    ```python
+    from canvodpy import Site
+
+    site = Site("rosalia_v3_04")
+    data = site.pipeline(n_workers=2).process_date("2025001")
+    ```
+
+    | Property | Value |
+    |----------|-------|
+    | **Site** | `{site}` |
+    | **GNSS store** | `{site.gnss_store_path}` |
+    | **Receivers** | {", ".join(f"`{r}`" for r in site.receivers)} |
+    | **Analyses** | {", ".join(f"`{a}`" for a in site.vod_analyses)} |
+    """
+    )
+    return site
 
 
 # ---------------------------------------------------------------------------
