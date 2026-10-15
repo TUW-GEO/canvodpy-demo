@@ -59,9 +59,13 @@ Format:
 
 ## Step 2: Add a `demo_data()` setup cell to data-reading notebooks
 
-Notebooks that load GNSS data call `canvodpy.demo_data()` (which downloads the test
-data into the platform cache on first use), then write a `canvod-settings.yaml` into
-the demo root so `canvodpy.Site(...)` can find the site and receivers.
+Notebooks that load GNSS data call `canvodpy.demo_data()` (which downloads
+the test data into the platform cache on first use) and read the downloaded
+data from the cache, then write a `canvod-settings.yaml` into a fresh
+temporary folder so `canvodpy.Site(...)` can find the site and receivers. The
+settings, stores, logs and auxiliary data of a session go into that folder;
+only the downloaded test data is read from the `demo_data()` cache, which is
+never written to.
 
 ```python
 @app.cell
@@ -69,12 +73,38 @@ def _():
     from canvodpy import demo_data
 
     root = demo_data("rinex")
-    root = demo_data("aux")
+    root = demo_data("aux")      # the same folder for every kind
     return root
+
+
+@app.cell
+def _(root):
+    import shutil
+    import tempfile
+    from pathlib import Path
+
+    import yaml
+
+    from canvod.utils import testing
+
+    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
+    config_dir = work / "config"
+    aux_data_dir = work / "aux_data"
+    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
+    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
+
+    settings = { ... }  # metadata from testing, funding empty
+    (config_dir / "canvod-settings.yaml").write_text(...)
+    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
+    return work, config_dir
 ```
 
-Each data-reading notebook declares `canvodpy` (and the `canvod*` packages it uses)
-in its PEP 723 header, pinned to a single revision.
+Each data-reading notebook declares `canvodpy` (and the `canvod*` packages it
+uses) in its PEP 723 header, pinned to a single revision.
+
+The settings block is identical in the 8 notebooks that write a
+`canvod-settings.yaml` (`grep -l canvod-settings.yaml *.py`): change it in
+all of them together.
 
 ---
 

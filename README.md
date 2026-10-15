@@ -62,7 +62,6 @@ management is needed.
 
 ```bash
 # Interactive editing
-cd canvodpy-demo
 uvx marimo edit --sandbox 10_vod_retrieval.py
 
 # Read-only app
@@ -85,6 +84,9 @@ uvx marimo edit --sandbox https://raw.githubusercontent.com/nfb2021/canvodpy-dem
 
 Every notebook is self-contained: it declares its `canvod*` dependencies and
 their pinned revision, and it fetches its data with `canvodpy.demo_data()`.
+A notebook run outside a clone has no canVODpy theme: `canvod_nordic.css`
+and `canvod_head.html` are files of the repository, so the page is unstyled
+and its HTML head is not applied; everything else works.
 
 ### Way 3: on molab
 
@@ -93,9 +95,7 @@ copies at [canvodpy.eu/notebooks](https://canvodpy.eu/notebooks/).
 
 ---
 
-marimo notebooks also run in the [VS Code marimo extension](https://marimo.io/docs/installation) and
-in containers; the sandbox image they use is documented in the
-[marimo sandbox-image docs](https://marimohub.docs.marimo.io/sandbox-image).
+marimo notebooks also run in the [VS Code marimo extension](https://marketplace.visualstudio.com/items?itemName=marimo-team.vscode-marimo).
 
 ---
 
@@ -148,19 +148,25 @@ uv run marimo run demo/10_vod_retrieval.py
 ## Test data
 
 Notebooks that read real GNSS data get it from `canvodpy.demo_data()`, which
-downloads it on first use into your platform's cache folder (Linux
-`~/.cache/canvodpy/demo`, macOS `~/Library/Caches/canvodpy/demo`, Windows
-`%LOCALAPPDATA%\canvodpy\demo`). Subsequent runs reuse the cached copy.
+downloads it on first use into your platform's cache folder: Linux
+`~/.cache/canvodpy/demo/1`, macOS `~/Library/Caches/canvodpy/demo/1`, Windows
+`%LOCALAPPDATA%\canvodpy\canvodpy\Cache\demo\1`. Subsequent runs reuse the
+cached copy.
 
-The download is roughly 1 GB and contains, for the Rosalia, Austria site on
-DOY 2025-001:
+The download is about 350 MB (about 1 GB once unpacked per kind below) and
+contains, for the Rosalia, Austria site on DOY 2025-001:
 
-- **RINEX v3.04** observations (~350 MB): a full day per receiver, for both the
-  reference and canopy receivers.
-- **SBF** binary observations (~190 MB): the first two hours of the day.
-- **Auxiliary data** (~350 MB): CODE final SP3 orbit and CLK clock files for
-  the day and its neighboring days, plus the pre-computed auxiliary Zarr
-  store.
+- **RINEX v3.04** observations: a full day per receiver, for both the
+  reference and canopy receivers (about 350 MB once unpacked).
+- **SBF** binary observations: the first two hours of the day (about 190 MB
+  once unpacked).
+- **Auxiliary data**: CODE final SP3 orbit and CLK clock files for the day
+  and its neighboring days, plus the pre-computed auxiliary Zarr store
+  (about 350 MB once unpacked).
+
+A notebook session writes its settings, stores, logs and auxiliary data into
+a fresh temporary folder, so the cache holds only the downloaded test data
+and is never written to.
 
 `demo_data()` needs no manual download and no cloned test-data repository.
 
