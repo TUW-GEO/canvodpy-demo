@@ -610,12 +610,20 @@ def _(mo):
 
     # Open canvod-settings.yaml in $EDITOR
     canvodpy config edit
+
+    # Print what a setting means: description, type, limits, default
+    canvodpy config explain gnss_store.epoch
     ```
 
     `validate` catches configuration errors (missing fields, invalid
     types, broken cross-references between receivers and VOD analyses)
     and checks each receiver's files the same way `canvodpy run` finds
     them, before you run the pipeline.
+
+    `explain` takes a setting's path in the file, or its end. The same
+    text is in the [settings reference](https://canvodpy.eu/guides/settings/),
+    and `canvodpy config init --interactive` prints it when you answer `?`
+    to a question.
     """
     )
 
