@@ -1047,32 +1047,32 @@ def _(mo):
 
     All of the above is `canvod-store-metadata`'s own display format. For
     interop with STAC-based tooling (catalog browsers, `stac-fastapi`,
-    `pystac`), `to_stac_collection()` converts the same metadata into a
-    STAC 1.1 Collection dict **in memory** -- no file write required. A
-    JSON-string convenience wrapper, `to_stac_collection_json()`, is also
-    available for cases that want the serialized form directly (display,
-    hashing, sending over the wire).
+    `pystac`), `store_item()` describes `main` of one store as a STAC 1.1
+    Item **in memory** -- no file write required. It returns a
+    `pystac.Item` with a point at the site, the time range of the data,
+    the receivers with their positions, and one asset per stored dataset;
+    `.to_dict()` gives the serialized JSON.
 
     ```python
-    from canvod.store_metadata import to_stac_collection, to_stac_collection_json
+    from canvod.store_metadata import store_item
 
-    collection = to_stac_collection(meta)          # dict
-    as_json = to_stac_collection_json(meta)         # str
-
-    # To persist it to disk instead: write_stac_collection(store_path)
+    item = store_item(store_path)          # pystac.Item
+    as_json = json.dumps(item.to_dict())    # str
     ```
     """)
     return
 
 
 @app.cell
-def _(mo, store_metadata):
-    from canvod.store_metadata import to_stac_collection_json
+def _(mo, store_path):
+    import json
+
+    from canvod.store_metadata import metadata_exists, store_item
 
     _stac_json = (
         "No store metadata found."
-        if store_metadata is None
-        else to_stac_collection_json(store_metadata)
+        if not metadata_exists(store_path)
+        else json.dumps(store_item(store_path).to_dict(), indent=2, default=str)
     )
 
     mo.md(
