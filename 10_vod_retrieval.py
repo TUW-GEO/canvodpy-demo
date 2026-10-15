@@ -132,13 +132,21 @@ def _():
 @app.cell
 def _(root):
     import os
+    import shutil
+    import tempfile
+    from pathlib import Path
 
     import yaml
 
     from canvod.utils import testing
 
-    config_dir = root / "config"
+    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
+    config_dir = work / "config"
     config_dir.mkdir(parents=True, exist_ok=True)
+    aux_data_dir = work / "aux_data"
+    aux_data_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
+    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
 
     settings = {
         "sites": {
@@ -208,18 +216,18 @@ def _(root):
                 "funding": [],
             },
             "storage": {
-                "stores_root_dir": str(root / "stores"),
-                "aux_data_dir": str(root / "aux_data"),
+                "stores_root_dir": str(work / "stores"),
+                "aux_data_dir": str(aux_data_dir),
                 "shared_aux_cache_dir": None,
             },
-            "logging": {"log_dir": str(root / "logs")},
+            "logging": {"log_dir": str(work / "logs")},
         },
     }
     (config_dir / "canvod-settings.yaml").write_text(
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return config_dir
+    return work, config_dir
 
 
 # ---------------------------------------------------------------------------
@@ -248,7 +256,7 @@ def _(mo):
 
 
 @app.cell
-def _(root, config_dir):
+def _(root, work, config_dir):
     from canvod.auxiliary import ECEFPosition
     from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
     from canvod.readers import Rnxv3Obs
@@ -268,7 +276,7 @@ def _(root, config_dir):
     )
 
     # Compute the satellite geometry from the SP3/CLK files demo_data downloaded
-    aux_root = root / "aux_data"
+    aux_root = work / "aux_data"
     provider = AgencyEphemerisProvider(
         agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
     )

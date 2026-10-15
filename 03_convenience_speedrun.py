@@ -101,13 +101,21 @@ def _():
 @app.cell
 def _(root):
     import os
+    import shutil
+    import tempfile
+    from pathlib import Path
 
     import yaml
 
     from canvod.utils import testing
 
-    config_dir = root / "config"
+    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
+    config_dir = work / "config"
     config_dir.mkdir(parents=True, exist_ok=True)
+    aux_data_dir = work / "aux_data"
+    aux_data_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
+    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
 
     settings = {
         "sites": {
@@ -177,28 +185,30 @@ def _(root):
                 "funding": [],
             },
             "storage": {
-                "stores_root_dir": str(root / "stores"),
-                "aux_data_dir": str(root / "aux_data"),
+                "stores_root_dir": str(work / "stores"),
+                "aux_data_dir": str(aux_data_dir),
                 "shared_aux_cache_dir": None,
             },
-            "logging": {"log_dir": str(root / "logs")},
+            "logging": {"log_dir": str(work / "logs")},
         },
     }
     (config_dir / "canvod-settings.yaml").write_text(
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return config_dir
+    return work, config_dir
 
 
 @app.cell
-def _(mo, root):
+def _(mo, root, work):
     mo.md(
         f"""
-    The settings for the site are written to `canvod-settings.yaml` in the
-    demo cache, and `CANVOD_CONFIG_DIR` points at it: this is how canvodpy
-    finds the site and the SP3/CLK server list here. `demo_data()` lays the
-    files out like the test data, under `{root}`.
+    The settings for the site are written to `canvod-settings.yaml` in a
+    fresh temporary folder (`{work}`), and `CANVOD_CONFIG_DIR` points at
+    it: this is how canvodpy finds the site and the SP3/CLK server list
+    here. `demo_data()` lays the test data out like a real run, under
+    `{root}`; the settings, stores, logs and auxiliary data for this run
+    go into the fresh temporary folder `{work}`.
 """
     )
     return
@@ -261,13 +271,13 @@ def _(mo):
 
 
 @app.cell
-def _(root, config_dir, ds_can_raw, ds_ref_raw):
+def _(root, work, config_dir, ds_can_raw, ds_ref_raw):
     import numpy as np
 
     from canvod.auxiliary import ECEFPosition
     from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
 
-    aux_root = root / "aux_data"
+    aux_root = work / "aux_data"
     provider = AgencyEphemerisProvider(
         agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
     )
