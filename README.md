@@ -19,91 +19,46 @@
 
 # canVODpy Demo Notebooks
 
-Interactive [marimo](https://marimo.io) notebooks for the [canVODpy](https://github.com/nfb2021/canvodpy) GNSS-Transmissometry (GNSS-T) VOD retrieval ecosystem. The notebooks cover the full pipeline, from raw GNSS file reading to vegetation optical depth retrieval, versioned storage, and visualisation.
+[marimo](https://marimo.io) notebooks for
+[canVODpy](https://github.com/nfb2021/canvodpy), the software for canopy
+Vegetation Optical Depth (VOD) from GNSS transmissometry. They go through
+the whole pipeline on real data: reading receiver files, adding satellite
+positions, hemispheric grids, VOD, versioned storage and plots.
 
----
+## In your browser
 
-## Look at the notebooks in your browser (no installation)
+Each notebook in the [table below](#notebooks) opens in
+[molab](https://molab.marimo.io/), with no installation. The copies on
+[canvodpy.eu/notebooks](https://canvodpy.eu/notebooks/) also show their
+results, run on the test data when the site was built.
 
-Each notebook in the [table below](#notebooks) has a molab link that opens
-it in your browser in [marimo molab](https://molab.marimo.io/). The copies
-on [canvodpy.eu/notebooks](https://canvodpy.eu/notebooks/) also show their
-results: they were run on the test data when the site was built.
+## On your machine
 
-To run a notebook yourself, see the next section. Notebooks that read real
-GNSS data download the test dataset (~1.7 GB) from Zenodo the first time
-and cache it.
-
----
-
-## Run locally: standalone
-
-### Prerequisites
-
-Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/):
-
-```bash
-# macOS / Linux
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Windows
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-### 1. Clone
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/),
+clone this repository and run a notebook:
 
 ```bash
 git clone https://github.com/nfb2021/canvodpy-demo.git
 cd canvodpy-demo
+uvx marimo edit --sandbox 10_vod_retrieval.py   # edit and run
+uvx marimo run --sandbox 10_vod_retrieval.py    # read-only app
 ```
 
-### 2. Run a notebook
+Each notebook lists its own dependencies in a PEP 723 header; with
+`--sandbox`, uv installs them into a temporary environment of the notebook,
+so no project environment is needed.
 
-Each notebook declares its own dependencies via a PEP 723 header. `uv` installs them automatically on first run; no `uv sync` or manual dependency management required.
+### Inside the canvodpy repository
 
-```bash
-# Interactive editing
-uvx marimo edit --sandbox 10_vod_retrieval.py
-
-# Read-only app
-uvx marimo run --sandbox 10_vod_retrieval.py
-```
-
-`uvx` and `--sandbox` together mean this never touches (or requires) any
-project-level virtual environment -- the notebook's own PEP 723 header
-declares everything it needs, installed into a throwaway venv.
-
-### 3. Test data
-
-Notebooks that read GNSS data download the test dataset (~1.7 GB) automatically from Zenodo on first run and cache it at `~/.cache/canvodpy/`. Subsequent runs are instant.
-
-To skip the download and use a local copy instead, clone the test data into `test_data/`:
-
-```bash
-git clone https://github.com/nfb2021/canvodpy-test-data.git test_data
-```
-
-`_paths.py` detects this directory automatically and skips the Zenodo download.
-
----
-
-## Run locally: inside the canvodpy monorepo
-
-If you are working inside the canvodpy monorepo, the notebooks are available as the `demo/` submodule and share the monorepo's virtual environment and test data automatically.
+The notebooks are the `demo/` submodule of canvodpy and use its environment
+and test data:
 
 ```bash
 git clone --recurse-submodules https://github.com/nfb2021/canvodpy.git
 cd canvodpy
 uv sync
-
-# Interactive editing
 uv run marimo edit demo/10_vod_retrieval.py
-
-# Read-only app
-uv run marimo run demo/10_vod_retrieval.py
 ```
-
----
 
 ## Notebooks
 
@@ -122,7 +77,7 @@ uv run marimo run demo/10_vod_retrieval.py
 | 11 | `11_icechunk_store.py` | Versioned Icechunk/Zarr storage | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/11_icechunk_store.py?mode=edit) |
 | 12 | `12_store_metadata.py` | DataCite/ACDD/STAC provenance metadata | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/12_store_metadata.py?mode=edit) |
 | 13 | `13_workflow_store_operations.py` | Store read/write/branch operations | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_workflow_store_operations.py?mode=edit) |
-| 14 | `14_visualization.py` | 2D/3D hemispheric visualisation | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_visualization.py?mode=edit) |
+| 14 | `14_visualization.py` | 2D/3D hemispheric visualization | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_visualization.py?mode=edit) |
 | 15 | `15_grid_exploration.py` | Interactive hemispheric grid explorer | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/15_grid_exploration.py?mode=edit) |
 | 16 | `16_grid_3d_gallery.py` | 3D gallery comparing all hemispheric grid types | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/16_grid_3d_gallery.py?mode=edit) |
 | 17 | `17_api_overview.py` | API overview: CLI and Site pipeline | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_api_overview.py?mode=edit) |
@@ -131,33 +86,28 @@ uv run marimo run demo/10_vod_retrieval.py
 | 20 | `20_workflow_batch_processing.py` | Batch processing with Dask | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/20_workflow_batch_processing.py?mode=edit) |
 | 21 | `21_plugins.py` | Your own VOD calculator: register it, compare it, make it a plugin | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/21_plugins.py?mode=edit) |
 
----
-
 ## Test data
 
-The notebooks use [canvodpy-test-data](https://github.com/nfb2021/canvodpy-test-data): real GNSS observations from Rosalia, Austria (DOY 2025-001), including RINEX v3.04, SBF binary files, precise SP3/CLK ephemerides, and a pre-built Icechunk store snapshot.
+The notebooks read [canvodpy-test-data](https://github.com/nfb2021/canvodpy-test-data):
+real observations of receiver pairs at four sites in RINEX v3.04, RINEX
+v2.11, stripped RINEX v3.05, SBF and NMEA, with orbit and clock products.
+`_paths.py` finds the data in this order:
 
-Path resolution is handled automatically by `_paths.py`:
-
-| Scenario | Expected location |
-|---|---|
-| molab / cloud | Zenodo auto-download (~1.7 GB, cached after first run) |
-| Standalone | `./test_data/`: clone canvodpy-test-data here |
-| Monorepo | `../packages/canvod-readers/tests/test_data/`: resolved automatically |
-
----
+| Where | When |
+| ----- | ---- |
+| `../packages/canvod-readers/tests/test_data/` | inside the canvodpy repository |
+| the user cache folder, `canvodpy/` | after a first download |
+| `./test_data/` | after `git clone https://github.com/nfb2021/canvodpy-test-data.git test_data` |
+| Zenodo ([doi:10.5281/zenodo.19708759](https://doi.org/10.5281/zenodo.19708759)) | otherwise: downloaded once (about 1.7 GB) and cached |
 
 ## Contributing
 
-Contributions are welcome. See [CONTRIBUTING.md](https://github.com/nfb2021/canvodpy/blob/main/CONTRIBUTING.md) in the canvodpy repository for guidelines.
-
----
+See [CONTRIBUTING.md](https://github.com/nfb2021/canvodpy/blob/main/CONTRIBUTING.md)
+in the canvodpy repository.
 
 ## License
 
 [Apache License 2.0](LICENSE)
-
----
 
 ## Affiliation
 
