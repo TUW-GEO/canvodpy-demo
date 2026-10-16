@@ -161,8 +161,6 @@ Contributions are welcome. See [CONTRIBUTING.md](https://github.com/nfb2021/canv
 
 ## Affiliation
 
-Founded by **Nicolas François Bader**
-
 [Climate and Environmental Remote Sensing Research Unit (CLIMERS)](https://www.tuwien.at/en/mg/geo/climers)
 Department of Geodesy and Geoinformation, TU Wien
 
