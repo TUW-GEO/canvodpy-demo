@@ -6,7 +6,7 @@
 # ]
 #
 # [tool.uv.sources]
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "caddb63b88618cde329b126e036cf0f5c05c1c7e" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "1b820d6e1dd1ef285cad48176d6a297b77b0548e" }
 #
 # [tool.marimo.opengraph]
 # title = "23 · Run Dashboard"
