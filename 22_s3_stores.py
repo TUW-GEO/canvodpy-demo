@@ -820,8 +820,9 @@ def _(SITE, block, cli, config_dir, mo):
     Maintenance removes old snapshots and the data only they refer to.
     On a local folder, `canvodpy store maintain --execute` does it. On S3,
     another machine may be writing to the store at that moment, so
-    canVODpy only reports what maintenance would do and changes nothing
-    (exit code {_code}):
+    canVODpy refuses `--execute`: it reports what maintenance would do,
+    changes nothing, and exits with code {_code}, so a scheduled job
+    notices that no maintenance was done:
 
     ```text
     {block(_output)}
