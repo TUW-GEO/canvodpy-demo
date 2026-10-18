@@ -270,15 +270,21 @@ def _(mo):
     result = vod.compute_bulk(
         "main",
         start=datetime(2025, 1, 1),
-        end=datetime(2025, 1, 31),
+        end=datetime(2025, 1, 31, 23, 59, 59),
         write=True,
     )
     ```
 
-    `compute_bulk()` reads canopy and reference data from the Icechunk
-    GNSS store for the specified date range, then computes VOD.  This
-    decouples ingestion from retrieval: data can be ingested nightly,
-    and VOD recomputed weekly or on demand.
+    `compute_bulk()` computes the VOD of each day in the range in the
+    worker pool: each task reads one day of canopy and reference data
+    from the Icechunk GNSS store, so a day takes as long in a large
+    store as in a small one. A day whose VOD the store already holds
+    from the same GNSS files is not computed again. The VOD of the range
+    is then read back from the VOD store and returned. With
+    `write=False`, it reads the range into memory, computes the VOD
+    there and writes nothing. This decouples ingestion from retrieval:
+    data can be ingested nightly, and VOD recomputed weekly or on
+    demand.
     """
     )
 
@@ -369,7 +375,7 @@ def _(mo):
     result = site.vod.compute_bulk(
         "main",
         start=datetime(2025, 1, 27),
-        end=datetime(2025, 2, 2),
+        end=datetime(2025, 2, 2, 23, 59, 59),
         write=True,  # Write to VOD store
     )
     ```
