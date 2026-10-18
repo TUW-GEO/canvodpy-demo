@@ -82,10 +82,11 @@ def _(mo):
     | `start` | First date (YYYYDOY format) |
     | `end` | Last date (YYYYDOY format, inclusive) |
 
-    The pipeline writes each day to the Icechunk store itself and
-    yields the days of a batch once the whole batch is written.  It
-    holds the days of one batch in memory at a time; `days_per_batch`
-    sets their number (default 1).
+    The pipeline writes the days to the Icechunk store itself, in
+    units of days with one commit per unit, and yields the days of a
+    unit once the whole unit is written.  It sizes the units from its
+    memory budget (`max_memory_gb`), at most 31 days; a range of one
+    day is a unit of one day.
     """
     )
 
@@ -293,7 +294,7 @@ def _(mo):
     ```python
     with site.pipeline(
         n_workers=4,           # worker processes
-        days_per_batch=2,      # days the workers process together
+        max_memory_gb=16,      # memory budget of the run
         threads_per_worker=1,  # threads of numerical libraries per worker
     ) as pipe:
         for date, data in pipe.process_range("2025001", "2025365"):
@@ -303,14 +304,14 @@ def _(mo):
     | Argument | Default | Description |
     |----------|---------|-------------|
     | `n_workers` | from the settings | Number of worker processes |
-    | `days_per_batch` | from the settings (1) | Days the workers process together |
+    | `max_memory_gb` | from the settings (none: the memory available at the start) | Memory budget of the run |
     | `threads_per_worker` | from the settings (1) | Threads that numerical libraries use in each worker |
 
     The CPU cores and the priority of the workers come from
     `cpu_affinity` and `nice_priority` under `processing.params` in
-    `canvod-settings.yaml`.  canVODpy doesn't limit memory; to lower
-    the memory a run needs, use fewer workers or a smaller
-    `days_per_batch`.
+    `canvod-settings.yaml`.  The run sizes the workers and its units
+    of days to fit the memory budget, and stops before it reads a
+    file if not even one worker fits with one day.
     """
     )
 

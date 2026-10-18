@@ -118,7 +118,7 @@ def _(mo):
     with the same code path and the same guarantees. It adds resumability (auto-detects
     the last committed date in the store), a live progress display, and a
     few production-oriented flags (`--ephemeris-source`, `--vod-calculator`,
-    `--workers`, `--days-per-batch`).
+    `--workers`).
 
     See [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py) for a full
     walkthrough of the flags.
