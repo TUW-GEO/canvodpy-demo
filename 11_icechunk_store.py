@@ -120,7 +120,7 @@ def _(mo):
     ```python
     from canvod.store import MyIcechunkStore
 
-    store = MyIcechunkStore(store_path=Path("stores/my_site_rinex"))
+    store = MyIcechunkStore(store_path=Path("stores/my_site/gnss"))
     ```
 
     | Property | Value |
@@ -174,7 +174,7 @@ def _(build_rosalia_vod_store, mo):
     retrieval algorithms.
 
     ```python
-    vod_store = MyIcechunkStore(store_path=Path("stores/my_site_vod"), store_type="vod_store")
+    vod_store = MyIcechunkStore(store_path=Path("stores/my_site/vod"), store_type="vod_store")
     ```
 
     | Property | Value |

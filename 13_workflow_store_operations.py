@@ -110,7 +110,7 @@ def _(mo):
     ```python
     from canvod.store import MyIcechunkStore
 
-    store = MyIcechunkStore(store_path=Path("stores/rosalia_rinex"))
+    store = MyIcechunkStore(store_path=Path("stores/rosalia/gnss"))
     ```
 
     | Property | Value |
