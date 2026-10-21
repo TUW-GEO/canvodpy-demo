@@ -19,18 +19,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
 #
 # [tool.marimo.opengraph]
 # title = "11 · Icechunk Store"
