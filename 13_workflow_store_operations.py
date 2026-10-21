@@ -19,18 +19,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
+# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "e6e90bedd25e7d42d240cbf3a6cb80edc811c97e" }
 #
 # [tool.marimo.opengraph]
 # title = "13 · Store Operations"
@@ -68,13 +68,14 @@ def _():
     do to a real store: branching, writing, commit history, time travel,
     native rich rendering, and store-wide provenance metadata.
 
-    Every operation below runs against the **same live store** built for
-    [11 · Icechunk Store](./11_icechunk_store.py); nothing here is illustrative-only.
+    Every operation below runs against a real store, the one
+    [11 · Icechunk Store](./11_icechunk_store.py) shows; nothing here is illustrative-only.
 
-    **Test data**: this notebook builds the store live, at run time, by
-    running the real `canvodpy` CLI against real Rosalia RINEX v3.04 data
-    for DOY 2025-001; no pre-built store fixture is shipped (see
-    `_live_store.py` for why).
+    **Test data**: a copy of the GNSS store that `canvodpy run` writes
+    from the Rosalia RINEX v3.04 day, 2025-01-01, downloaded with
+    `canvodpy.demo_data("stores")`, canVODpy's published reference store.
+    The operations below write to the store, so the notebook works on a
+    copy in a temporary folder and the downloaded store stays as it is.
 
     ---
 
@@ -84,20 +85,19 @@ def _():
 
 
 @app.cell
-def _():
-    import _paths
-    from _download import marimo_downloader
-    _paths.ensure_data(downloader=marimo_downloader)
-    return
-
-
-@app.cell
 def _(mo):
-    from canvod.store import MyIcechunkStore
+    import shutil
+    import tempfile
+    from pathlib import Path
 
-    from _live_store import build_rosalia_store, get_pipeline_command, get_pipeline_output
+    from canvod.store import open_gnss_store
+    from canvodpy import demo_data
 
-    store, store_path = build_rosalia_store()
+    # The operations below write: work on a copy of the downloaded store.
+    _published = demo_data("stores") / "stores" / "rosalia_rinex_v3_04" / "gnss"
+    store_path = Path(tempfile.mkdtemp(prefix="canvodpy-demo-")) / "gnss"
+    shutil.copytree(_published, store_path)
+    store = open_gnss_store(store_path)
 
     _branches = store.get_branch_names()
     _groups = store.list_groups()
@@ -108,9 +108,9 @@ def _(mo):
     ## Opening and inspecting a store
 
     ```python
-    from canvod.store import MyIcechunkStore
+    from canvod.store import open_gnss_store
 
-    store = MyIcechunkStore(store_path=Path("stores/rosalia_rinex"))
+    store = open_gnss_store(store_path)  # a copy of demo_data("stores")
     ```
 
     | Property | Value |
@@ -122,23 +122,6 @@ def _(mo):
 
     The `source_format` root attribute indicates whether data
     originated from RINEX or SBF files.
-
-    This store was built by running the real `canvodpy` CLI as a
-    subprocess (marimo notebooks can't run shell commands directly) --
-    here is the exact command that produced it:
-
-    ```bash
-    {get_pipeline_command()}
-    ```
-
-    <details>
-    <summary>CLI output (captured after the run finished -- not live)</summary>
-
-    ```text
-    {get_pipeline_output()}
-    ```
-
-    </details>
     """
     )
     return store, store_path
