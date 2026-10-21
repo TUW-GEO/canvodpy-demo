@@ -77,6 +77,11 @@ def _():
     The operations below write to the store, so the notebook works on a
     copy in a temporary folder and the downloaded store stays as it is.
 
+    **Settings**: reading a store and moving branches need no settings,
+    but writing a group does. Run `canvodpy config init` once before this
+    notebook; without a settings file, the write below stops with an
+    error that says so.
+
     ---
 
     """
@@ -342,7 +347,9 @@ def _(mo):
     real ingested groups. Written to the `demo/scratch` branch, so
     `main` is completely unaffected. Its epochs are marked as GPS time
     (`epoch.attrs["time_system"] = "GPS"`): a store holds GPS time only and
-    refuses data that doesn't record its time scale.
+    refuses data that doesn't record its time scale. The write takes its
+    chunks and compression from your settings file, so it needs one
+    (`canvodpy config init`).
     """)
     return
 
@@ -1052,18 +1059,6 @@ def _(mo):
     # first, last or middle value, as integer_method sets.
     # sid-only coords (e.g. sv, band) are preserved unchanged.
     ```
-
-    #### Quick-look: `store.safe_temporal_aggregate()`
-
-    For interactive exploration, the store provides a convenience method:
-
-    ```python
-    ds_agg = store.safe_temporal_aggregate("canopy_01", freq="1D")
-    ```
-
-    This uses xarray's `.resample()` which preserves the `sid` dimension
-    (each satellite is aggregated independently).  For production
-    analyses, prefer `TemporalAggregate`.
 
     #### Anti-pattern: naive resampling
 
