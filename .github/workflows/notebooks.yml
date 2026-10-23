@@ -113,6 +113,11 @@ jobs:
                   docker logs rustfs
                   exit 1
             - name: Run the notebooks
+              # The AWS_* names are the variables every S3 client reads; they
+              # point at the emulator on this runner, not at Amazon. The keys
+              # are the throwaway ones from above, new for every run. The
+              # region is a placeholder the clients require, and no client
+              # looks for real AWS credentials on the runner.
               env:
                   CANVOD_DEMO_S3_URL: s3://${{ env.BUCKET }}/ci-${{ github.run_id }}-${{ github.run_attempt }}
                   AWS_ENDPOINT_URL: http://127.0.0.1:9000
