@@ -620,7 +620,7 @@ def _(
     _codes = [finish_cli(run)[0] for run in _runs]
     _seconds = time.monotonic() - _start
 
-    _gnss = f"{_stores}/{SITE}/rinex"
+    _gnss = f"{_stores}/{SITE}/gnss"
     _history = list(open_repository(_gnss).ancestry(branch="main"))
     _rows = "\n".join(
         f"| {s.written_at:%H:%M:%S.%f}"[:-3] + f" | {s.message.split(' (run=')[0]} |"
