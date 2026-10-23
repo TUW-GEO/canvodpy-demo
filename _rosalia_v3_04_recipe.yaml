@@ -44,8 +44,8 @@ processing:
     publisher_url: https://www.tuwien.at/en/mg/geo/climers
     naming_authority: eu.canvodpy
   references:
-    software_repository: https://github.com/nfb2021/canvodpy
-    documentation: https://github.com/nfb2021/canvodpy/tree/main/docs
+    software_repository: https://github.com/TUW-GEO/canvodpy
+    documentation: https://github.com/TUW-GEO/canvodpy/tree/main/docs
     publications: []
     funding:
       - funder: Austrian Science Fund (FWF)
