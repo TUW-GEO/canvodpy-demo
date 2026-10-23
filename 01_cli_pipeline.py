@@ -6,7 +6,7 @@
 #
 # [tool.marimo.opengraph]
 # title = "01 · Running the Pipeline (CLI)"
-# description = "canvodpy run: the recommended command-line interface for production ingestion. Covers date ranges, auto-resume, multi-site runs, dry-run previews, and the ephemeris-source/VOD-calculator flags."
+# description = "canvodpy run: the recommended command-line interface for production ingestion. Covers date ranges, --update-to-latest, several sites, dry-run previews, and the ephemeris-source/VOD-calculator flags."
 # ///
 
 import marimo
@@ -38,7 +38,7 @@ def _():
     `canvodpy run` is the recommended way to run production ingestion. It
     wraps the exact same code path as `Site(...).pipeline().process_range()`
     (covered in [18 · Site Pipeline](./18_site_pipeline.py)), adding
-    resumability and a live progress display on top.
+    a live progress display on top.
 
     ```bash
     uv run canvodpy run --site Rosalia --start 2025001 --end 2025007
@@ -67,25 +67,35 @@ def _(mo):
     # Process a specific range
     uv run canvodpy run --site Rosalia --start 2025001 --end 2025007
 
-    # Process new data only: auto-resume from the last processed date,
-    # end defaults to today. This is what you want in a cron job.
-    uv run canvodpy run --site Rosalia
+    # Add every file not yet stored, up to the latest day with files.
+    # This is what you want in a cron job.
+    uv run canvodpy run --site Rosalia --update-to-latest
 
     # Observation ingestion only, skip VOD calculation
-    uv run canvodpy run --site Rosalia --no-vod
+    uv run canvodpy run --site Rosalia --start 2025001 --end 2025007 --no-vod
 
     # Preview what would be processed, without executing anything
-    uv run canvodpy run --site Rosalia --dry-run
+    uv run canvodpy run --site Rosalia --update-to-latest --dry-run
     ```
 
-    **Auto-resume** is the reason the CLI is recommended over calling
-    `Site.pipeline()` directly for scheduled runs: omit `--start` and the
-    CLI queries the Icechunk store's metadata for the latest committed
-    date and resumes from there. A daily cron entry needs no date-math:
+    Every run needs either `--start` or `--update-to-latest`; a run with
+    neither stops with an error, and so does `--update-to-latest`
+    together with `--start` or `--end`.
+
+    **`--update-to-latest`** finds the dates for you and prints them
+    (`update: 2025001 to 2025007`). It starts on the earliest last stored
+    day among the receivers that have files not yet stored, so files that
+    arrive late for a day already stored are still processed. It ends on
+    the latest day with files. If no receiver has new files, it says so
+    and exits without error; on an empty store it stops and asks for
+    `--start`. A daily cron entry needs no date-math:
 
     ```
-    0 3 * * * cd /path/to/canvodpy && uv run canvodpy run --site Rosalia
+    0 3 * * * cd /path/to/canvodpy && uv run canvodpy run --site Rosalia --update-to-latest
     ```
+
+    In Python, `Site(...).pipeline().run(update_to_latest=True)` does the
+    same.
     """
     )
 
@@ -101,19 +111,20 @@ def _(mo):
 def _(mo):
     mo.md(
         r"""
-    ## Multiple sites in one invocation
+    ## Several sites
 
-    `--site` accepts one or more names, processed **sequentially**:
+    Each run processes one site: sites can differ in their dates, data
+    and settings. For several sites, run one after the other in a shell
+    loop:
 
     ```bash
-    uv run canvodpy run --site Rosalia OtherSite ThirdSite
+    for site in Rosalia OtherSite ThirdSite; do
+        uv run canvodpy run --site "$site" --update-to-latest
+    done
     ```
 
-    Each site resolves its own resume point from its own store; sites
-    don't share a date range. The live progress display shows one row per
-    `(site, receiver-group)` pair, known upfront, so a multi-site run
-    shows the full picture from the start rather than only revealing the
-    next site once the previous one finishes.
+    Each site finds its own dates from its own store. More than one site
+    in a run stops with an error.
     """
     )
 
@@ -133,10 +144,10 @@ def _(mo):
 
     ```bash
     # Override the configured ephemeris source for this run
-    uv run canvodpy run --site Rosalia --ephemeris-source broadcast
+    uv run canvodpy run --site Rosalia --ephemeris-source broadcast --update-to-latest
 
     # Choose a VOD calculator (choices come from VODFactory.list_available())
-    uv run canvodpy run --site Rosalia --vod-calculator tau_omega
+    uv run canvodpy run --site Rosalia --vod-calculator tau_omega --update-to-latest
     ```
 
     | Flag | Choices | Default |
@@ -165,7 +176,7 @@ def _(mo):
     ## Resource flags
 
     ```bash
-    uv run canvodpy run --site Rosalia --workers 8 --days-per-batch 14
+    uv run canvodpy run --site Rosalia --workers 8 --days-per-batch 14 --update-to-latest
     ```
 
     | Flag | Effect |
@@ -198,7 +209,7 @@ def _(mo):
     ## Config overlay
 
     ```bash
-    uv run canvodpy run --site Rosalia --config cluster-overlay.yaml
+    uv run canvodpy run --site Rosalia --config cluster-overlay.yaml --update-to-latest
     ```
 
     Applies an overlay YAML on top of the main `canvod-settings.yaml`:

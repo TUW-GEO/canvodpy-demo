@@ -98,25 +98,33 @@ def _(mo):
     ## CLI: running the pipeline
 
     The recommended way to run canvodpy in production: a single command,
-    resumable, no Python required.
+    no Python required. Each run processes one site and needs either a
+    start date or `--update-to-latest`.
 
     ```bash
     # Process a range
     uv run canvodpy run --site Rosalia --start 2025001 --end 2025007
 
-    # Resume automatically from the last processed date
-    uv run canvodpy run --site Rosalia
+    # Add every file not yet stored, up to the latest day with files
+    uv run canvodpy run --site Rosalia --update-to-latest
 
-    # Multiple sites in one invocation (processed sequentially)
-    uv run canvodpy run --site Rosalia OtherSite
+    # Several sites: one run per site, in a shell loop
+    for site in Rosalia OtherSite; do
+        uv run canvodpy run --site "$site" --update-to-latest
+    done
 
     # Preview without executing
-    uv run canvodpy run --site Rosalia --dry-run
+    uv run canvodpy run --site Rosalia --update-to-latest --dry-run
     ```
 
+    `--update-to-latest` starts on the earliest last stored day among the
+    receivers that have files not yet stored, so files that arrive late for
+    a day already stored are still processed. It prints the dates it chose.
+    On an empty store it stops and asks for `--start`.
+
     The CLI is a thin wrapper around `Site(...).pipeline().process_range()`,
-    with the same code path and the same guarantees. It adds resumability (auto-detects
-    the last committed date in the store), a live progress display, and a
+    with the same code path and the same guarantees. It adds
+    `--update-to-latest`, a live progress display, and a
     few production-oriented flags (`--ephemeris-source`, `--vod-calculator`,
     `--workers`, `--days-per-batch`).
 
@@ -233,7 +241,7 @@ def _(mo):
 
     | If you want to... | Use |
     |-------------------|-----|
-    | Run production ingestion, resumable, from a shell/cron | CLI: `canvodpy run` |
+    | Run production ingestion from a shell/cron, `--update-to-latest` | CLI: `canvodpy run` |
     | Script a run in Python: loop over sites, embed in a notebook | `Site(...).pipeline()` |
     | Recompute VOD separately from ingestion | `Site(...).vod` (`VodComputer`) |
     | Orchestrate with Airflow | The optional `canvod-airflow` extension (`canvodpy.workflows.tasks`) |
