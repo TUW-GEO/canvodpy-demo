@@ -103,6 +103,7 @@ uv run marimo edit demo/10_vod_retrieval.py
 | 20 | `20_workflow_batch_processing.py` | Batch processing with Dask | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/20_workflow_batch_processing.py) |
 | 21 | `21_plugins.py` | Your own VOD calculator: register it, compare it, make it a plugin | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/21_plugins.py) |
 | 22 | `22_s3_stores.py` | Stores on S3: credentials, two runs on one store, settings from a store (needs an S3 endpoint, RustFS works) | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/22_s3_stores.py) |
+| 23 | `23_run_dashboard.py` | The run dashboard on an example run history: progress, stage times, resources, problems, comparison by label | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/23_run_dashboard.py) |
 
 ## Test data
 
@@ -129,6 +130,10 @@ The download is about 350 MB and holds the Rosalia, Austria site on DOY
 A notebook session writes its settings, stores, logs and auxiliary data
 into a fresh temporary folder, so the cache holds only the downloaded test
 data and is never written to.
+
+Notebook 23 reads an anonymized run history with
+`canvodpy.demo_data("run_history")`: under 1 MB, downloaded once into the
+user cache folder.
 
 ## Contributing
 
