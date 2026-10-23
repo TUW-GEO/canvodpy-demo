@@ -272,7 +272,7 @@ def _(site, mo):
     retrieval algorithms.
 
     ```python
-    vod_store = MyIcechunkStore(store_path=Path("stores/my_site_vod"), store_type="vod_store")
+    vod_store = MyIcechunkStore(store_path=Path("stores/my_site/vod"), store_type="vod_store")
     ```
 
     | Property | Value |
