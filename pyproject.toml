@@ -9,7 +9,7 @@ dependencies = [
     # ── Pre-release ──────────────────────────────────────────────────────────
     # canvodpy is not yet on PyPI. Install from a local clone:
     #
-    #   git clone https://github.com/nfb2021/canvodpy.git ../canvodpy
+    #   git clone https://github.com/TUW-GEO/canvodpy.git ../canvodpy
     #   # then uncomment the line below and run: uv sync
     #
     # "canvodpy @ ../canvodpy",
@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/nfb2021/canvodpy-demo"
-Repository = "https://github.com/nfb2021/canvodpy-demo"
-"Bug Tracker" = "https://github.com/nfb2021/canvodpy/issues"
+Homepage = "https://github.com/TUW-GEO/canvodpy-demo"
+Repository = "https://github.com/TUW-GEO/canvodpy-demo"
+"Bug Tracker" = "https://github.com/TUW-GEO/canvodpy/issues"
 Documentation = "https://nfb2021.github.io/canvodpy/"

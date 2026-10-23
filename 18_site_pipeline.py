@@ -7,7 +7,7 @@
 # ]
 #
 # [tool.uv.sources]
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
 #
 # [tool.marimo.opengraph]
 # title = "18 · Site Pipeline"
@@ -30,13 +30,13 @@ def _():
     mo.md(
         r"""
     <p align="center" class="canvod-logo">
-      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
-      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
     </p>
 
     # Site Pipeline
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/18_site_pipeline.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/18_site_pipeline.py)
 
     `Site(...).pipeline()` is canvodpy's Python-native surface for running
     the pipeline, the exact same code path the `canvodpy run` CLI wraps
@@ -165,8 +165,8 @@ def _(root):
                 "naming_authority": testing.NAMING_AUTHORITY,
             },
             "references": {
-                "software_repository": "https://github.com/nfb2021/canvodpy",
-                "documentation": "https://github.com/nfb2021/canvodpy/tree/main/docs",
+                "software_repository": "https://github.com/TUW-GEO/canvodpy",
+                "documentation": "https://github.com/TUW-GEO/canvodpy/tree/main/docs",
                 "publications": [],
                 "funding": [],
             },
