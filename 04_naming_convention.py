@@ -333,6 +333,24 @@ def _(mo):
 
     Downstream code only sees canonical names, so processing behaves the
     same regardless of how files were originally named.
+
+    A recipe can also live in a GitHub repository, so every computer that
+    processes the site uses the same file. Give its raw URL, pinned to a
+    commit or a tag:
+
+    ```yaml
+    recipe: https://raw.githubusercontent.com/<account>/<recipes-repo>/<commit>/recipes/<site>/<recipe>.yaml
+    ```
+
+    A recipe in a private repository needs a GitHub token in `GH_TOKEN` or
+    `GITHUB_TOKEN`. The GNSS store records each receiver's recipe and the
+    sha256 of its content, and a run stops if the settings give another
+    recipe, since it would find other files than the days already stored.
+    Record a recipe that changed on purpose, with a reason:
+
+    ```bash
+    canvodpy store amend <site> --update-recipe <receiver> --reason "..."
+    ```
     """)
     return
 
