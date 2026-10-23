@@ -1,35 +1,23 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-auxiliary",
-#   "canvod-config",
-#   "canvod-grids",
-#   "canvod-ops",
-#   "canvod-preflight",
-#   "canvod-readers",
-#   "canvod-store",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "canvod-viz",
-#   "canvod-vod",
-#   "canvodpy",
+#   "canvod-auxiliary==1.0.0",
+#   "canvod-config==1.0.0",
+#   "canvod-grids==1.0.0",
+#   "canvod-ops==1.0.0",
+#   "canvod-preflight==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-store==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvod-viz[widgets]==1.0.0",
+#   "canvod-vod==1.0.0",
+#   "canvodpy==1.0.0",
 #   "plotly>=5.0",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
+#   "numpy==2.5.4",
+#   "xarray==2026.9.0",
 # ]
-#
-# [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "15 · Grid Exploration"
@@ -38,10 +26,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Grid Exploration", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Grid Exploration",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -67,13 +57,7 @@ def _():
     ---
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -81,12 +65,7 @@ def _():
     import numpy as np
     import xarray as xr
 
-    return np, xr
-
-
-# ---------------------------------------------------------------------------
-# Grid setup: create or load a hemispheric grid
-# ---------------------------------------------------------------------------
+    return (np,)
 
 
 @app.cell
@@ -103,13 +82,7 @@ def _(np):
     cell_x = np.sin(theta) * np.sin(phi)  # East
     cell_y = np.sin(theta) * np.cos(phi)  # North
     cell_z = np.cos(theta)
-
     return cell_x, cell_y, cell_z, grid, phi, theta
-
-
-# ---------------------------------------------------------------------------
-# UI Controls
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -148,13 +121,7 @@ def _(mo):
         justify="start",
         gap=2,
     )
-
-    return band_dropdown, color_by, system_dropdown, vod_range, view_mode
-
-
-# ---------------------------------------------------------------------------
-# Synthetic data (used when no store is available)
-# ---------------------------------------------------------------------------
+    return color_by, view_mode
 
 
 @app.cell
@@ -178,13 +145,7 @@ def _(grid, np):
         "count": _synthetic_count,
         "coverage": _synthetic_coverage,
     }
-
     return cell_stats, ncells
-
-
-# ---------------------------------------------------------------------------
-# Prepare widget data
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -202,13 +163,7 @@ def _(cell_stats, color_by, grid, ncells, np, theta):
         f"Cell {i}\n  theta={_theta_deg[i]:.1f} deg\n  phi={_phi_deg[i]:.1f} deg\n  {stat_name}={values[i]:.4f}"
         for i in range(ncells)
     ]
-
     return labels, values
-
-
-# ---------------------------------------------------------------------------
-# 3D Hemisphere Widget
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -216,7 +171,7 @@ def _(cell_x, cell_y, cell_z, labels, mo, values, view_mode):
     hemisphere_3d = None
 
     if view_mode.value:
-        from _widgets.hemisphere_widgets import HemisphereSelector3D
+        from canvod.viz.widgets import HemisphereSelector3D
 
         hemisphere_3d = mo.ui.anywidget(
             HemisphereSelector3D(
@@ -232,13 +187,7 @@ def _(cell_x, cell_y, cell_z, labels, mo, values, view_mode):
         mo.output.replace(hemisphere_3d)
     else:
         mo.output.replace(mo.md("*Switch to 3D view to see the hemisphere widget.*"))
-
     return (hemisphere_3d,)
-
-
-# ---------------------------------------------------------------------------
-# 2D Hemisphere Widget
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -246,7 +195,7 @@ def _(labels, mo, phi, theta, values, view_mode):
     hemisphere_2d = None
 
     if not view_mode.value:
-        from _widgets.hemisphere_widgets import HemisphereSelector2D
+        from canvod.viz.widgets import HemisphereSelector2D
 
         hemisphere_2d = mo.ui.anywidget(
             HemisphereSelector2D(
@@ -260,13 +209,7 @@ def _(labels, mo, phi, theta, values, view_mode):
         mo.output.replace(hemisphere_2d)
     else:
         mo.output.replace(mo.md("*Switch to 2D view to see the polar projection.*"))
-
     return (hemisphere_2d,)
-
-
-# ---------------------------------------------------------------------------
-# Selection info table
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -304,13 +247,7 @@ def _(cell_stats, hemisphere_2d, hemisphere_3d, mo, np, theta, view_mode):
                 ]
             )
         )
-
     return (selected_ids,)
-
-
-# ---------------------------------------------------------------------------
-# Timeseries plot for selected cells
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -351,40 +288,30 @@ def _(mo, np, selected_ids):
         )
 
         mo.output.replace(mo.ui.plotly(fig))
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        """
+    mo.md("""
     ---
     **Note:** This notebook uses synthetic data for demonstration.
     To use real data, open an Icechunk store and pass actual per-cell
     timeseries datasets via `canvod.store.AnalysisStorage.load_percell_timeseries()`.
-    """
-    )
+    """)
     return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [14 · Visualization](./14_visualization.py)
     | **Next**: [16 · 3D Grid Gallery](./16_grid_3d_gallery.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
+    """)
     return
 
 

@@ -1,7 +1,9 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "marimo>=0.21.1",
+#   "canvodpy==1.0.0",
+#   "marimo>=0.23.9",
+#   "pyyaml==6.0.3",
 # ]
 #
 # [tool.marimo.opengraph]
@@ -11,10 +13,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Site Pipeline", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Site Pipeline",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -54,6 +58,11 @@ def _():
     `(date_key, datasets)` pair per processed day; this is what the CLI's
     reporter loop consumes to show live progress.
 
+    The first run creates the site's stores. Before that,
+    `site.gnss_store` and `site.vod_store` raise a `FileNotFoundError`;
+    `site.gnss_store_path` and `site.vod_store_path` say where the run
+    puts them.
+
     Once data is ingested, `site.vod` (a `VodComputer`) gives finer-grained
     control over VOD computation as a separate stage, covered below.
 
@@ -61,19 +70,156 @@ def _():
 
     """
     )
-
     return (mo,)
 
 
-# ---------------------------------------------------------------------------
-# Section: VodComputer
-# ---------------------------------------------------------------------------
+@app.cell
+def _():
+    from canvodpy import demo_data
+
+    root = demo_data("rinex")
+    root = demo_data("aux")
+    return (root,)
+
+
+@app.cell
+def _(root):
+    import os
+    import shutil
+    import tempfile
+    from pathlib import Path
+
+    import yaml
+
+    from canvod.utils import testing
+
+    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
+    config_dir = work / "config"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    aux_data_dir = work / "aux_data"
+    aux_data_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
+    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
+
+    settings = {
+        "sites": {
+            "rosalia_v3_04": {
+                "store_description": (
+                    "Reference GNSS-T store for the Rosalia beech forest site,"
+                    " built live from real RINEX v3.04 raw data (DOY 2025-001)."
+                ),
+                "description": (
+                    "Beech forest GNSS-T research site, reference test dataset."
+                ),
+                "country": "AT",
+                "latitude": 47.7,
+                "longitude": 16.3,
+                "altitude_m": 680.0,
+                "gnss_site_data_root": str(root / "rinex_v3_04" / "01_Rosalia"),
+                "receivers": {
+                    "reference_01": {
+                        "type": "reference",
+                        "directory": "01_reference/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "paired_canopies": "all",
+                        "description": "Rosalia reference receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                    "canopy_01": {
+                        "type": "canopy",
+                        "directory": "02_canopy/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "description": "Rosalia canopy receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                },
+                "vod_analyses": {
+                    "canopy_01_vs_reference_01": {
+                        "canopy_receiver": "canopy_01",
+                        "reference_receiver": "reference_01",
+                    }
+                },
+            }
+        },
+        "processing": {
+            "metadata": {
+                "author": testing.PERSON_NAME,
+                "email": testing.PERSON_EMAIL,
+                "orcid": testing.PERSON_ORCID,
+                "institution": testing.INSTITUTION,
+                "institution_ror": "https://ror.org/" + testing.INSTITUTION_ROR,
+                "department": testing.DEPARTMENT,
+                "research_group": testing.RESEARCH_GROUP,
+                "website": testing.WEBSITE,
+                "license": "CC-BY-4.0",
+                "publisher": testing.PUBLISHER,
+                "publisher_url": testing.WEBSITE,
+                "naming_authority": testing.NAMING_AUTHORITY,
+            },
+            "references": {
+                "software_repository": "https://github.com/TUW-GEO/canvodpy",
+                "documentation": "https://github.com/TUW-GEO/canvodpy/tree/main/docs",
+                "publications": [],
+                "funding": [],
+            },
+            "storage": {
+                "stores_root_dir": str(work / "stores"),
+                "aux_data_dir": str(aux_data_dir),
+                "shared_aux_cache_dir": None,
+            },
+            "logging": {"log_dir": str(work / "logs")},
+        },
+    }
+    (config_dir / "canvod-settings.yaml").write_text(
+        yaml.safe_dump(settings, sort_keys=False)
+    )
+    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
+    return
 
 
 @app.cell
 def _(mo):
+    from canvodpy import Site
+
+    site = Site("rosalia_v3_04")
+    data = site.pipeline(n_workers=2).process_date("2025001")
+
     mo.md(
-        r"""
+        f"""
+    ## A real run on the demo data
+
+    This cell runs the site pipeline on the Rosalia demo data that
+    `demo_data()` downloaded (DOY 2025-001, canopy + reference), using the
+    settings written above. It writes the site's GNSS store into a fresh
+    temporary folder, not the demo cache.
+
+    ```python
+    from canvodpy import Site
+
+    site = Site("rosalia_v3_04")
+    data = site.pipeline(n_workers=2).process_date("2025001")
+    ```
+
+    | Property | Value |
+    |----------|-------|
+    | **Site** | `{site}` |
+    | **GNSS store** | `{site.gnss_store_path}` |
+    | **Receivers** | {", ".join(f"`{r}`" for r in site.receivers)} |
+    | **Analyses** | {", ".join(f"`{a}`" for a in site.vod_analyses)} |
+    """
+    )
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
     ## VodComputer: VOD as a separate stage
 
     `site.vod` offers two computation strategies for when VOD retrieval is
@@ -116,30 +262,28 @@ def _(mo):
     result = vod.compute_bulk(
         "main",
         start=datetime(2025, 1, 1),
-        end=datetime(2025, 1, 31),
+        end=datetime(2025, 1, 31, 23, 59, 59),
         write=True,
     )
     ```
 
-    `compute_bulk()` reads canopy and reference data from the Icechunk
-    GNSS store for the specified date range, then computes VOD.  This
-    decouples ingestion from retrieval: data can be ingested nightly,
-    and VOD recomputed weekly or on demand.
-    """
-    )
-
+    `compute_bulk()` computes the VOD of each day in the range in the
+    worker pool: each task reads one day of canopy and reference data
+    from the Icechunk GNSS store, so a day takes as long in a large
+    store as in a small one. A day whose VOD the store already holds
+    from the same GNSS files is not computed again. The VOD of the range
+    is then read back from the VOD store and returned. With
+    `write=False`, it reads the range into memory, computes the VOD
+    there and writes nothing. This decouples ingestion from retrieval:
+    data can be ingested nightly, and VOD recomputed weekly or on
+    demand.
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: VOD analyses configuration
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## VOD analyses configuration
 
     The `vod_analyses` entry of each site in `config/canvod-settings.yaml`
@@ -181,21 +325,13 @@ def _(mo):
     Multiple analyses can share the same reference receiver,
     a common setup when one open-sky receiver serves several
     below-canopy stations.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: production workflow
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Production workflow pattern
 
     A typical production deployment separates ingestion from retrieval:
@@ -215,7 +351,7 @@ def _(mo):
     result = site.vod.compute_bulk(
         "main",
         start=datetime(2025, 1, 27),
-        end=datetime(2025, 2, 2),
+        end=datetime(2025, 2, 2, 23, 59, 59),
         write=True,  # Write to VOD store
     )
     ```
@@ -227,30 +363,20 @@ def _(mo):
       from the store without re-reading raw files
     - **Independent scheduling**: ingestion and retrieval can run on
       different schedules and different machines
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [17 · API Overview](./17_api_overview.py)
     | **Next**: [19 · Single-Day Workflow](./19_workflow_single_day.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

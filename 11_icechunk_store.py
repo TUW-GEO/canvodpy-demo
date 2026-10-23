@@ -1,36 +1,22 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-auxiliary",
-#   "canvod-config",
-#   "canvod-grids",
-#   "canvod-ops",
-#   "canvod-preflight",
-#   "canvod-readers",
-#   "canvod-store",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "canvod-viz",
-#   "canvod-vod",
-#   "canvodpy",
-#   "pooch>=1.6",
+#   "canvod-auxiliary==1.0.0",
+#   "canvod-config==1.0.0",
+#   "canvod-grids==1.0.0",
+#   "canvod-ops==1.0.0",
+#   "canvod-preflight==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-store==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvod-viz==1.0.0",
+#   "canvod-vod==1.0.0",
+#   "canvodpy==1.0.0",
 #   "pyyaml>=6.0",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
+#   "xarray==2026.9.0",
 # ]
-#
-# [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "11 · Icechunk Store"
@@ -79,10 +65,11 @@ def _():
 
     ---
 
-    **Test data**: this notebook builds the store live, at run time, by
-    running the real `canvodpy` CLI against real Rosalia RINEX v3.04 data
-    for DOY 2025-001 (canopy + reference receivers); no pre-built store
-    fixture is shipped (see `_live_store.py` for why).
+    **Test data**: the GNSS store and the VOD store that `canvodpy run`
+    writes from the Rosalia RINEX v3.04 day, 2025-01-01 (canopy and
+    reference receiver), downloaded with `canvodpy.demo_data("stores")`.
+    They are canVODpy's published reference stores. How a run builds
+    them is shown in [01 · CLI Pipeline](./01_cli_pipeline.py).
 
     """
     )
@@ -90,25 +77,13 @@ def _():
 
 
 @app.cell
-def _():
-    import _paths
-    from _download import marimo_downloader
-    _paths.ensure_data(downloader=marimo_downloader)
-    return
-
-
-@app.cell
 def _(mo):
-    from canvod.store import MyIcechunkStore
+    from canvod.store import open_gnss_store
+    from canvodpy import demo_data
 
-    from _live_store import (
-        build_rosalia_store,
-        build_rosalia_vod_store,
-        get_pipeline_command,
-        get_pipeline_output,
-    )
-
-    store, store_path = build_rosalia_store()
+    stores_root = demo_data("stores") / "stores" / "rosalia_rinex_v3_04"
+    store_path = stores_root / "gnss"
+    store = open_gnss_store(store_path)
 
     _branches = store.get_branch_names()
     _groups = store.list_groups()
@@ -118,36 +93,29 @@ def _(mo):
     ## Opening a store
 
     ```python
-    from canvod.store import MyIcechunkStore
+    from canvod.store import open_gnss_store
+    from canvodpy import demo_data
 
-    store = MyIcechunkStore(store_path=Path("stores/my_site_rinex"))
+    stores_root = demo_data("stores") / "stores" / "rosalia_rinex_v3_04"
+    store = open_gnss_store(stores_root / "gnss")
     ```
+
+    For your own site, give the path of its GNSS store, for example
+    `open_gnss_store("/data/stores/my_site/gnss")`.
 
     | Property | Value |
     |----------|-------|
     | **Path** | `{store_path}` |
+    | **Site** | `{store.site_name}` |
     | **Branches** | {", ".join(f"`{b}`" for b in _branches)} |
     | **Groups** | {", ".join(f"`{g}`" for g in _groups) if _groups else "(empty)"} |
 
-    This store was built by running the real `canvodpy` CLI as a
-    subprocess (marimo notebooks can't run shell commands directly) --
-    here is the exact command that produced it:
-
-    ```bash
-    {get_pipeline_command()}
-    ```
-
-    <details>
-    <summary>CLI output (captured after the run finished -- not live)</summary>
-
-    ```text
-    {get_pipeline_output()}
-    ```
-
-    </details>
+    `demo_data("stores")` downloads the store once and returns the same
+    folder on every later call. This notebook only reads it; copy a
+    store before you write to it.
     """
     )
-    return build_rosalia_vod_store, store
+    return store, stores_root
 
 
 @app.cell
@@ -157,8 +125,11 @@ def _(store):
 
 
 @app.cell
-def _(build_rosalia_vod_store, mo):
-    vod_store, vod_store_path = build_rosalia_vod_store()
+def _(mo, stores_root):
+    from canvod.store import open_vod_store
+
+    vod_store_path = stores_root / "vod"
+    vod_store = open_vod_store(vod_store_path)
 
     _vod_branches = vod_store.get_branch_names()
     _vod_groups = vod_store.list_groups()
@@ -174,7 +145,7 @@ def _(build_rosalia_vod_store, mo):
     retrieval algorithms.
 
     ```python
-    vod_store = MyIcechunkStore(store_path=Path("stores/my_site_vod"), store_type="vod_store")
+    vod_store = open_vod_store(stores_root / "vod")
     ```
 
     | Property | Value |
@@ -332,32 +303,53 @@ def _(mo):
     mo.md(r"""
     ## Creating a new store
 
-    The `create_gnss_store()` and `create_vod_store()` factory functions
-    initialise new Icechunk repositories with the appropriate configuration:
+    You don't create a store yourself: `canvodpy run` creates a site's
+    stores when it first writes data, together with their metadata and
+    the Icechunk settings in `processing.icechunk`. Opening a store never
+    creates one, so a mistyped path fails with a `FileNotFoundError`
+    instead of leaving an empty store behind:
 
     ```python
-    from canvod.store import create_gnss_store, create_vod_store
+    from canvod.store import open_gnss_store, open_vod_store
 
-    # For raw observation data
-    gnss_store = create_gnss_store(Path("/data/my_site/observations.icechunk"))
+    # Raw observation data
+    gnss_store = open_gnss_store(Path("/data/my_site/rinex"))
 
-    # For VOD products
-    vod_store = create_vod_store(Path("/data/my_site/vod.icechunk"))
+    # VOD products
+    vod_store = open_vod_store(Path("/data/my_site/vod"))
     ```
 
     ### Writing data
 
-    ```python
-    with store.writable_session(branch="main") as session:
-        # First write to a group
-        store.write_initial_group(ds, group_name="canopy_01")
+    You don't write groups yourself: `canvodpy run` (or
+    `Site(<site>).pipeline()` in Python) writes the files of a site into
+    its stores:
 
-        # Subsequent writes append along the epoch dimension
-        store.append_to_group(ds_new, group_name="canopy_01", append_dim="epoch")
+    ```python
+    from canvodpy import Site
+
+    with Site("my_site").pipeline() as pipeline:
+        pipeline.process_date("2025001")
     ```
 
-    The `append_to_group()` method handles all deduplication, epoch
-    alignment, and SID padding automatically.
+    A run does not append. In a GNSS store each processing
+    day gets one block of empty epoch slots, and every file is written
+    into its own slots, so writing a file again replaces it. A run refuses
+    a store written by appending, by canVODpy versions before day blocks;
+    `canvodpy store migrate-layout SITE --store gnss` (and `--store vod`)
+    moves it to day blocks once.
+
+    `write_initial_group()`, `append_to_group()` and
+    `write_or_append_group()` are left over from development: they warn,
+    still work on groups written by appending, refuse a group made of day
+    blocks, and will be removed with the next major version. Read a group
+    with `read_group()`; `read_group_deduplicated()` is deprecated too.
+
+    The VOD store is written the same way: each day of VOD gets a block at
+    the cadence of its GNSS data, with one commit per day. VOD of a day
+    computed from other GNSS files, for example after more files of the
+    day were stored, replaces the stored day; VOD from the same files is
+    skipped.
     """)
     return
 

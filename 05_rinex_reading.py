@@ -1,17 +1,14 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-config",
-#   "canvod-readers",
-#   "canvod-utils",
-#   "pooch>=1.6",
-#   "marimo>=0.21.1",
+#   "canvod-config==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvodpy==1.0.0",
+#   "marimo>=0.23.9",
+#   "numpy==2.5.4",
+#   "xarray==2026.9.0",
 # ]
-#
-# [tool.uv.sources]
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "05 · RINEX v3 Observation Reading"
@@ -20,7 +17,7 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="RINEX v3 Observation Reading",
@@ -69,23 +66,24 @@ def _():
 
 @app.cell
 def _():
-    import _paths
-    from _download import marimo_downloader
-    _paths.ensure_data(downloader=marimo_downloader)
+    from canvodpy import demo_data
+
+    root = demo_data("rinex")
+    return (root,)
 
 
 @app.cell
-def _():
+def _(root):
     from pathlib import Path
 
-    from _paths import ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR
-
-    return ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR
+    canopy_dir = root / "rinex_v3_04" / "01_Rosalia" / "02_canopy" / "01_GNSS" / "01_raw"
+    ref_dir = root / "rinex_v3_04" / "01_Rosalia" / "01_reference" / "01_GNSS" / "01_raw"
+    return canopy_dir, ref_dir
 
 
 @app.cell
-def _(ROSALIA_CANOPY_DIR, mo):
-    _files = sorted(ROSALIA_CANOPY_DIR.glob("25001/*.rnx"))
+def _(canopy_dir, mo):
+    _files = sorted(canopy_dir.glob("25001/*.rnx"))
 
     mo.md(
         f"""
@@ -135,10 +133,10 @@ def _(mo):
 
 
 @app.cell
-def _(ROSALIA_CANOPY_DIR, mo):
+def _(canopy_dir, mo):
     from canvod.readers import Rnxv3Obs
 
-    _first_file = sorted(ROSALIA_CANOPY_DIR.glob("25001/*.rnx"))[0]
+    _first_file = sorted(canopy_dir.glob("25001/*.rnx"))[0]
     reader = Rnxv3Obs(fpath=_first_file)
 
     mo.md(
@@ -534,10 +532,10 @@ def _(mo):
 
 
 @app.cell
-def _(ROSALIA_CANOPY_DIR, Rnxv3Obs, mo):
+def _(Rnxv3Obs, canopy_dir, mo):
     import xarray as xr
 
-    _files = sorted(ROSALIA_CANOPY_DIR.glob("25001/*.rnx"))[:4]
+    _files = sorted(canopy_dir.glob("25001/*.rnx"))[:4]
 
     _datasets = []
     for _f in _files:
@@ -634,9 +632,9 @@ def _(ds_single, mo):
 
 
 @app.cell
-def _(ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, Rnxv3Obs, mo, np):
-    _can_files = sorted(ROSALIA_CANOPY_DIR.glob("25001/*.rnx"))[:1]
-    _ref_files = sorted(ROSALIA_REFERENCE_DIR.glob("25001/*.rnx"))[:1]
+def _(Rnxv3Obs, canopy_dir, mo, np, ref_dir):
+    _can_files = sorted(canopy_dir.glob("25001/*.rnx"))[:1]
+    _ref_files = sorted(ref_dir.glob("25001/*.rnx"))[:1]
 
     _can_reader = Rnxv3Obs(fpath=_can_files[0])
     _ref_reader = Rnxv3Obs(fpath=_ref_files[0])

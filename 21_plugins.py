@@ -1,36 +1,24 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-auxiliary",
-#   "canvod-config",
-#   "canvod-grids",
-#   "canvod-ops",
-#   "canvod-preflight",
-#   "canvod-readers",
-#   "canvod-store",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "canvod-viz",
-#   "canvod-vod",
-#   "canvodpy",
+#   "canvod-auxiliary==1.0.0",
+#   "canvod-config==1.0.0",
+#   "canvod-grids==1.0.0",
+#   "canvod-ops==1.0.0",
+#   "canvod-preflight==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-store==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvod-viz==1.0.0",
+#   "canvod-vod==1.0.0",
+#   "canvodpy==1.0.0",
 #   "zarr>=3.1.2",
-#   "pooch>=1.6",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
+#   "pyyaml==6.0.3",
+#   "numpy==2.5.4",
+#   "xarray==2026.9.0",
 # ]
-#
-# [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "21 · Your Own VOD Calculator"
@@ -39,16 +27,13 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Your Own VOD Calculator", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Your Own VOD Calculator",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -78,27 +63,123 @@ def _():
     This notebook goes through the three steps with one file per receiver
     of the demo data. Readers work the same way, with `GNSSDataReader`
     and `ReaderFactory`; the
-    [plugins guide](https://nfb2021.github.io/canvodpy/guides/plugins/)
+    [plugins guide](https://canvodpy.eu/guides/plugins/)
     shows both.
 
     ---
     """
     )
-
     return (mo,)
 
 
 @app.cell
 def _():
-    import _paths
-    from _download import marimo_downloader
+    from canvodpy import demo_data
 
-    _paths.ensure_data(downloader=marimo_downloader)
+    root = demo_data("rinex")
+    root = demo_data("aux")
+    return (root,)
 
 
-# ---------------------------------------------------------------------------
-# Section: what is registered
-# ---------------------------------------------------------------------------
+@app.cell
+def _(root):
+    import os
+    import shutil
+    import tempfile
+    from pathlib import Path
+
+    import yaml
+
+    from canvod.utils import testing
+
+    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
+    config_dir = work / "config"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    aux_data_dir = work / "aux_data"
+    aux_data_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
+    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
+
+    settings = {
+        "sites": {
+            "rosalia_v3_04": {
+                "store_description": (
+                    "Reference GNSS-T store for the Rosalia beech forest site,"
+                    " built live from real RINEX v3.04 raw data (DOY 2025-001)."
+                ),
+                "description": (
+                    "Beech forest GNSS-T research site, reference test dataset."
+                ),
+                "country": "AT",
+                "latitude": 47.7,
+                "longitude": 16.3,
+                "altitude_m": 680.0,
+                "gnss_site_data_root": str(root / "rinex_v3_04" / "01_Rosalia"),
+                "receivers": {
+                    "reference_01": {
+                        "type": "reference",
+                        "directory": "01_reference/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "paired_canopies": "all",
+                        "description": "Rosalia reference receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                    "canopy_01": {
+                        "type": "canopy",
+                        "directory": "02_canopy/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "description": "Rosalia canopy receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                },
+                "vod_analyses": {
+                    "canopy_01_vs_reference_01": {
+                        "canopy_receiver": "canopy_01",
+                        "reference_receiver": "reference_01",
+                    }
+                },
+            }
+        },
+        "processing": {
+            "metadata": {
+                "author": testing.PERSON_NAME,
+                "email": testing.PERSON_EMAIL,
+                "orcid": testing.PERSON_ORCID,
+                "institution": testing.INSTITUTION,
+                "institution_ror": "https://ror.org/" + testing.INSTITUTION_ROR,
+                "department": testing.DEPARTMENT,
+                "research_group": testing.RESEARCH_GROUP,
+                "website": testing.WEBSITE,
+                "license": "CC-BY-4.0",
+                "publisher": testing.PUBLISHER,
+                "publisher_url": testing.WEBSITE,
+                "naming_authority": testing.NAMING_AUTHORITY,
+            },
+            "references": {
+                "software_repository": "https://github.com/TUW-GEO/canvodpy",
+                "documentation": "https://github.com/TUW-GEO/canvodpy/tree/main/docs",
+                "publications": [],
+                "funding": [],
+            },
+            "storage": {
+                "stores_root_dir": str(work / "stores"),
+                "aux_data_dir": str(aux_data_dir),
+                "shared_aux_cache_dir": None,
+            },
+            "logging": {"log_dir": str(work / "logs")},
+        },
+    }
+    (config_dir / "canvod-settings.yaml").write_text(
+        yaml.safe_dump(settings, sort_keys=False)
+    )
+    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
+    return (work,)
 
 
 @app.cell
@@ -123,19 +204,12 @@ def _(mo):
     `VODFactory` holds when canVODpy is imported.
     """
     )
-
     return (VODFactory,)
-
-
-# ---------------------------------------------------------------------------
-# Section: paired datasets
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## The data
 
     A calculator gets two datasets: the canopy receiver's and the
@@ -143,59 +217,41 @@ def _(mo):
     dimensions `(epoch, sid)`. As in
     [10 · VOD Retrieval](./10_vod_retrieval.py), we read one file per
     receiver and add the angles of each satellite from the orbits.
-    """
-    )
-
+    """)
     return
 
 
 @app.cell
-def _():
+def _(root, work):
     import numpy as np
     import xarray as xr
-    from canvod.auxiliary import (
-        ECEFPosition,
-        add_spherical_coords_to_dataset,
-        compute_spherical_coordinates,
-    )
+    from canvod.auxiliary import ECEFPosition
+    from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
     from canvod.readers import Rnxv3Obs
 
-    from _paths import AUX_DATA_DIR, ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR
+    canopy_dir = root / "rinex_v3_04" / "01_Rosalia" / "02_canopy" / "01_GNSS" / "01_raw"
+    ref_dir = root / "rinex_v3_04" / "01_Rosalia" / "01_reference" / "01_GNSS" / "01_raw"
 
-    _aux = xr.open_zarr(str(AUX_DATA_DIR / "aux_2025001.zarr"), decode_timedelta=False)
+    aux_root = work / "aux_data"
+    provider = AgencyEphemerisProvider(
+        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
+    )
+    provider.preprocess_day("2025001", None)
 
     def _with_angles(fpath):
         ds = Rnxv3Obs(fpath=fpath).to_ds(
             keep_data_vars=["SNR"], write_global_attrs=True
         )
-        sids = np.intersect1d(ds.sid.values, _aux.sid.values)
-        epochs = np.intersect1d(ds.epoch.values, _aux.epoch.values)
-        aux = _aux.sel(sid=sids, epoch=epochs)
-        r, theta, phi = compute_spherical_coordinates(
-            aux["X"].values,
-            aux["Y"].values,
-            aux["Z"].values,
-            ECEFPosition.from_ds_metadata(ds),
-        )
-        return add_spherical_coords_to_dataset(
-            ds.sel(sid=sids, epoch=epochs), r, theta, phi
-        )
+        return provider.augment_dataset(ds, ECEFPosition.from_ds_metadata(ds))
 
-    ds_canopy = _with_angles(min(ROSALIA_CANOPY_DIR.glob("25001/*.rnx")))
-    ds_reference = _with_angles(min(ROSALIA_REFERENCE_DIR.glob("25001/*.rnx")))
-
+    ds_canopy = _with_angles(min(canopy_dir.glob("25001/*.rnx")))
+    ds_reference = _with_angles(min(ref_dir.glob("25001/*.rnx")))
     return ds_canopy, ds_reference, np, xr
-
-
-# ---------------------------------------------------------------------------
-# Section: the calculator
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Step 1: the calculator
 
     A calculator inherits `VODCalculator` and implements one method,
@@ -209,9 +265,7 @@ def _(mo):
     $\cos\theta$ and returns $-\ln(T)$. It is only an example of how a
     calculator is built, not a model to use; replace `calculate_vod()`
     with your own.
-    """
-    )
-
+    """)
     return
 
 
@@ -274,28 +328,19 @@ def _(VODCalculator, ds_canopy, ds_reference, mo):
     ```
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: register and compare
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Step 2: register it in your code
 
     `VODFactory.register()` adds the class under a name of your choice.
     It checks that the class inherits `VODCalculator` and refuses a name
     that is already taken. This notebook passes `replace=True`, so that
     running the cell again replaces the class registered the first time.
-    """
-    )
-
+    """)
     return
 
 
@@ -329,19 +374,15 @@ def _(VODFactory, mo):
     ```
     """
     )
-
     return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     Now both calculators are created by name, in the same way
     `Site(...).vod` creates the calculator it is given:
-    """
-    )
-
+    """)
     return
 
 
@@ -380,13 +421,7 @@ def _(mo, np, vod_slant, vod_tau_omega):
     {_max_diff:.1e}.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: plugin package
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -453,31 +488,23 @@ def _(mo):
 
     Reader plugins use the entry point group `canvodpy.readers` and
     inherit `GNSSDataReader`; the
-    [plugins guide](https://nfb2021.github.io/canvodpy/guides/plugins/)
+    [plugins guide](https://canvodpy.eu/guides/plugins/)
     shows a complete package with a reader and a calculator.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [20 · Batch Processing](./20_workflow_batch_processing.py)
+    | **Next**: [22 · Stores on S3](./22_s3_stores.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

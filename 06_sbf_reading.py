@@ -1,17 +1,13 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-config",
-#   "canvod-readers",
-#   "canvod-utils",
-#   "pooch>=1.6",
-#   "marimo>=0.21.1",
+#   "canvod-config==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvodpy==1.0.0",
+#   "marimo>=0.23.9",
+#   "numpy==2.5.4",
 # ]
-#
-# [tool.uv.sources]
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "06 · SBF Binary Reading"
@@ -20,16 +16,13 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="SBF Binary Reading", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="SBF Binary Reading",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -74,40 +67,28 @@ def _():
 
     """
     )
-
     return (mo,)
 
 
 @app.cell
 def _():
-    import _paths
-    from _download import marimo_downloader
-    _paths.ensure_data(downloader=marimo_downloader)
+    from canvodpy import demo_data
 
-
-# ---------------------------------------------------------------------------
-# Imports and paths
-# ---------------------------------------------------------------------------
+    root = demo_data("sbf")
+    return (root,)
 
 
 @app.cell
-def _():
+def _(root):
     from pathlib import Path
 
-    from _paths import SBF_CANOPY_DIR, SBF_REFERENCE_DIR
-
-    return Path, SBF_CANOPY_DIR, SBF_REFERENCE_DIR
-
-
-# ---------------------------------------------------------------------------
-# Section: SBF vs RINEX
-# ---------------------------------------------------------------------------
+    sbf_canopy = root / "sbf" / "01_Rosalia" / "02_canopy"
+    return (sbf_canopy,)
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## SBF vs RINEX: format comparison
 
     Both formats encode the same fundamental GNSS observables, but they
@@ -128,37 +109,27 @@ def _(mo):
     receiver also logs the MeasExtra block, its CN0HighRes field refines
     this to 1/32 dB-Hz (0.03125 dB-Hz), and the `SbfReader` applies it to
     `SNR` automatically.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: loading a single SBF file
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Loading a single SBF file
 
     The `SbfReader` constructor accepts a `Path` to any `.sbf` file.
     Like `Rnxv3Obs`, it is a frozen Pydantic model that lazily parses
     metadata on construction.
-    """
-    )
-
+    """)
     return
 
 
 @app.cell
-def _(SBF_CANOPY_DIR, mo):
+def _(mo, sbf_canopy):
     from canvod.readers.sbf import SbfReader
 
-    _first_file = sorted(SBF_CANOPY_DIR.glob("25001/*.sbf"))[0]
+    _first_file = sorted(sbf_canopy.glob("25001/*.sbf"))[0]
     sbf_reader = SbfReader(fpath=_first_file)
 
     mo.md(
@@ -170,8 +141,7 @@ def _(SBF_CANOPY_DIR, mo):
     ```
     """
     )
-
-    return SbfReader, sbf_reader
+    return (sbf_reader,)
 
 
 @app.cell
@@ -192,13 +162,7 @@ def _(mo, sbf_reader):
     | **File hash** | `{sbf_reader.file_hash[:16]}...` |
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: SBF header (ReceiverSetup)
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -225,27 +189,18 @@ def _(mo, sbf_reader):
     | **Height** | {_h.height_m} |
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: observation dataset
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Observation dataset
 
     `to_ds()` produces the same `(epoch, sid)` dataset as the RINEX reader.
     The data contract is identical: dimensions, coordinates, attributes, and
     the required `SNR` variable all match.
-    """
-    )
-
+    """)
     return
 
 
@@ -260,14 +215,12 @@ def _(mo, sbf_reader):
     ```
     """
     )
-
     return (ds_sbf,)
 
 
 @app.cell
 def _(ds_sbf):
     ds_sbf
-
     return
 
 
@@ -299,13 +252,7 @@ def _(ds_sbf, mo):
     (enabled by default), both are padded to the same global SID space.
     """
     )
-
     return (np,)
-
-
-# ---------------------------------------------------------------------------
-# Section: SNR quantization
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -330,19 +277,12 @@ def _(ds_sbf, mo, np):
     observed through forest canopies.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: SBF metadata dataset (sbf_obs)
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## SBF metadata: receiver-computed geometry
 
     The key advantage of reading SBF directly (rather than converting to
@@ -369,9 +309,7 @@ def _(mo):
     accuracy.  The canvodpy pipeline can alternatively compute angles from
     **post-processed SP3 orbits** (~2 cm accuracy) via the auxiliary
     package.
-    """
-    )
-
+    """)
     return
 
 
@@ -388,8 +326,7 @@ def _(mo, sbf_reader):
     ```
     """
     )
-
-    return aux_dict, ds_meta, ds_obs
+    return (ds_meta,)
 
 
 @app.cell
@@ -425,13 +362,7 @@ def _(ds_meta, mo, np):
     orbits.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: DOP values
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -464,19 +395,12 @@ def _(ds_meta, mo, np):
     (poor geometry) may produce less reliable VOD estimates.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: comparing SBF and RINEX readers
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Unified reader interface
 
     Both `Rnxv3Obs` and `SbfReader` inherit from the `GNSSDataReader`
@@ -506,21 +430,13 @@ def _(mo):
 
     The orchestrator in canvodpy detects the file format from the extension
     and selects the appropriate reader automatically.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: when to use SBF vs RINEX
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## When to use SBF vs RINEX
 
     | Use case | Recommended format |
@@ -536,30 +452,20 @@ def _(mo):
     for archival.  canvodpy supports both paths: read SBF directly for
     operational processing, or read RINEX for reproducible scientific
     analysis with post-processed orbits.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [05 · RINEX Reading](./05_rinex_reading.py)
     | **Next**: [07 · Satellite Catalog](./07_satellite_catalog.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

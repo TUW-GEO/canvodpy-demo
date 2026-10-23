@@ -1,34 +1,20 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-auxiliary",
-#   "canvod-config",
-#   "canvod-grids",
-#   "canvod-ops",
-#   "canvod-preflight",
-#   "canvod-readers",
-#   "canvod-store",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "canvod-viz",
-#   "canvod-vod",
-#   "canvodpy",
-#   "marimo>=0.21.1",
+#   "canvod-auxiliary==1.0.0",
+#   "canvod-config==1.0.0",
+#   "canvod-grids==1.0.0",
+#   "canvod-ops==1.0.0",
+#   "canvod-preflight==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-store==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvod-viz==1.0.0",
+#   "canvod-vod==1.0.0",
+#   "canvodpy==1.0.0",
+#   "marimo>=0.23.9",
 # ]
-#
-# [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "17 · API Overview"
@@ -37,10 +23,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="API Overview", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="API Overview",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -82,61 +70,53 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Section: CLI
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## CLI: running the pipeline
 
     The recommended way to run canvodpy in production: a single command,
-    resumable, no Python required.
+    no Python required. Each run processes one site and needs either a
+    start date or `--update-to-latest`.
 
     ```bash
     # Process a range
     uv run canvodpy run --site Rosalia --start 2025001 --end 2025007
 
-    # Resume automatically from the last processed date
-    uv run canvodpy run --site Rosalia
+    # Add every file not yet stored, up to the latest day with files
+    uv run canvodpy run --site Rosalia --update-to-latest
 
-    # Multiple sites in one invocation (processed sequentially)
-    uv run canvodpy run --site Rosalia OtherSite
+    # Several sites: one run per site, in a shell loop
+    for site in Rosalia OtherSite; do
+        uv run canvodpy run --site "$site" --update-to-latest
+    done
 
     # Preview without executing
-    uv run canvodpy run --site Rosalia --dry-run
+    uv run canvodpy run --site Rosalia --update-to-latest --dry-run
     ```
 
+    `--update-to-latest` starts on the earliest last stored day among the
+    receivers that have files not yet stored, so files that arrive late for
+    a day already stored are still processed. It prints the dates it chose.
+    On an empty store it stops and asks for `--start`.
+
     The CLI is a thin wrapper around `Site(...).pipeline().process_range()`,
-    with the same code path and the same guarantees. It adds resumability (auto-detects
-    the last committed date in the store), a live progress display, and a
-    few production-oriented flags (`--ephemeris-source`, `--vod-calculator`,
-    `--workers`, `--days-per-batch`).
+    with the same code path and the same guarantees. It adds a live
+    progress display and a few production-oriented flags
+    (`--ephemeris-source`, `--vod-calculator`, `--workers`).
 
     See [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py) for a full
     walkthrough of the flags.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: Site pipeline
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Site pipeline: Python-native scripting
 
     `Site(...).pipeline()` is what the CLI calls internally. Use it
@@ -160,15 +140,8 @@ def _(mo):
     schedule.
 
     See [18 · Site Pipeline](./18_site_pipeline.py) for the full walkthrough.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: factory system
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -216,24 +189,17 @@ def _(mo):
     [21 · Your Own VOD Calculator](./21_plugins.py) shows both ways.
     """
     )
-
-    return GridFactory, ReaderFactory, VODFactory
-
-
-# ---------------------------------------------------------------------------
-# Section: choosing a surface
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Choosing a surface
 
     | If you want to... | Use |
     |-------------------|-----|
-    | Run production ingestion, resumable, from a shell/cron | CLI: `canvodpy run` |
+    | Run production ingestion from a shell/cron, `--update-to-latest` | CLI: `canvodpy run` |
     | Script a run in Python: loop over sites, embed in a notebook | `Site(...).pipeline()` |
     | Recompute VOD separately from ingestion | `Site(...).vod` (`VodComputer`) |
     | Orchestrate with Airflow | The optional `canvod-airflow` extension (`canvodpy.workflows.tasks`) |
@@ -252,30 +218,20 @@ def _(mo):
 
     - [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py)
     - [18 · Site Pipeline](./18_site_pipeline.py)
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [16 · 3D Grid Gallery](./16_grid_3d_gallery.py)
     | **Next**: [18 · Site Pipeline](./18_site_pipeline.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

@@ -48,10 +48,27 @@ Each notebook lists its own dependencies in a PEP 723 header; with
 `--sandbox`, uv installs them into a temporary environment of the notebook,
 so no project environment is needed.
 
+### As a single file
+
+You don't need the repository: give marimo the raw URL of one notebook, and
+`--sandbox` builds a temporary environment from its PEP 723 header:
+
+```bash
+uvx marimo edit --sandbox https://raw.githubusercontent.com/TUW-GEO/canvodpy-demo/main/10_vod_retrieval.py
+```
+
+Every notebook declares its `canvod*` dependencies and fetches its data
+with `canvodpy.demo_data()`. Outside a clone the page has no canVODpy
+theme (`canvod_nordic.css` and `canvod_head.html` are files of the
+repository); everything else works.
+
+marimo notebooks also run in the
+[VS Code marimo extension](https://marketplace.visualstudio.com/items?itemName=marimo-team.vscode-marimo).
+
 ### Inside the canvodpy repository
 
-The notebooks are the `demo/` submodule of canvodpy and use its environment
-and test data:
+The notebooks are the `demo/` submodule of canvodpy and use its
+environment:
 
 ```bash
 git clone --recurse-submodules https://github.com/TUW-GEO/canvodpy.git
@@ -85,25 +102,58 @@ uv run marimo edit demo/10_vod_retrieval.py
 | 19 | `19_workflow_single_day.py` | End-to-end single-day processing | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/19_workflow_single_day.py) |
 | 20 | `20_workflow_batch_processing.py` | Batch processing with Dask | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/20_workflow_batch_processing.py) |
 | 21 | `21_plugins.py` | Your own VOD calculator: register it, compare it, make it a plugin | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/21_plugins.py) |
+| 22 | `22_s3_stores.py` | Stores on S3: credentials, two runs on one store, settings from a store (needs an S3 endpoint, RustFS works) | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/22_s3_stores.py) |
+| 23 | `23_run_dashboard.py` | The run dashboard on an example run history: progress, stage times, resources, problems, comparison by label | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/23_run_dashboard.py) |
 
 ## Test data
 
-The notebooks read [canvodpy-test-data](https://github.com/TUW-GEO/canvodpy-test-data):
-real observations of receiver pairs at four sites in RINEX v3.04, RINEX
-v2.11, stripped RINEX v3.05, SBF and NMEA, with orbit and clock products.
-`_paths.py` finds the data in this order:
+Notebooks that read real GNSS data get it from `canvodpy.demo_data()`,
+which downloads it on first use into your platform's cache folder: Linux
+`~/.cache/canvodpy/demo/2`, macOS `~/Library/Caches/canvodpy/demo/2`,
+Windows `%LOCALAPPDATA%\canvodpy\canvodpy\Cache\demo\2`. The reference
+stores of `demo_data("stores")` go next to it, into
+`demo/stores/<revision>`. Later runs
+reuse the cached copy; no manual download and no cloned test-data
+repository are needed.
 
-| Where | When |
-| ----- | ---- |
-| `../packages/canvod-readers/tests/test_data/` | inside the canvodpy repository |
-| the user cache folder, `canvodpy/` | after a first download |
-| `./test_data/` | after `git clone https://github.com/TUW-GEO/canvodpy-test-data.git test_data` |
-| Zenodo ([doi:10.5281/zenodo.19708759](https://doi.org/10.5281/zenodo.19708759)) | otherwise: downloaded once (about 1.7 GB) and cached |
+The download is about 350 MB and holds the Rosalia, Austria site on DOY
+2025-001 (part of
+[canvodpy-test-data](https://github.com/TUW-GEO/canvodpy-test-data),
+[doi:10.5281/zenodo.19708759](https://doi.org/10.5281/zenodo.19708759)):
+
+- **RINEX v3.04** observations: a full day for the reference and the
+  canopy receiver (about 350 MB once unpacked).
+- **SBF** observations: the first two hours of the day (about 190 MB once
+  unpacked).
+- **Auxiliary data**: CODE final SP3 orbit and CLK clock files for the day
+  and its neighboring days, plus the pre-computed auxiliary Zarr store
+  (about 350 MB once unpacked).
+
+A notebook session writes its settings, stores, logs and auxiliary data
+into a fresh temporary folder, so the cache holds only the downloaded test
+data and is never written to.
+
+Notebook 23 reads an anonymized run history with
+`canvodpy.demo_data("run_history")`: under 1 MB, downloaded once into the
+user cache folder.
 
 ## Contributing
 
 See [CONTRIBUTING.md](https://github.com/TUW-GEO/canvodpy/blob/main/CONTRIBUTING.md)
 in the canvodpy repository.
+
+CI runs every notebook on each pull request and once a week. To run the same
+checks locally:
+
+```bash
+uv run --locked marimo check --strict [0-9][0-9]_*.py   # format; --fix fixes most warnings
+scripts/run_notebooks.sh                                # all notebooks
+scripts/run_notebooks.sh 05 13                          # only these
+```
+
+Notebook 22 needs an S3 endpoint and credentials in the environment; the
+notebook shows how to start a local S3 emulator for it. Every notebook must
+pin the same canVODpy release from PyPI (`"canvodpy==1.0.0"`).
 
 ## Citation
 

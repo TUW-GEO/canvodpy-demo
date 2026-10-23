@@ -1,17 +1,17 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 # ]
 #
 # [tool.marimo.opengraph]
 # title = "01 · Running the Pipeline (CLI)"
-# description = "canvodpy run: the recommended command-line interface for production ingestion. Covers date ranges, auto-resume, multi-site runs, dry-run previews, and the ephemeris-source/VOD-calculator flags."
+# description = "canvodpy run: the recommended command-line interface for production ingestion. Covers date ranges, --update-to-latest, several sites, dry-run previews, and the ephemeris-source/VOD-calculator flags."
 # ///
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="Running the Pipeline (CLI)",
@@ -38,7 +38,7 @@ def _():
     `canvodpy run` is the recommended way to run production ingestion. It
     wraps the exact same code path as `Site(...).pipeline().process_range()`
     (covered in [18 · Site Pipeline](./18_site_pipeline.py)), adding
-    resumability and a live progress display on top.
+    a live progress display on top.
 
     ```bash
     uv run canvodpy run --site Rosalia --start 2025001 --end 2025007
@@ -48,95 +48,83 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Section: basic usage
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Basic usage
 
     ```bash
     # Process a specific range
     uv run canvodpy run --site Rosalia --start 2025001 --end 2025007
 
-    # Process new data only: auto-resume from the last processed date,
-    # end defaults to today. This is what you want in a cron job.
-    uv run canvodpy run --site Rosalia
+    # Add every file not yet stored, up to the latest day with files.
+    # This is what you want in a cron job.
+    uv run canvodpy run --site Rosalia --update-to-latest
 
     # Observation ingestion only, skip VOD calculation
-    uv run canvodpy run --site Rosalia --no-vod
+    uv run canvodpy run --site Rosalia --start 2025001 --end 2025007 --no-vod
 
     # Preview what would be processed, without executing anything
-    uv run canvodpy run --site Rosalia --dry-run
+    uv run canvodpy run --site Rosalia --update-to-latest --dry-run
     ```
 
-    **Auto-resume** is the reason the CLI is recommended over calling
-    `Site.pipeline()` directly for scheduled runs: omit `--start` and the
-    CLI queries the Icechunk store's metadata for the latest committed
-    date and resumes from there. A daily cron entry needs no date-math:
+    Every run needs either `--start` or `--update-to-latest`; a run with
+    neither stops with an error, and so does `--update-to-latest`
+    together with `--start` or `--end`.
+
+    **`--update-to-latest`** finds the dates for you and prints them
+    (`update: 2025001 to 2025007`). It starts on the earliest last stored
+    day among the receivers that have files not yet stored, so files that
+    arrive late for a day already stored are still processed. It ends on
+    the latest day with files. If no receiver has new files, it says so
+    and exits without error; on an empty store it stops and asks for
+    `--start`. A daily cron entry needs no date-math:
 
     ```
-    0 3 * * * cd /path/to/canvodpy && uv run canvodpy run --site Rosalia
+    0 3 * * * cd /path/to/canvodpy && uv run canvodpy run --site Rosalia --update-to-latest
     ```
-    """
-    )
 
+    In Python, `Site(...).pipeline().run(update_to_latest=True)` does the
+    same.
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: multiple sites
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
-    ## Multiple sites in one invocation
+    mo.md(r"""
+    ## Several sites
 
-    `--site` accepts one or more names, processed **sequentially**:
+    Each run processes one site: sites can differ in their dates, data
+    and settings. For several sites, run one after the other in a shell
+    loop:
 
     ```bash
-    uv run canvodpy run --site Rosalia OtherSite ThirdSite
+    for site in Rosalia OtherSite ThirdSite; do
+        uv run canvodpy run --site "$site" --update-to-latest
+    done
     ```
 
-    Each site resolves its own resume point from its own store; sites
-    don't share a date range. The live progress display shows one row per
-    `(site, receiver-group)` pair, known upfront, so a multi-site run
-    shows the full picture from the start rather than only revealing the
-    next site once the previous one finishes.
-    """
-    )
-
+    Each site finds its own dates from its own store. More than one site
+    in a run stops with an error.
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: ephemeris source and VOD calculator
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Choosing ephemeris source and VOD calculator
 
     ```bash
     # Override the configured ephemeris source for this run
-    uv run canvodpy run --site Rosalia --ephemeris-source broadcast
+    uv run canvodpy run --site Rosalia --ephemeris-source broadcast --update-to-latest
 
     # Choose a VOD calculator (choices come from VODFactory.list_available())
-    uv run canvodpy run --site Rosalia --vod-calculator tau_omega
+    uv run canvodpy run --site Rosalia --vod-calculator tau_omega --update-to-latest
     ```
 
     | Flag | Choices | Default |
@@ -147,58 +135,40 @@ def _(mo):
     Both flags are one-off overrides for a single invocation; they don't
     modify `canvod-settings.yaml`. Bake in a value there once you've
     settled on it for a site.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: resources
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
-    ## Resource flags
+    mo.md(r"""
+    ## Workers
 
     ```bash
-    uv run canvodpy run --site Rosalia --workers 8 --days-per-batch 14
+    uv run canvodpy run --site Rosalia --workers 8 --update-to-latest
     ```
 
-    | Flag | Effect |
-    |------|--------|
-    | `--workers` | Number of parallel workers (default: from config's `resource_mode`) |
-    | `--days-per-batch` | Number of DOYs pooled into one parallel processing wave |
+    `--workers` sets the number of worker processes. Without it, the
+    number comes from the resource settings in `canvod-settings.yaml`.
 
-    `--days-per-batch` trades responsiveness for throughput: a bigger
-    batch keeps the worker pool saturated longer per invocation (fewer
-    sequential aux-data-prep stalls between waves), but the live progress
-    display can only advance once each batch's files finish writing, so
-    very large batches on a big backfill can look quiet for a while before
-    a burst of progress lands. Start small (`1`–`7`) and increase once you
-    have a feel for how long a batch takes on your hardware.
-    """
-    )
-
+    The run commits the days to the store in units of days, one commit
+    per unit. It sizes the units itself from its memory budget
+    (`processing.params.max_memory_gb`, or without it the memory
+    available when the run starts), at most 31 days; a run of one new day
+    is a unit of one day. The progress display advances when a unit is
+    committed, so a long backfill can look quiet for a while before the
+    days of a unit land together.
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: config overlay
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Config overlay
 
     ```bash
-    uv run canvodpy run --site Rosalia --config cluster-overlay.yaml
+    uv run canvodpy run --site Rosalia --config cluster-overlay.yaml --update-to-latest
     ```
 
     Applies an overlay YAML on top of the main `canvod-settings.yaml`:
@@ -206,29 +176,19 @@ def _(mo):
     is read from the main file. Useful on shared/HPC machines where
     resource limits vary per job but the base configuration is
     version-controlled.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Next**: [02 · Configuration](./02_configuration.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

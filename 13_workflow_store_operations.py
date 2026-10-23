@@ -1,36 +1,23 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-auxiliary",
-#   "canvod-config",
-#   "canvod-grids",
-#   "canvod-ops",
-#   "canvod-preflight",
-#   "canvod-readers",
-#   "canvod-store",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "canvod-viz",
-#   "canvod-vod",
-#   "canvodpy",
-#   "pooch>=1.6",
+#   "canvod-auxiliary==1.0.0",
+#   "canvod-config==1.0.0",
+#   "canvod-grids==1.0.0",
+#   "canvod-ops==1.0.0",
+#   "canvod-preflight==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-store==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvod-viz==1.0.0",
+#   "canvod-vod==1.0.0",
+#   "canvodpy==1.0.0",
 #   "pyyaml>=6.0",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
+#   "xarray==2026.9.0",
+#   "numpy==2.5.4",
 # ]
-#
-# [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "13 · Store Operations"
@@ -39,7 +26,7 @@
 
 import marimo
 
-__generated_with = "0.24.0"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="Store Operations",
@@ -68,13 +55,31 @@ def _():
     do to a real store: branching, writing, commit history, time travel,
     native rich rendering, and store-wide provenance metadata.
 
-    Every operation below runs against the **same live store** built for
-    [11 · Icechunk Store](./11_icechunk_store.py); nothing here is illustrative-only.
+    Every operation below runs against a real store, the one
+    [11 · Icechunk Store](./11_icechunk_store.py) shows; nothing here is illustrative-only.
 
-    **Test data**: this notebook builds the store live, at run time, by
-    running the real `canvodpy` CLI against real Rosalia RINEX v3.04 data
-    for DOY 2025-001; no pre-built store fixture is shipped (see
-    `_live_store.py` for why).
+    **Test data**: a copy of the GNSS store that `canvodpy run` writes
+    from the Rosalia RINEX v3.04 day, 2025-01-01, downloaded with
+    `canvodpy.demo_data("stores")`, canVODpy's published reference store.
+    The operations below write to the store, so the notebook works on a
+    copy in a temporary folder and the downloaded store stays as it is.
+
+    **Settings**: reading a store and moving branches need no settings,
+    but writing a group does, and the settings must match the ones the
+    store was written with. Write them from the store once before this
+    notebook, into a folder of their own, and point canVODpy at it:
+
+    ```bash
+    canvodpy config init --config-dir ~/canvodpy-demo-settings \
+        --from-store <cache>/stores/rosalia_rinex_v3_04/gnss
+    export CANVOD_CONFIG_DIR=~/canvodpy-demo-settings
+    ```
+
+    `<cache>` is the folder `canvodpy.demo_data("stores")` returns. Fill
+    in the values the file leaves as `TODO` (your name, email and
+    folders). Without settings, the write below stops with an error that
+    says so; with settings from `canvodpy config init` alone, the store
+    refuses the write because its site is not in them.
 
     ---
 
@@ -84,20 +89,19 @@ def _():
 
 
 @app.cell
-def _():
-    import _paths
-    from _download import marimo_downloader
-    _paths.ensure_data(downloader=marimo_downloader)
-    return
-
-
-@app.cell
 def _(mo):
-    from canvod.store import MyIcechunkStore
+    import shutil
+    import tempfile
+    from pathlib import Path
 
-    from _live_store import build_rosalia_store, get_pipeline_command, get_pipeline_output
+    from canvod.store import open_gnss_store
+    from canvodpy import demo_data
 
-    store, store_path = build_rosalia_store()
+    # The operations below write: work on a copy of the downloaded store.
+    _published = demo_data("stores") / "stores" / "rosalia_rinex_v3_04" / "gnss"
+    store_path = Path(tempfile.mkdtemp(prefix="canvodpy-demo-")) / "gnss"
+    shutil.copytree(_published, store_path)
+    store = open_gnss_store(store_path)
 
     _branches = store.get_branch_names()
     _groups = store.list_groups()
@@ -108,9 +112,9 @@ def _(mo):
     ## Opening and inspecting a store
 
     ```python
-    from canvod.store import MyIcechunkStore
+    from canvod.store import open_gnss_store
 
-    store = MyIcechunkStore(store_path=Path("stores/rosalia_rinex"))
+    store = open_gnss_store(store_path)  # a copy of demo_data("stores")
     ```
 
     | Property | Value |
@@ -122,23 +126,6 @@ def _(mo):
 
     The `source_format` root attribute indicates whether data
     originated from RINEX or SBF files.
-
-    This store was built by running the real `canvodpy` CLI as a
-    subprocess (marimo notebooks can't run shell commands directly) --
-    here is the exact command that produced it:
-
-    ```bash
-    {get_pipeline_command()}
-    ```
-
-    <details>
-    <summary>CLI output (captured after the run finished -- not live)</summary>
-
-    ```text
-    {get_pipeline_output()}
-    ```
-
-    </details>
     """
     )
     return store, store_path
@@ -352,61 +339,46 @@ def _(demo_branch, history_table):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Writing a new group on the branch
+    ## Changing data on the branch
 
     A small synthetic dataset, built inline (not real GNSS data) purely
     to demonstrate `write_initial_group()` without touching any of the
     real ingested groups. Written to the `demo/scratch` branch, so
     `main` is completely unaffected. Its epochs are marked as GPS time
     (`epoch.attrs["time_system"] = "GPS"`): a store holds GPS time only and
-    refuses data that doesn't record its time scale.
+    refuses data that doesn't record its time scale. The write takes its
+    chunks and compression from your settings file, so it needs the
+    settings written from the store (see the top of this notebook).
     """)
     return
 
 
 @app.cell
 def _(demo_branch, store):
-    import numpy as np
-    import xarray as _xr
+    from canvod.ops import assign_grid_cells_in_store
 
-    def _make_demo_dataset():
-        sids = ["G01|L1|C", "G02|L1|C", "E01|L1|C"]
-        epochs = np.datetime64("2025-01-01T00:00:00") + np.arange(60) * np.timedelta64(
-            5, "s"
-        )
-        rng = np.random.default_rng(42)
-        snr = rng.uniform(30.0, 50.0, (60, len(sids))).astype(np.float32)
-        ds = _xr.Dataset(
-            {"S1C": (("epoch", "sid"), snr)},
-            coords={"epoch": epochs, "sid": sids},
-        )
-        # The store holds GPS time only, and refuses epochs that don't
-        # record their time scale.
-        ds["epoch"].attrs["time_system"] = "GPS"
-        ds.attrs["File Hash"] = "demo0000deadbeef"
-        return ds
-
-    demo_group = "demo_scratch_group"
-    if not store.group_exists(demo_group, branch=demo_branch):
-        store.write_initial_group(
-            _make_demo_dataset(), group_name=demo_group, branch=demo_branch
-        )
+    demo_group = "canopy_01"
+    assign_grid_cells_in_store(
+        store,
+        demo_group,
+        grid_type="equal_area",
+        angular_resolution=5.0,
+        branch=demo_branch,
+    )
     return (demo_group,)
 
 
 @app.cell
 def _(demo_branch, demo_group, mo, store):
+    def _cells(branch):
+        _names = store.read_group(demo_group, branch=branch).data_vars
+        return ", ".join(f"`{v}`" for v in _names if v.startswith("cell_id")) or "none"
+
     mo.md(f"""
-    **Groups on `{demo_branch}`**: {
-        ", ".join(f"`{g}`" for g in store.get_group_names(branch=demo_branch)[demo_branch])
-    }
+    **Grid cells in `{demo_group}` on `{demo_branch}`**: {_cells(demo_branch)}
 
-    **Groups on `main`**: {
-        ", ".join(f"`{g}`" for g in store.list_groups(branch="main"))
-    } -- unchanged, `write_initial_group()` on a branch never touches `main`.
-
-    (`{demo_group}` on `{demo_branch}` is a small synthetic dataset built
-    inline purely to demonstrate the write path -- not real GNSS data.)
+    **Grid cells in `{demo_group}` on `main`**: {_cells("main")} -- unchanged,
+    a write on a branch never touches `main`.
 
     And the graph once more -- `demo/scratch` now has one extra commit
     that `main` doesn't:
@@ -581,21 +553,24 @@ def _(mo):
     mo.md(r"""
     ## Creating a new store
 
-    The `create_gnss_store()` and `create_vod_store()` factory functions
-    initialise new Icechunk repositories with the appropriate configuration:
+    You don't create a store yourself: `canvodpy run` creates a site's
+    stores when it first writes data, together with their metadata and
+    the Icechunk settings in `processing.icechunk`. Opening a store never
+    creates one, so a mistyped path fails with a `FileNotFoundError`
+    instead of leaving an empty store behind:
 
     ```python
-    from canvod.store import create_gnss_store, create_vod_store
+    from canvod.store import open_gnss_store, open_vod_store
 
-    # For raw observation data
-    gnss_store = create_gnss_store(Path("/data/my_site/observations.icechunk"))
+    # Raw observation data
+    gnss_store = open_gnss_store(Path("/data/my_site/rinex"))
 
-    # For VOD products
-    vod_store = create_vod_store(Path("/data/my_site/vod.icechunk"))
+    # VOD products
+    vod_store = open_vod_store(Path("/data/my_site/vod"))
     ```
 
-    The store opened at the top of this notebook was created this way
-    internally, by the `canvodpy` CLI pipeline.
+    The store opened at the top of this notebook was created by the
+    `canvodpy run` at the start.
     """)
     return
 
@@ -936,7 +911,7 @@ def _(mo, store_path):
     else:
         store_metadata = None
         full_metadata_table = mo.md("No store metadata found.")
-    return full_metadata_table, store_metadata
+    return full_metadata_table, metadata_exists
 
 
 @app.cell
@@ -952,32 +927,32 @@ def _(mo):
 
     All of the above is `canvod-store-metadata`'s own display format. For
     interop with STAC-based tooling (catalog browsers, `stac-fastapi`,
-    `pystac`), `to_stac_collection()` converts the same metadata into a
-    STAC 1.1 Collection dict **in memory** -- no file write required. A
-    JSON-string convenience wrapper, `to_stac_collection_json()`, is also
-    available for cases that want the serialized form directly (display,
-    hashing, sending over the wire).
+    `pystac`), `store_item()` describes `main` of one store as a STAC 1.1
+    Item **in memory** -- no file write required. It returns a
+    `pystac.Item` with a point at the site, the time range of the data,
+    the receivers with their positions, and one asset per stored dataset;
+    `.to_dict()` gives the serialized JSON.
 
     ```python
-    from canvod.store_metadata import to_stac_collection, to_stac_collection_json
+    from canvod.store_metadata import store_item
 
-    collection = to_stac_collection(meta)          # dict
-    as_json = to_stac_collection_json(meta)         # str
-
-    # To persist it to disk instead: write_stac_collection(store_path)
+    item = store_item(store_path)          # pystac.Item
+    as_json = json.dumps(item.to_dict())    # str
     ```
     """)
     return
 
 
 @app.cell
-def _(mo, store_metadata):
-    from canvod.store_metadata import to_stac_collection_json
+def _(metadata_exists, mo, store_path):
+    import json
+
+    from canvod.store_metadata import store_item
 
     _stac_json = (
         "No store metadata found."
-        if store_metadata is None
-        else to_stac_collection_json(store_metadata)
+        if not metadata_exists(store_path)
+        else json.dumps(store_item(store_path).to_dict(), indent=2, default=str)
     )
 
     mo.md(
@@ -1069,18 +1044,6 @@ def _(mo):
     # first, last or middle value, as integer_method sets.
     # sid-only coords (e.g. sv, band) are preserved unchanged.
     ```
-
-    #### Quick-look: `store.safe_temporal_aggregate()`
-
-    For interactive exploration, the store provides a convenience method:
-
-    ```python
-    ds_agg = store.safe_temporal_aggregate("canopy_01", freq="1D")
-    ```
-
-    This uses xarray's `.resample()` which preserves the `sid` dimension
-    (each satellite is aggregated independently).  For production
-    analyses, prefer `TemporalAggregate`.
 
     #### Anti-pattern: naive resampling
 

@@ -1,36 +1,24 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-auxiliary",
-#   "canvod-config",
-#   "canvod-grids",
-#   "canvod-ops",
-#   "canvod-preflight",
-#   "canvod-readers",
-#   "canvod-store",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "canvod-viz",
-#   "canvod-vod",
-#   "canvodpy",
+#   "canvod-auxiliary==1.0.0",
+#   "canvod-config==1.0.0",
+#   "canvod-grids==1.0.0",
+#   "canvod-ops==1.0.0",
+#   "canvod-preflight==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-store==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvod-viz==1.0.0",
+#   "canvod-vod==1.0.0",
+#   "canvodpy==1.0.0",
 #   "zarr>=3.1.2",
-#   "pooch>=1.6",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
+#   "numpy==2.5.4",
+#   "xarray==2026.9.0",
+#   "pyyaml==6.0.3",
 # ]
-#
-# [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "19 · Single-Day Workflow"
@@ -39,10 +27,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Single-Day Workflow", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Single-Day Workflow",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -76,20 +66,16 @@ def _():
 
     """
     )
-
     return (mo,)
 
 
 @app.cell
 def _():
-    import _paths
-    from _download import marimo_downloader
-    _paths.ensure_data(downloader=marimo_downloader)
+    from canvodpy import demo_data
 
-
-# ---------------------------------------------------------------------------
-# Setup
-# ---------------------------------------------------------------------------
+    root = demo_data("rinex")
+    root = demo_data("aux")
+    return (root,)
 
 
 @app.cell
@@ -98,20 +84,122 @@ def _():
 
     import numpy as np
     import xarray as xr
-    from _paths import AUX_DATA_DIR, ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR
 
-    return AUX_DATA_DIR, Path, ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, np, xr
-
-
-# ---------------------------------------------------------------------------
-# Step 1: discover files
-# ---------------------------------------------------------------------------
+    return np, xr
 
 
 @app.cell
-def _(ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, mo):
-    _can_files = sorted(ROSALIA_CANOPY_DIR.glob("25001/*.rnx"))
-    _ref_files = sorted(ROSALIA_REFERENCE_DIR.glob("25001/*.rnx"))
+def _(root):
+    import os
+    import shutil
+    import tempfile
+    import pathlib
+
+    import yaml
+
+    from canvod.utils import testing
+
+    work = pathlib.Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
+    config_dir = work / "config"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    aux_data_dir = work / "aux_data"
+    aux_data_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
+    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
+
+    settings = {
+        "sites": {
+            "rosalia_v3_04": {
+                "store_description": (
+                    "Reference GNSS-T store for the Rosalia beech forest site,"
+                    " built live from real RINEX v3.04 raw data (DOY 2025-001)."
+                ),
+                "description": (
+                    "Beech forest GNSS-T research site, reference test dataset."
+                ),
+                "country": "AT",
+                "latitude": 47.7,
+                "longitude": 16.3,
+                "altitude_m": 680.0,
+                "gnss_site_data_root": str(root / "rinex_v3_04" / "01_Rosalia"),
+                "receivers": {
+                    "reference_01": {
+                        "type": "reference",
+                        "directory": "01_reference/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "paired_canopies": "all",
+                        "description": "Rosalia reference receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                    "canopy_01": {
+                        "type": "canopy",
+                        "directory": "02_canopy/01_GNSS/01_raw",
+                        "reader_format": "rinex3",
+                        "description": "Rosalia canopy receiver (test data)",
+                        "metadata": {
+                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
+                            "firmware_version": "4.14.4",
+                        },
+                    },
+                },
+                "vod_analyses": {
+                    "canopy_01_vs_reference_01": {
+                        "canopy_receiver": "canopy_01",
+                        "reference_receiver": "reference_01",
+                    }
+                },
+            }
+        },
+        "processing": {
+            "metadata": {
+                "author": testing.PERSON_NAME,
+                "email": testing.PERSON_EMAIL,
+                "orcid": testing.PERSON_ORCID,
+                "institution": testing.INSTITUTION,
+                "institution_ror": "https://ror.org/" + testing.INSTITUTION_ROR,
+                "department": testing.DEPARTMENT,
+                "research_group": testing.RESEARCH_GROUP,
+                "website": testing.WEBSITE,
+                "license": "CC-BY-4.0",
+                "publisher": testing.PUBLISHER,
+                "publisher_url": testing.WEBSITE,
+                "naming_authority": testing.NAMING_AUTHORITY,
+            },
+            "references": {
+                "software_repository": "https://github.com/TUW-GEO/canvodpy",
+                "documentation": "https://github.com/TUW-GEO/canvodpy/tree/main/docs",
+                "publications": [],
+                "funding": [],
+            },
+            "storage": {
+                "stores_root_dir": str(work / "stores"),
+                "aux_data_dir": str(aux_data_dir),
+                "shared_aux_cache_dir": None,
+            },
+            "logging": {"log_dir": str(work / "logs")},
+        },
+    }
+    (config_dir / "canvod-settings.yaml").write_text(
+        yaml.safe_dump(settings, sort_keys=False)
+    )
+    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
+    return (work,)
+
+
+@app.cell
+def _(root):
+    canopy_dir = root / "rinex_v3_04" / "01_Rosalia" / "02_canopy" / "01_GNSS" / "01_raw"
+    ref_dir = root / "rinex_v3_04" / "01_Rosalia" / "01_reference" / "01_GNSS" / "01_raw"
+    return canopy_dir, ref_dir
+
+
+@app.cell
+def _(canopy_dir, mo, ref_dir):
+    _can_files = sorted(canopy_dir.glob("25001/*.rnx"))
+    _ref_files = sorted(ref_dir.glob("25001/*.rnx"))
 
     mo.md(
         f"""
@@ -123,8 +211,8 @@ def _(ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, mo):
 
     | Receiver | Directory | Files found |
     |----------|-----------|-------------|
-    | **Canopy** | `{ROSALIA_CANOPY_DIR}/25001/` | {len(_can_files)} |
-    | **Reference** | `{ROSALIA_REFERENCE_DIR}/25001/` | {len(_ref_files)} |
+    | **Canopy** | `{canopy_dir}/25001/` | {len(_can_files)} |
+    | **Reference** | `{ref_dir}/25001/` | {len(_ref_files)} |
 
     The number of files per day depends on the receiver's file duration
     setting.  This test data has **{len(_can_files)} files** per receiver.
@@ -133,22 +221,16 @@ def _(ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, mo):
     Last file: `{_can_files[-1].name if _can_files else "none"}`
     """
     )
-
     return
 
 
-# ---------------------------------------------------------------------------
-# Step 2: read files
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, mo, xr):
+def _(canopy_dir, mo, ref_dir, xr):
     from canvod.readers import Rnxv3Obs
 
     # Read first 4 files (one hour) for demonstration
-    _can_files = sorted(ROSALIA_CANOPY_DIR.glob("25001/*.rnx"))[:4]
-    _ref_files = sorted(ROSALIA_REFERENCE_DIR.glob("25001/*.rnx"))[:4]
+    _can_files = sorted(canopy_dir.glob("25001/*.rnx"))[:4]
+    _ref_files = sorted(ref_dir.glob("25001/*.rnx"))[:4]
 
     _can_datasets = [
         Rnxv3Obs(fpath=f).to_ds(keep_data_vars=["SNR"], write_global_attrs=True)
@@ -187,46 +269,26 @@ def _(ROSALIA_CANOPY_DIR, ROSALIA_REFERENCE_DIR, mo, xr):
     | **Variables** | {list(ds_canopy.data_vars)} | {list(ds_reference.data_vars)} |
     """
     )
-
-    return Rnxv3Obs, ds_canopy, ds_reference
-
-
-# ---------------------------------------------------------------------------
-# Step 3: augment with satellite geometry
-# ---------------------------------------------------------------------------
+    return ds_canopy, ds_reference
 
 
 @app.cell
-def _(AUX_DATA_DIR, ds_canopy, ds_reference, mo, np, xr):
-    from canvod.auxiliary import (
-        ECEFPosition,
-        add_spherical_coords_to_dataset,
-        compute_spherical_coordinates,
-    )
+def _(ds_canopy, ds_reference, mo, work):
+    from canvod.auxiliary import ECEFPosition
+    from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
 
-    _aux = xr.open_zarr(
-        str(AUX_DATA_DIR / "aux_2025001.zarr"),
-        decode_timedelta=False,
-        consolidated=False,
+    aux_root = work / "aux_data"
+    provider = AgencyEphemerisProvider(
+        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
     )
+    provider.preprocess_day("2025001", None)
 
-    def _augment(ds, aux):
+    def _augment(ds):
         """Augment a dataset with satellite geometry."""
-        rx = ECEFPosition.from_ds_metadata(ds)
-        shared_s = np.intersect1d(ds.sid.values, aux.sid.values)
-        shared_e = np.intersect1d(ds.epoch.values, aux.epoch.values)
-        aux_sel = aux.sel(sid=shared_s, epoch=shared_e)
-        ds_sel = ds.sel(sid=shared_s, epoch=shared_e)
-        r, theta, phi = compute_spherical_coordinates(
-            aux_sel["X"].values,
-            aux_sel["Y"].values,
-            aux_sel["Z"].values,
-            rx,
-        )
-        return add_spherical_coords_to_dataset(ds_sel, r, theta, phi)
+        return provider.augment_dataset(ds, ECEFPosition.from_ds_metadata(ds))
 
-    ds_can_aug = _augment(ds_canopy, _aux)
-    ds_ref_aug = _augment(ds_reference, _aux)
+    ds_can_aug = _augment(ds_canopy)
+    ds_ref_aug = _augment(ds_reference)
 
     mo.md(
         f"""
@@ -237,7 +299,7 @@ def _(AUX_DATA_DIR, ds_canopy, ds_reference, mo, np, xr):
     angle ($\\theta$), and azimuth ($\\phi$).
 
     The transformation chain:
-    1. Load pre-computed auxiliary Zarr (SP3 → Hermite interpolation → 5s grid)
+    1. Compute satellite positions from the SP3/CLK files (SP3 → Hermite interpolation → 5s grid)
     2. Extract receiver ECEF position from RINEX header
     3. Convert satellite ECEF → receiver-local ENU → spherical
 
@@ -250,19 +312,7 @@ def _(AUX_DATA_DIR, ds_canopy, ds_reference, mo, np, xr):
     Both datasets now contain `SNR`, `theta`, `phi`, and `r`.
     """
     )
-
-    return (
-        ECEFPosition,
-        add_spherical_coords_to_dataset,
-        compute_spherical_coordinates,
-        ds_can_aug,
-        ds_ref_aug,
-    )
-
-
-# ---------------------------------------------------------------------------
-# Step 4: compute VOD
-# ---------------------------------------------------------------------------
+    return ds_can_aug, ds_ref_aug
 
 
 @app.cell
@@ -306,20 +356,13 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     | **Range** | [{np.nanmin(_vod[_valid]):.4f}, {np.nanmax(_vod[_valid]):.4f}] |
     """
     )
-
-    return TauOmegaZerothOrder, ds_vod
+    return (ds_vod,)
 
 
 @app.cell
 def _(ds_vod):
     ds_vod
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Step 5 (optional): grid assignment
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -368,56 +411,39 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     limited by satellite geometry and horizon obstructions.
     """
     )
-
-    return (ds_vod_gridded,)
-
-
-# ---------------------------------------------------------------------------
-# Summary
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Pipeline summary
 
     | Step | Function | Input | Output |
     |------|----------|-------|--------|
     | 1 | `glob()` | Directory path | File list |
     | 2 | `Rnxv3Obs().to_ds()` + `xr.concat()` | RINEX files | `xr.Dataset(epoch, sid)` |
-    | 3 | `compute_spherical_coordinates()` | Dataset + aux Zarr | Dataset + θ, φ, r |
+    | 3 | `AgencyEphemerisProvider.augment_dataset()` | Dataset + SP3/CLK | Dataset + θ, φ, r |
     | 4 | `TauOmegaZerothOrder.from_datasets()` | Canopy + reference | VOD dataset |
     | 5 | `add_cell_ids_to_ds_fast()` | VOD dataset + grid | VOD + cell_id |
 
     Each step can be run independently, inspected, and debugged.
     `Site.pipeline()` and the `canvodpy run` CLI wrap these exact same
     steps in a more convenient interface.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [18 · Site Pipeline](./18_site_pipeline.py)
     | **Next**: [20 · Batch Processing](./20_workflow_batch_processing.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

@@ -1,7 +1,7 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 # ]
 #
 # [tool.marimo.opengraph]
@@ -11,10 +11,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Batch Processing Workflows", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Batch Processing Workflows",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -47,19 +49,12 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Section: multi-day processing
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Multi-day processing
 
     The `Pipeline.process_range()` method iterates over a date range
@@ -82,25 +77,18 @@ def _(mo):
     | `start` | First date (YYYYDOY format) |
     | `end` | Last date (YYYYDOY format, inclusive) |
 
-    The pipeline writes each day to the Icechunk store itself and
-    yields the days of a batch once the whole batch is written.  It
-    holds the days of one batch in memory at a time; `days_per_batch`
-    sets their number (default 1).
-    """
-    )
-
+    The pipeline writes the days to the Icechunk store itself, in
+    units of days with one commit per unit, and yields the days of a
+    unit once the whole unit is written.  It sizes the units from its
+    memory budget (`max_memory_gb`), at most 31 days; a range of one
+    day is a unit of one day.
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: ephemeris agencies
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Choosing ephemeris agencies
 
     Different analysis centres produce orbit products with varying
@@ -139,21 +127,13 @@ def _(mo):
     The practical difference is **availability**: if one agency's FTP
     server is down, switch to another.  All final products use the
     same satellite laser ranging and VLBI calibration data.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: temporal aggregation
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Temporal aggregation
 
     `canvodpy run`, `Site(...).pipeline()` and Airflow store observations
@@ -223,21 +203,13 @@ def _(mo):
     op = TemporalAggregate(freq="1min", method="mean", integer_method="first")
     ds_aggregated, result = op(ds)
     ```
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: grid configuration
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Grid configuration
 
     `canvodpy run` assigns grid cells only if `processing.preprocessing`
@@ -270,21 +242,13 @@ def _(mo):
     | 2° | 6,563 | Standard analysis |
     | 5° | 1,051 | Robust averages |
     | 10° | 263 | Coarse monitoring |
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: resource management
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Resource management
 
     For long-running batch jobs, these arguments limit how much of
@@ -293,7 +257,7 @@ def _(mo):
     ```python
     with site.pipeline(
         n_workers=4,           # worker processes
-        days_per_batch=2,      # days the workers process together
+        max_memory_gb=16,      # memory budget of the run
         threads_per_worker=1,  # threads of numerical libraries per worker
     ) as pipe:
         for date, data in pipe.process_range("2025001", "2025365"):
@@ -303,29 +267,21 @@ def _(mo):
     | Argument | Default | Description |
     |----------|---------|-------------|
     | `n_workers` | from the settings | Number of worker processes |
-    | `days_per_batch` | from the settings (1) | Days the workers process together |
+    | `max_memory_gb` | from the settings (none: the memory available at the start) | Memory budget of the run |
     | `threads_per_worker` | from the settings (1) | Threads that numerical libraries use in each worker |
 
     The CPU cores and the priority of the workers come from
     `cpu_affinity` and `nice_priority` under `processing.params` in
-    `canvod-settings.yaml`.  canVODpy doesn't limit memory; to lower
-    the memory a run needs, use fewer workers or a smaller
-    `days_per_batch`.
-    """
-    )
-
+    `canvod-settings.yaml`.  The run sizes the workers and its units
+    of days to fit the memory budget, and stops before it reads a
+    file if not even one worker fits with one day.
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: monitoring
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Monitoring long-running batches
 
     Every pipeline stage writes a timing event to the run's
@@ -338,30 +294,20 @@ def _(mo):
     canvodpy dashboard                      # log directory from canvod-settings.yaml
     canvodpy dashboard --logs-dir /path/to/logs   # or an explicit one
     ```
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [19 · Single-Day Workflow](./19_workflow_single_day.py)
     | **Next**: [21 · Your Own VOD Calculator](./21_plugins.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

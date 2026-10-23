@@ -1,16 +1,11 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-config",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "marimo>=0.21.1",
+#   "canvod-config==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "marimo>=0.23.9",
 # ]
-#
-# [tool.uv.sources]
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "12 · Store Metadata & FAIR Compliance"
@@ -264,6 +259,21 @@ def _(mo):
     ```
 
     The history of a store is its commit log; `show_metadata()` lists it.
+
+    ## Stores on S3
+
+    The metadata functions also take an `s3://bucket/prefix` URL, so you
+    can read the metadata of a shared store without copying it:
+
+    ```python
+    show_metadata("s3://example-bucket/stores/ExampleSite/gnss")
+    ```
+
+    Credentials, region and endpoint come only from the environment
+    (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` or `AWS_PROFILE`,
+    `AWS_REGION`, and `AWS_ENDPOINT_URL` for storage that isn't AWS) or
+    from `~/.aws/credentials`, never from the settings or the store.
+    Runs write stores on S3 too: [22 · Stores on S3](./22_s3_stores.py).
 
     ## Changing the description
 

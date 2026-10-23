@@ -1,17 +1,13 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-config",
-#   "canvod-utils",
+#   "canvod-config==1.0.0",
+#   "canvod-utils==1.0.0",
 #   "numpy>=1.24.0",
 #   "xarray>=2024.1.0",
 #   "zarr>=3.1.2",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 # ]
-#
-# [tool.uv.sources]
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "02 · Configuration & Utilities"
@@ -20,10 +16,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Configuration & Utilities", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Configuration & Utilities",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -57,19 +55,12 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Section: configuration loading
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Configuration system
 
     canvodpy is configured through a single YAML file,
@@ -94,15 +85,8 @@ def _(mo):
     environment variable, then uses the `config/` directory of the
     monorepo root.  An optional overlay file (`config_file`, or the
     `CANVOD_CONFIG_FILE` environment variable) is applied on top.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: configuration models overview
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -162,43 +146,18 @@ def _(mo):
     that failed.
     """
     )
-
     return (
         AuxDataConfig,
-        CanvodConfig,
-        NetcdfCompressionConfig,
-        IcechunkConfig,
-        LoggingConfig,
-        MetadataConfig,
-        PreprocessingConfig,
-        ProcessingConfig,
         ProcessingParams,
         ReceiverConfig,
         SidsConfig,
         SiteConfig,
-        SitesConfig,
-        StorageConfig,
         VodAnalysisConfig,
     )
 
 
-# ---------------------------------------------------------------------------
-# Section: building config programmatically
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(
-    AuxDataConfig,
-    MetadataConfig,
-    ProcessingParams,
-    ReceiverConfig,
-    SiteConfig,
-    SitesConfig,
-    StorageConfig,
-    VodAnalysisConfig,
-    mo,
-):
+def _(ReceiverConfig, SiteConfig, VodAnalysisConfig, mo):
     _site = SiteConfig(
         gnss_site_data_root="/data/gnss/my_site",
         description="Example GNSS-T station",
@@ -270,13 +229,7 @@ def _(
     for canopy receivers.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: auxiliary data config
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -315,13 +268,7 @@ def _(AuxDataConfig, mo):
     20 times smaller than the grid cell size.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: processing parameters
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -335,7 +282,7 @@ def _(ProcessingParams, mo):
             _default.ephemeris_source,
             "final (SP3/CLK) or broadcast (SBF)",
         ),
-        ("days_per_batch", _default.days_per_batch, "Days processed per batch"),
+        ("max_memory_gb", _default.max_memory_gb, "Memory budget of a run in GB"),
         (
             "aggregate_glonass_fdma",
             _default.aggregate_glonass_fdma,
@@ -370,8 +317,10 @@ def _(ProcessingParams, mo):
       `n_max_threads`, and optionally the CPU cores (`cpu_affinity`)
       and the priority (`nice_priority`) of the workers
 
-    canVODpy doesn't limit memory; to lower the memory a run needs,
-    use fewer workers or a smaller `days_per_batch`.
+    A run sizes its workers and its units of days (the days it
+    commits together, at most 31) to the memory budget,
+    `max_memory_gb`, or without it to the memory available when the
+    run starts.
 
     ```python
     params = ProcessingParams(
@@ -383,19 +332,12 @@ def _(ProcessingParams, mo):
     ```
     """
     )
-
     return
 
 
-# ---------------------------------------------------------------------------
-# Section: storage strategies
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(StorageConfig, mo):
-    mo.md(
-        r"""
+def _(mo):
+    mo.md(r"""
     ## Storage strategies
 
     `gnss_store_strategy` of the `StorageConfig` model sets what a run
@@ -405,8 +347,8 @@ def _(StorageConfig, mo):
     | Strategy | Behaviour |
     |----------|-----------|
     | `skip` | Default: leave the stored data unchanged; the log book records the skip |
-    | `overwrite` | Replace the stored epochs of the file's range with the new data |
-    | `unsafe_append` | Write the data again, without any duplicate check |
+    | `overwrite` | Write the file again into its slots, replacing what it wrote before |
+    | `unsafe_append` | Kept from versions that appended files; does what `overwrite` does |
 
     ```python
     storage = StorageConfig(
@@ -415,21 +357,18 @@ def _(StorageConfig, mo):
     )
     ```
 
+    `stores_root_dir` is a local folder or an `s3://bucket/prefix` URL;
+    the S3 credentials, region and endpoint come from the environment only
+    ([22 · Stores on S3](./22_s3_stores.py)). Other URLs are refused.
+
     **skip** is the recommended setting: re-running a day leaves the
     stored data unchanged. Use **overwrite** to correct data already
     stored, e.g. after a processing bug was fixed. The strategy applies to
     the GNSS store only: a VOD result is always skipped if the VOD store
     already holds one from the same source files or an overlapping epoch
     range. To recompute VOD, write to a new VOD store.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: SID filtering
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -471,13 +410,7 @@ def _(SidsConfig, mo):
     tracking codes while excluding others from the same satellite.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: date utilities
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -515,13 +448,7 @@ def _(mo):
     week 2347, day 3).
     """
     )
-
-    return YYYYDOY, datetime
-
-
-# ---------------------------------------------------------------------------
-# Section: file hashing
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
@@ -548,19 +475,12 @@ def _(mo):
     keeps metadata compact in the Zarr store.
     """
     )
-
-    return (file_hash,)
-
-
-# ---------------------------------------------------------------------------
-# Section: stage timing
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Stage timing
 
     The pipeline times each stage with `stage_timer`, a context manager
@@ -578,21 +498,13 @@ def _(mo):
 
     `canvodpy dashboard` launches a marimo dashboard that reads these
     events from a run's log files, also while the run is in progress.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: CLI
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Configuration CLI
 
     The `canvodpy config` commands manage the configuration file:
@@ -604,42 +516,46 @@ def _(mo):
     # Validate the configuration and the receiver data it points to
     canvodpy config validate
     canvodpy config validate --site <site>
+    # ... with an overlay file applied on top, as for canvodpy run
+    canvodpy config validate --config overlay.yaml
 
     # Show the current configuration
     canvodpy config show
 
     # Open canvod-settings.yaml in $EDITOR
     canvodpy config edit
+
+    # Write the settings file from an existing store
+    canvodpy config init --from-store /data/stores/my_site/rinex
+    canvodpy config init --from-store s3://my-bucket/stores/my_site/rinex
     ```
 
     `validate` catches configuration errors (missing fields, invalid
     types, broken cross-references between receivers and VOD analyses)
     and checks each receiver's files the same way `canvodpy run` finds
     them, before you run the pipeline.
-    """
-    )
 
+    `init --from-store` writes the settings a store was made with: its
+    content settings, which every run writing to the store must keep, its
+    site and receivers, and the stores folder. The values that belong to
+    your machine (data folders, logs, your name) are `TODO`, and
+    `validate` lists them. This is how a second machine joins a store, or
+    how you reproduce the processing of a store you were given, local or
+    on S3.
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py)
     | **Next**: [03 · Speedrun: Full Pipeline](./03_convenience_speedrun.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 
