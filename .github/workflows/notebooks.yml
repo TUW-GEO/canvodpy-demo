@@ -71,10 +71,25 @@ jobs:
             - name: Check the notebook format
               run: uv run --locked marimo check --strict [0-9][0-9]_*.py
             - name: Check that all notebooks pin the same canvodpy
+              # Once the notebooks pin canvodpy from PyPI instead of a commit,
+              # this check and the cache key below have to change with them.
               id: rev
               run: |
+                  # Each canvod* dependency in a script header needs a git
+                  # source with a rev. Notebooks without canvod* dependencies
+                  # (01, 20) need none.
+                  unpinned=0
+                  for nb in [0-9][0-9]_*.py; do
+                      deps="$(grep -c '^#   "canvod' "$nb" || true)"
+                      pins="$(grep -c '^# canvod[a-z-]* = { git = .*rev = "[0-9a-f]\{40\}"' "$nb" || true)"
+                      if [ "$deps" -ne "$pins" ]; then
+                          echo "::error::$nb: $deps canvod* dependencies, $pins pinned to a commit."
+                          unpinned=1
+                      fi
+                  done
+                  [ "$unpinned" -eq 0 ] || exit 1
                   revs="$(grep -ho 'rev = "[0-9a-f]*"' [0-9][0-9]_*.py | sort -u)"
-                  if [ "$(wc -l <<< "$revs")" -ne 1 ]; then
+                  if [ -z "$revs" ] || [ "$(wc -l <<< "$revs")" -ne 1 ]; then
                       echo "::error::The notebooks pin different canvodpy commits:"
                       grep -o 'rev = "[0-9a-f]*"' [0-9][0-9]_*.py
                       exit 1
@@ -106,15 +121,21 @@ jobs:
                   CANVOD_S3_PATH_STYLE: "1"
               run: scripts/run_notebooks.sh
             - name: Check that notebook 22 wrote to S3
+              # Counts files and folders under the prefix in the emulator's
+              # data folder, not S3 objects: non-zero means notebook 22 wrote
+              # something.
               run: |
                   prefix="/data/$BUCKET/ci-${{ github.run_id }}-${{ github.run_attempt }}"
                   count="$(docker exec rustfs sh -c "find $prefix -mindepth 1 2> /dev/null | wc -l")"
-                  echo "Objects under $prefix: $count"
+                  echo "Files and folders under $prefix: $count"
                   if [ "$count" -eq 0 ]; then
                       echo "::error::Notebook 22 wrote nothing to the S3 emulator."
                       exit 1
                   fi
             - name: Upload the notebook logs
+              # ::add-mask:: hides the credentials in the console log only, not
+              # in these files. They are throwaway keys, but a notebook that
+              # prints them would put them in the artifact.
               if: always()
               uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
               with:

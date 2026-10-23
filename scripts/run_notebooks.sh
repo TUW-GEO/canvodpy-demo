@@ -32,7 +32,8 @@ notebook_13_python() {
 
 # Settings for notebook 13, made from the reference store of the demo data
 # with `canvodpy config init --from-store`. The values the store doesn't
-# know get the test persona and folders under $LOG_DIR.
+# know get the test persona of canvod.utils.testing and folders under
+# $LOG_DIR.
 notebook_13_settings() {
     local config_dir="$LOG_DIR/settings_13"
     rm -rf "$config_dir"
@@ -42,6 +43,7 @@ import sys
 from pathlib import Path
 
 import yaml
+from canvod.utils import testing
 
 import canvodpy
 
@@ -56,9 +58,9 @@ path = config_dir / "canvod-settings.yaml"
 header = "".join(line for line in path.read_text().splitlines(True) if line.startswith("#"))
 settings = yaml.safe_load(path.read_text())
 persona = {
-    "author": "J. R. R. Tolkien",
-    "email": "j.r.r.tolkien@the.inklings.org",
-    "institution": "Fangorn",
+    "author": testing.PERSON_NAME,
+    "email": testing.PERSON_EMAIL,
+    "institution": testing.INSTITUTION,
 }
 data = config_dir / "data"
 
