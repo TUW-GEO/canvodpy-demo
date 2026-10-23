@@ -335,7 +335,6 @@ def _(ProcessingParams, mo):
             _default.ephemeris_source,
             "final (SP3/CLK) or broadcast (SBF)",
         ),
-        ("days_per_batch", _default.days_per_batch, "Days processed per batch"),
         ("max_memory_gb", _default.max_memory_gb, "Memory budget of a run in GB"),
         (
             "aggregate_glonass_fdma",
@@ -371,10 +370,10 @@ def _(ProcessingParams, mo):
       `n_max_threads`, and optionally the CPU cores (`cpu_affinity`)
       and the priority (`nice_priority`) of the workers
 
-    A run fits its memory budget, `max_memory_gb` (without it, the
-    memory available when the run starts): it starts fewer workers, or
-    lowers `days_per_batch`, if they do not fit, and stops before
-    reading a file if not even one worker fits.
+    A run sizes its workers and its units of days (the days it
+    commits together, at most 31) to the memory budget,
+    `max_memory_gb`, or without it to the memory available when the
+    run starts.
 
     ```python
     params = ProcessingParams(

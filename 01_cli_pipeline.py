@@ -165,21 +165,20 @@ def _(mo):
     ## Resource flags
 
     ```bash
-    uv run canvodpy run --site Rosalia --workers 8 --days-per-batch 14
+    uv run canvodpy run --site Rosalia --workers 8
     ```
 
     | Flag | Effect |
     |------|--------|
     | `--workers` | Number of parallel workers (default: from config's `resource_mode`) |
-    | `--days-per-batch` | Number of DOYs pooled into one parallel processing wave |
 
-    `--days-per-batch` trades responsiveness for throughput: a bigger
-    batch keeps the worker pool saturated longer per invocation (fewer
-    sequential aux-data-prep stalls between waves), but the live progress
-    display can only advance once each batch's files finish writing, so
-    very large batches on a big backfill can look quiet for a while before
-    a burst of progress lands. Start small (`1`–`7`) and increase once you
-    have a feel for how long a batch takes on your hardware.
+    The run commits the days to the store in units of days, one commit
+    per unit. It sizes the units itself from its memory budget
+    (`processing.params.max_memory_gb`, or without it the memory
+    available when the run starts), at most 31 days; a run of one new day
+    is a unit of one day. The progress display advances when a unit is
+    committed, so a long backfill can look quiet for a while before the
+    days of a unit land together.
     """
     )
 
