@@ -123,10 +123,9 @@ def _(mo):
     On an empty store it stops and asks for `--start`.
 
     The CLI is a thin wrapper around `Site(...).pipeline().process_range()`,
-    with the same code path and the same guarantees. It adds
-    `--update-to-latest`, a live progress display, and a
-    few production-oriented flags (`--ephemeris-source`, `--vod-calculator`,
-    `--workers`, `--days-per-batch`).
+    with the same code path and the same guarantees. It adds a live
+    progress display and a few production-oriented flags
+    (`--ephemeris-source`, `--vod-calculator`, `--workers`).
 
     See [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py) for a full
     walkthrough of the flags.

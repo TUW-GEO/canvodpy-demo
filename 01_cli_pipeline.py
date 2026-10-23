@@ -173,24 +173,15 @@ def _(mo):
 def _(mo):
     mo.md(
         r"""
-    ## Resource flags
+    ## Workers
 
     ```bash
-    uv run canvodpy run --site Rosalia --workers 8 --days-per-batch 14 --update-to-latest
+    uv run canvodpy run --site Rosalia --workers 8 --update-to-latest
     ```
 
-    | Flag | Effect |
-    |------|--------|
-    | `--workers` | Number of parallel workers (default: from config's `resource_mode`) |
-    | `--days-per-batch` | Number of DOYs pooled into one parallel processing wave |
-
-    `--days-per-batch` trades responsiveness for throughput: a bigger
-    batch keeps the worker pool saturated longer per invocation (fewer
-    sequential aux-data-prep stalls between waves), but the live progress
-    display can only advance once each batch's files finish writing, so
-    very large batches on a big backfill can look quiet for a while before
-    a burst of progress lands. Start small (`1`–`7`) and increase once you
-    have a feel for how long a batch takes on your hardware.
+    `--workers` sets the number of worker processes. Without it, the
+    number comes from the resource settings in `canvod-settings.yaml`.
+    The run sizes its units of days from the memory budget.
     """
     )
 
