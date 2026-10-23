@@ -20,10 +20,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Configuration & Utilities", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Configuration & Utilities",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -57,19 +59,12 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Section: configuration loading
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Configuration system
 
     canvodpy is configured through a single YAML file,
@@ -94,15 +89,8 @@ def _(mo):
     environment variable, then uses the `config/` directory of the
     monorepo root.  An optional overlay file (`config_file`, or the
     `CANVOD_CONFIG_FILE` environment variable) is applied on top.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: configuration models overview
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -162,43 +150,18 @@ def _(mo):
     that failed.
     """
     )
-
     return (
         AuxDataConfig,
-        CanvodConfig,
-        NetcdfCompressionConfig,
-        IcechunkConfig,
-        LoggingConfig,
-        MetadataConfig,
-        PreprocessingConfig,
-        ProcessingConfig,
         ProcessingParams,
         ReceiverConfig,
         SidsConfig,
         SiteConfig,
-        SitesConfig,
-        StorageConfig,
         VodAnalysisConfig,
     )
 
 
-# ---------------------------------------------------------------------------
-# Section: building config programmatically
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(
-    AuxDataConfig,
-    MetadataConfig,
-    ProcessingParams,
-    ReceiverConfig,
-    SiteConfig,
-    SitesConfig,
-    StorageConfig,
-    VodAnalysisConfig,
-    mo,
-):
+def _(ReceiverConfig, SiteConfig, VodAnalysisConfig, mo):
     _site = SiteConfig(
         gnss_site_data_root="/data/gnss/my_site",
         description="Example GNSS-T station",
@@ -270,13 +233,7 @@ def _(
     for canopy receivers.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: auxiliary data config
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -315,13 +272,7 @@ def _(AuxDataConfig, mo):
     20 times smaller than the grid cell size.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: processing parameters
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -385,19 +336,12 @@ def _(ProcessingParams, mo):
     ```
     """
     )
-
     return
 
 
-# ---------------------------------------------------------------------------
-# Section: storage strategies
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(StorageConfig, mo):
-    mo.md(
-        r"""
+def _(mo):
+    mo.md(r"""
     ## Storage strategies
 
     `gnss_store_strategy` of the `StorageConfig` model sets what a run
@@ -427,15 +371,8 @@ def _(StorageConfig, mo):
     the GNSS store only: a VOD result is always skipped if the VOD store
     already holds one from the same source files or an overlapping epoch
     range. To recompute VOD, write to a new VOD store.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: SID filtering
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -477,13 +414,7 @@ def _(SidsConfig, mo):
     tracking codes while excluding others from the same satellite.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: date utilities
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -521,13 +452,7 @@ def _(mo):
     week 2347, day 3).
     """
     )
-
-    return YYYYDOY, datetime
-
-
-# ---------------------------------------------------------------------------
-# Section: file hashing
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
@@ -554,19 +479,12 @@ def _(mo):
     keeps metadata compact in the Zarr store.
     """
     )
-
-    return (file_hash,)
-
-
-# ---------------------------------------------------------------------------
-# Section: stage timing
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Stage timing
 
     The pipeline times each stage with `stage_timer`, a context manager
@@ -584,21 +502,13 @@ def _(mo):
 
     `canvodpy dashboard` launches a marimo dashboard that reads these
     events from a run's log files, also while the run is in progress.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: CLI
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Configuration CLI
 
     The `canvodpy config` commands manage the configuration file:
@@ -636,30 +546,20 @@ def _(mo):
     `validate` lists them. This is how a second machine joins a store, or
     how you reproduce the processing of a store you were given, local or
     on S3.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py)
     | **Next**: [03 · Speedrun: Full Pipeline](./03_convenience_speedrun.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

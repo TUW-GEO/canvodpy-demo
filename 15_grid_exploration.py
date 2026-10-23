@@ -40,10 +40,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Grid Exploration", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Grid Exploration",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -69,13 +71,7 @@ def _():
     ---
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -83,12 +79,7 @@ def _():
     import numpy as np
     import xarray as xr
 
-    return np, xr
-
-
-# ---------------------------------------------------------------------------
-# Grid setup: create or load a hemispheric grid
-# ---------------------------------------------------------------------------
+    return (np,)
 
 
 @app.cell
@@ -105,13 +96,7 @@ def _(np):
     cell_x = np.sin(theta) * np.sin(phi)  # East
     cell_y = np.sin(theta) * np.cos(phi)  # North
     cell_z = np.cos(theta)
-
     return cell_x, cell_y, cell_z, grid, phi, theta
-
-
-# ---------------------------------------------------------------------------
-# UI Controls
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -150,13 +135,7 @@ def _(mo):
         justify="start",
         gap=2,
     )
-
-    return band_dropdown, color_by, system_dropdown, vod_range, view_mode
-
-
-# ---------------------------------------------------------------------------
-# Synthetic data (used when no store is available)
-# ---------------------------------------------------------------------------
+    return color_by, view_mode
 
 
 @app.cell
@@ -180,13 +159,7 @@ def _(grid, np):
         "count": _synthetic_count,
         "coverage": _synthetic_coverage,
     }
-
     return cell_stats, ncells
-
-
-# ---------------------------------------------------------------------------
-# Prepare widget data
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -204,13 +177,7 @@ def _(cell_stats, color_by, grid, ncells, np, theta):
         f"Cell {i}\n  theta={_theta_deg[i]:.1f} deg\n  phi={_phi_deg[i]:.1f} deg\n  {stat_name}={values[i]:.4f}"
         for i in range(ncells)
     ]
-
     return labels, values
-
-
-# ---------------------------------------------------------------------------
-# 3D Hemisphere Widget
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -234,13 +201,7 @@ def _(cell_x, cell_y, cell_z, labels, mo, values, view_mode):
         mo.output.replace(hemisphere_3d)
     else:
         mo.output.replace(mo.md("*Switch to 3D view to see the hemisphere widget.*"))
-
     return (hemisphere_3d,)
-
-
-# ---------------------------------------------------------------------------
-# 2D Hemisphere Widget
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -262,13 +223,7 @@ def _(labels, mo, phi, theta, values, view_mode):
         mo.output.replace(hemisphere_2d)
     else:
         mo.output.replace(mo.md("*Switch to 2D view to see the polar projection.*"))
-
     return (hemisphere_2d,)
-
-
-# ---------------------------------------------------------------------------
-# Selection info table
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -306,13 +261,7 @@ def _(cell_stats, hemisphere_2d, hemisphere_3d, mo, np, theta, view_mode):
                 ]
             )
         )
-
     return (selected_ids,)
-
-
-# ---------------------------------------------------------------------------
-# Timeseries plot for selected cells
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -353,40 +302,30 @@ def _(mo, np, selected_ids):
         )
 
         mo.output.replace(mo.ui.plotly(fig))
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        """
+    mo.md("""
     ---
     **Note:** This notebook uses synthetic data for demonstration.
     To use real data, open an Icechunk store and pass actual per-cell
     timeseries datasets via `canvod.store.AnalysisStorage.load_percell_timeseries()`.
-    """
-    )
+    """)
     return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [14 · Visualization](./14_visualization.py)
     | **Next**: [16 · 3D Grid Gallery](./16_grid_3d_gallery.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
+    """)
     return
 
 

@@ -41,10 +41,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Single-Day Workflow", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Single-Day Workflow",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -78,7 +80,6 @@ def _():
 
     """
     )
-
     return (mo,)
 
 
@@ -88,7 +89,7 @@ def _():
 
     root = demo_data("rinex")
     root = demo_data("aux")
-    return root
+    return (root,)
 
 
 @app.cell
@@ -98,7 +99,7 @@ def _():
     import numpy as np
     import xarray as xr
 
-    return Path, np, xr
+    return np, xr
 
 
 @app.cell
@@ -199,7 +200,7 @@ def _(root):
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
+    return (work,)
 
 
 @app.cell
@@ -209,13 +210,8 @@ def _(root):
     return canopy_dir, ref_dir
 
 
-# ---------------------------------------------------------------------------
-# Step 1: discover files
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(canopy_dir, ref_dir, mo):
+def _(canopy_dir, mo, ref_dir):
     _can_files = sorted(canopy_dir.glob("25001/*.rnx"))
     _ref_files = sorted(ref_dir.glob("25001/*.rnx"))
 
@@ -239,17 +235,11 @@ def _(canopy_dir, ref_dir, mo):
     Last file: `{_can_files[-1].name if _can_files else "none"}`
     """
     )
-
     return
 
 
-# ---------------------------------------------------------------------------
-# Step 2: read files
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(canopy_dir, ref_dir, mo, xr):
+def _(canopy_dir, mo, ref_dir, xr):
     from canvod.readers import Rnxv3Obs
 
     # Read first 4 files (one hour) for demonstration
@@ -293,17 +283,11 @@ def _(canopy_dir, ref_dir, mo, xr):
     | **Variables** | {list(ds_canopy.data_vars)} | {list(ds_reference.data_vars)} |
     """
     )
-
-    return Rnxv3Obs, ds_canopy, ds_reference
-
-
-# ---------------------------------------------------------------------------
-# Step 3: augment with satellite geometry
-# ---------------------------------------------------------------------------
+    return ds_canopy, ds_reference
 
 
 @app.cell
-def _(root, work, config_dir, ds_canopy, ds_reference, mo):
+def _(ds_canopy, ds_reference, mo, work):
     from canvod.auxiliary import ECEFPosition
     from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
 
@@ -342,16 +326,7 @@ def _(root, work, config_dir, ds_canopy, ds_reference, mo):
     Both datasets now contain `SNR`, `theta`, `phi`, and `r`.
     """
     )
-
-    return (
-        ds_can_aug,
-        ds_ref_aug,
-    )
-
-
-# ---------------------------------------------------------------------------
-# Step 4: compute VOD
-# ---------------------------------------------------------------------------
+    return ds_can_aug, ds_ref_aug
 
 
 @app.cell
@@ -395,20 +370,13 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     | **Range** | [{np.nanmin(_vod[_valid]):.4f}, {np.nanmax(_vod[_valid]):.4f}] |
     """
     )
-
-    return TauOmegaZerothOrder, ds_vod
+    return (ds_vod,)
 
 
 @app.cell
 def _(ds_vod):
     ds_vod
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Step 5 (optional): grid assignment
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -457,19 +425,12 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     limited by satellite geometry and horizon obstructions.
     """
     )
-
-    return (ds_vod_gridded,)
-
-
-# ---------------------------------------------------------------------------
-# Summary
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Pipeline summary
 
     | Step | Function | Input | Output |
@@ -483,30 +444,20 @@ def _(mo):
     Each step can be run independently, inspected, and debugged.
     `Site.pipeline()` and the `canvodpy run` CLI wrap these exact same
     steps in a more convenient interface.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [18 · Site Pipeline](./18_site_pipeline.py)
     | **Next**: [20 · Batch Processing](./20_workflow_batch_processing.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

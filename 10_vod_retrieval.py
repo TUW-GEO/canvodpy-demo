@@ -41,16 +41,13 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="VOD Retrieval", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="VOD Retrieval",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -103,13 +100,7 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -126,7 +117,7 @@ def _():
 
     root = demo_data("rinex")
     root = demo_data("aux")
-    return root
+    return (root,)
 
 
 @app.cell
@@ -227,18 +218,12 @@ def _(root):
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
-
-
-# ---------------------------------------------------------------------------
-# Section: prepare paired datasets
-# ---------------------------------------------------------------------------
+    return (work,)
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Preparing paired datasets
 
     VOD retrieval requires two augmented datasets from the same time window:
@@ -249,14 +234,12 @@ def _(mo):
     Here we load one file from each receiver and augment both
     with satellite geometry computed from the SP3/CLK files that
     `demo_data("aux")` downloaded.
-    """
-    )
-
+    """)
     return
 
 
 @app.cell
-def _(root, work, config_dir):
+def _(root, work):
     from canvod.auxiliary import ECEFPosition
     from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
     from canvod.readers import Rnxv3Obs
@@ -313,27 +296,18 @@ def _(ds_canopy, ds_reference, mo, np):
     before computing the transmittance ratio.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: VOD calculation
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Computing VOD
 
     The `TauOmegaZerothOrder` calculator implements the zeroth-order
     Tau-Omega model.  The convenience class method `from_datasets()`
     handles alignment and instantiation in one step.
-    """
-    )
-
+    """)
     return
 
 
@@ -345,8 +319,7 @@ def _(ds_canopy, ds_reference):
         canopy_ds=ds_canopy,
         sky_ds=ds_reference,
     )
-
-    return TauOmegaZerothOrder, ds_vod
+    return (ds_vod,)
 
 
 @app.cell
@@ -380,26 +353,18 @@ def _(ds_vod, mo, np):
     the vegetation canopy.
     """
     )
-
     return
 
 
 @app.cell
 def _(ds_vod):
     ds_vod
-
     return
 
 
-# ---------------------------------------------------------------------------
-# Section: interpreting VOD values
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(mo, np):
-    mo.md(
-        r"""
+def _(mo):
+    mo.md(r"""
     ## Interpreting VOD values
 
     VOD is dimensionless. It follows from the transmissivity
@@ -416,15 +381,8 @@ def _(mo, np):
     What a VOD value means for the vegetation depends on the signal
     frequency, the canopy and the site. See the literature on GNSS-T VOD
     for your vegetation type before you interpret absolute values.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: step-by-step formula
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -475,19 +433,12 @@ def _(ds_canopy, ds_reference, mo, np, xr):
     recorded a stronger signal than the reference.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: the calculator API
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Calculator API
 
     The `VODCalculator` base class defines the interface; `TauOmegaZerothOrder`
@@ -511,30 +462,20 @@ def _(mo):
     with `canvodpy run`, or from Python with `Site(...).vod`, which reads
     the data from the site's Icechunk store (see
     [18 · Site Pipeline](./18_site_pipeline.py)).
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [09 · Hemispheric Grids](./09_hemispheric_grids.py)
     | **Next**: [11 · Icechunk Store](./11_icechunk_store.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

@@ -41,7 +41,7 @@
 
 import marimo
 
-__generated_with = "0.23.4"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="Speedrun: Full Pipeline",
@@ -95,7 +95,7 @@ def _():
 
     root = demo_data("rinex")
     root = demo_data("aux")
-    return root
+    return (root,)
 
 
 @app.cell
@@ -196,20 +196,20 @@ def _(root):
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
+    return (work,)
 
 
 @app.cell
 def _(mo, root, work):
     mo.md(
         f"""
-    The settings for the site are written to `canvod-settings.yaml` in a
-    fresh temporary folder (`{work}`), and `CANVOD_CONFIG_DIR` points at
-    it: this is how canvodpy finds the site and the SP3/CLK server list
-    here. `demo_data()` lays the test data out like a real run, under
-    `{root}`; the settings, stores, logs and auxiliary data for this run
-    go into the fresh temporary folder `{work}`.
-"""
+        The settings for the site are written to `canvod-settings.yaml` in a
+        fresh temporary folder (`{work}`), and `CANVOD_CONFIG_DIR` points at
+        it: this is how canvodpy finds the site and the SP3/CLK server list
+        here. `demo_data()` lays the test data out like a real run, under
+        `{root}`; the settings, stores, logs and auxiliary data for this run
+        go into the fresh temporary folder `{work}`.
+    """
     )
     return
 
@@ -271,7 +271,7 @@ def _(mo):
 
 
 @app.cell
-def _(root, work, config_dir, ds_can_raw, ds_ref_raw):
+def _(ds_can_raw, ds_ref_raw, work):
     import numpy as np
 
     from canvod.auxiliary import ECEFPosition

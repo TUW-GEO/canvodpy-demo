@@ -16,10 +16,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Stores on S3", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Stores on S3",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -85,7 +87,6 @@ def _():
     endpoint here.
     """
     )
-
     return (mo,)
 
 
@@ -725,7 +726,18 @@ def _(
 
 
 @app.cell
-def _(DAY, Path, SITE, Site, block, contextlib, mo, open_repository, quiet, site):
+def _(
+    DAY,
+    Path,
+    SITE,
+    Site,
+    block,
+    contextlib,
+    mo,
+    open_repository,
+    quiet,
+    site,
+):
     _notebook = Path(__file__).parent
     _in_project = (_notebook / "pyproject.toml").is_file() and (_notebook / "uv.lock").is_file()
     if _in_project:
@@ -871,8 +883,7 @@ def _(block, clean, contextlib, mo, read_metadata, site):
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## On S3 and in a local folder
 
     | | Local folder | S3 |
@@ -885,28 +896,19 @@ def _(mo):
 
     The S3 service must support conditional writes (`If-Match` and
     `If-None-Match`); most do, but check before choosing one.
-    """
-    )
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [21 · Your Own VOD Calculator](./21_plugins.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

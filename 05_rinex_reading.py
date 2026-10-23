@@ -23,7 +23,7 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="RINEX v3 Observation Reading",
@@ -75,7 +75,7 @@ def _():
     from canvodpy import demo_data
 
     root = demo_data("rinex")
-    return root
+    return (root,)
 
 
 @app.cell
@@ -84,7 +84,6 @@ def _(root):
 
     canopy_dir = root / "rinex_v3_04" / "01_Rosalia" / "02_canopy" / "01_GNSS" / "01_raw"
     ref_dir = root / "rinex_v3_04" / "01_Rosalia" / "01_reference" / "01_GNSS" / "01_raw"
-
     return canopy_dir, ref_dir
 
 
@@ -539,7 +538,7 @@ def _(mo):
 
 
 @app.cell
-def _(canopy_dir, Rnxv3Obs, mo):
+def _(Rnxv3Obs, canopy_dir, mo):
     import xarray as xr
 
     _files = sorted(canopy_dir.glob("25001/*.rnx"))[:4]
@@ -639,7 +638,7 @@ def _(ds_single, mo):
 
 
 @app.cell
-def _(canopy_dir, ref_dir, Rnxv3Obs, mo, np):
+def _(Rnxv3Obs, canopy_dir, mo, np, ref_dir):
     _can_files = sorted(canopy_dir.glob("25001/*.rnx"))[:1]
     _ref_files = sorted(ref_dir.glob("25001/*.rnx"))[:1]
 

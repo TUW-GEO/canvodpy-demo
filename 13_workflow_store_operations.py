@@ -40,7 +40,7 @@
 
 import marimo
 
-__generated_with = "0.24.0"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="Store Operations",
@@ -142,7 +142,7 @@ def _(mo):
     originated from RINEX or SBF files.
     """
     )
-    return site, store, store_path
+    return store, store_path
 
 
 @app.cell
@@ -925,7 +925,7 @@ def _(mo, store_path):
     else:
         store_metadata = None
         full_metadata_table = mo.md("No store metadata found.")
-    return full_metadata_table, store_metadata
+    return full_metadata_table, metadata_exists
 
 
 @app.cell
@@ -958,7 +958,7 @@ def _(mo):
 
 
 @app.cell
-def _(mo, metadata_exists, store_path):
+def _(metadata_exists, mo, store_path):
     import json
 
     from canvod.store_metadata import store_item

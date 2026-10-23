@@ -37,10 +37,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="API Overview", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="API Overview",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -82,19 +84,12 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Section: CLI
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## CLI: running the pipeline
 
     The recommended way to run canvodpy in production: a single command,
@@ -129,21 +124,13 @@ def _(mo):
 
     See [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py) for a full
     walkthrough of the flags.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: Site pipeline
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Site pipeline: Python-native scripting
 
     `Site(...).pipeline()` is what the CLI calls internally. Use it
@@ -167,15 +154,8 @@ def _(mo):
     schedule.
 
     See [18 · Site Pipeline](./18_site_pipeline.py) for the full walkthrough.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: factory system
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -223,19 +203,12 @@ def _(mo):
     [21 · Your Own VOD Calculator](./21_plugins.py) shows both ways.
     """
     )
-
-    return GridFactory, ReaderFactory, VODFactory
-
-
-# ---------------------------------------------------------------------------
-# Section: choosing a surface
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Choosing a surface
 
     | If you want to... | Use |
@@ -259,30 +232,20 @@ def _(mo):
 
     - [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py)
     - [18 · Site Pipeline](./18_site_pipeline.py)
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [16 · 3D Grid Gallery](./16_grid_3d_gallery.py)
     | **Next**: [18 · Site Pipeline](./18_site_pipeline.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

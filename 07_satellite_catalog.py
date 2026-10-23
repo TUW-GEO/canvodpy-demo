@@ -20,16 +20,13 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Satellite Catalog", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Satellite Catalog",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -69,13 +66,7 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Load catalog
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -87,13 +78,7 @@ def _(mo):
         f"Loaded catalog with **{len(catalog.identities):,}** satellite entries "
         f"(all constellations, all time)."
     )
-
-    return SatelliteCatalog, catalog
-
-
-# ---------------------------------------------------------------------------
-# Active PRNs
-# ---------------------------------------------------------------------------
+    return (catalog,)
 
 
 @app.cell
@@ -135,13 +120,7 @@ def _(catalog, mo):
     end dates in the past.
     """
     )
-
     return (date,)
-
-
-# ---------------------------------------------------------------------------
-# PRN <-> SVN mapping
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -172,13 +151,7 @@ def _(catalog, date, mo):
     ```
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Reassignment history
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -215,13 +188,7 @@ def _(catalog, date, mo):
     {_table}
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Satellite metadata
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -245,13 +212,7 @@ def _(catalog, date, mo):
     {_rows}
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# TX power and mass
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -287,13 +248,7 @@ def _(catalog, date, mo):
     pressure scales with area-to-mass ratio).
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# GLONASS frequency channels
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -332,13 +287,7 @@ def _(catalog, date, mo):
     ground-truth assignment for validation.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Catalog as DataFrame
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -358,26 +307,18 @@ def _(catalog, date, mo):
     **Columns**: {", ".join(f"`{c}`" for c in df_catalog.columns)}
     """
     )
-
     return (df_catalog,)
 
 
 @app.cell
 def _(df_catalog, mo):
     mo.ui.dataframe(df_catalog.head(20))
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Load chain
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Data source and load chain
 
     `SatelliteCatalog.load()` searches for the SINEX file in this order:
@@ -401,30 +342,20 @@ def _(mo):
     | `SATELLITE/FREQUENCY_CHANNEL` | GLONASS FDMA channel assignments |
     | `SATELLITE/PLANE` | Orbital plane and slot per SVN |
     | `SATELLITE/COM/ECCENTRICITY` | Center-of-mass offset from antenna |
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [06 · SBF Reading](./06_sbf_reading.py)
     | **Next**: [08 · Ephemeris & Coordinates](./08_ephemeris_coordinates.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

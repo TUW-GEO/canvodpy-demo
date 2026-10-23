@@ -11,7 +11,7 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="Running the Pipeline (CLI)",
@@ -48,19 +48,12 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Section: basic usage
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Basic usage
 
     ```bash
@@ -96,21 +89,13 @@ def _(mo):
 
     In Python, `Site(...).pipeline().run(update_to_latest=True)` does the
     same.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: multiple sites
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Several sites
 
     Each run processes one site: sites can differ in their dates, data
@@ -125,21 +110,13 @@ def _(mo):
 
     Each site finds its own dates from its own store. More than one site
     in a run stops with an error.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: ephemeris source and VOD calculator
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Choosing ephemeris source and VOD calculator
 
     ```bash
@@ -158,21 +135,13 @@ def _(mo):
     Both flags are one-off overrides for a single invocation; they don't
     modify `canvod-settings.yaml`. Bake in a value there once you've
     settled on it for a site.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: resources
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Workers
 
     ```bash
@@ -189,21 +158,13 @@ def _(mo):
     is a unit of one day. The progress display advances when a unit is
     committed, so a long backfill can look quiet for a while before the
     days of a unit land together.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: config overlay
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Config overlay
 
     ```bash
@@ -215,29 +176,19 @@ def _(mo):
     is read from the main file. Useful on shared/HPC machines where
     resource limits vary per job but the base configuration is
     version-controlled.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Next**: [02 · Configuration](./02_configuration.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

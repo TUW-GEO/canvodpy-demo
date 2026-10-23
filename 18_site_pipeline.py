@@ -16,10 +16,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Site Pipeline", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Site Pipeline",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -71,7 +73,6 @@ def _():
 
     """
     )
-
     return (mo,)
 
 
@@ -81,7 +82,7 @@ def _():
 
     root = demo_data("rinex")
     root = demo_data("aux")
-    return root
+    return (root,)
 
 
 @app.cell
@@ -182,11 +183,11 @@ def _(root):
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
+    return
 
 
 @app.cell
-def _(mo, config_dir, root):
+def _(mo):
     from canvodpy import Site
 
     site = Site("rosalia_v3_04")
@@ -216,18 +217,12 @@ def _(mo, config_dir, root):
     | **Analyses** | {", ".join(f"`{a}`" for a in site.vod_analyses)} |
     """
     )
-    return site
-
-
-# ---------------------------------------------------------------------------
-# Section: VodComputer
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## VodComputer: VOD as a separate stage
 
     `site.vod` offers two computation strategies for when VOD retrieval is
@@ -285,21 +280,13 @@ def _(mo):
     there and writes nothing. This decouples ingestion from retrieval:
     data can be ingested nightly, and VOD recomputed weekly or on
     demand.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: VOD analyses configuration
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## VOD analyses configuration
 
     The `vod_analyses` entry of each site in `config/canvod-settings.yaml`
@@ -341,21 +328,13 @@ def _(mo):
     Multiple analyses can share the same reference receiver,
     a common setup when one open-sky receiver serves several
     below-canopy stations.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: production workflow
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Production workflow pattern
 
     A typical production deployment separates ingestion from retrieval:
@@ -387,30 +366,20 @@ def _(mo):
       from the store without re-reading raw files
     - **Independent scheduling**: ingestion and retrieval can run on
       different schedules and different machines
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [17 · API Overview](./17_api_overview.py)
     | **Next**: [19 · Single-Day Workflow](./19_workflow_single_day.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

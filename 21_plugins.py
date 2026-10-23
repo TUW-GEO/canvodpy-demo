@@ -41,16 +41,13 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Your Own VOD Calculator", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Your Own VOD Calculator",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -86,7 +83,6 @@ def _():
     ---
     """
     )
-
     return (mo,)
 
 
@@ -96,7 +92,7 @@ def _():
 
     root = demo_data("rinex")
     root = demo_data("aux")
-    return root
+    return (root,)
 
 
 @app.cell
@@ -197,12 +193,7 @@ def _(root):
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
-
-
-# ---------------------------------------------------------------------------
-# Section: what is registered
-# ---------------------------------------------------------------------------
+    return (work,)
 
 
 @app.cell
@@ -227,19 +218,12 @@ def _(mo):
     `VODFactory` holds when canVODpy is imported.
     """
     )
-
     return (VODFactory,)
-
-
-# ---------------------------------------------------------------------------
-# Section: paired datasets
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## The data
 
     A calculator gets two datasets: the canopy receiver's and the
@@ -247,14 +231,12 @@ def _(mo):
     dimensions `(epoch, sid)`. As in
     [10 · VOD Retrieval](./10_vod_retrieval.py), we read one file per
     receiver and add the angles of each satellite from the orbits.
-    """
-    )
-
+    """)
     return
 
 
 @app.cell
-def _(root, work, config_dir):
+def _(root, work):
     import numpy as np
     import xarray as xr
     from canvod.auxiliary import ECEFPosition
@@ -278,19 +260,12 @@ def _(root, work, config_dir):
 
     ds_canopy = _with_angles(min(canopy_dir.glob("25001/*.rnx")))
     ds_reference = _with_angles(min(ref_dir.glob("25001/*.rnx")))
-
     return ds_canopy, ds_reference, np, xr
-
-
-# ---------------------------------------------------------------------------
-# Section: the calculator
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Step 1: the calculator
 
     A calculator inherits `VODCalculator` and implements one method,
@@ -304,9 +279,7 @@ def _(mo):
     $\cos\theta$ and returns $-\ln(T)$. It is only an example of how a
     calculator is built, not a model to use; replace `calculate_vod()`
     with your own.
-    """
-    )
-
+    """)
     return
 
 
@@ -369,28 +342,19 @@ def _(VODCalculator, ds_canopy, ds_reference, mo):
     ```
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: register and compare
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Step 2: register it in your code
 
     `VODFactory.register()` adds the class under a name of your choice.
     It checks that the class inherits `VODCalculator` and refuses a name
     that is already taken. This notebook passes `replace=True`, so that
     running the cell again replaces the class registered the first time.
-    """
-    )
-
+    """)
     return
 
 
@@ -424,19 +388,15 @@ def _(VODFactory, mo):
     ```
     """
     )
-
     return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     Now both calculators are created by name, in the same way
     `Site(...).vod` creates the calculator it is given:
-    """
-    )
-
+    """)
     return
 
 
@@ -475,13 +435,7 @@ def _(mo, np, vod_slant, vod_tau_omega):
     {_max_diff:.1e}.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: plugin package
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -552,28 +506,19 @@ def _(mo):
     shows a complete package with a reader and a calculator.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [20 · Batch Processing](./20_workflow_batch_processing.py)
     | **Next**: [22 · Stores on S3](./22_s3_stores.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

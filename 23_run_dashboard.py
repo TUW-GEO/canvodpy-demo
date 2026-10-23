@@ -15,16 +15,13 @@
 
 import marimo
 
-__generated_with = "0.23.13"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Run Dashboard", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Run Dashboard",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -68,11 +65,6 @@ def _():
     return (mo,)
 
 
-# ---------------------------------------------------------------------------
-# Example run history
-# ---------------------------------------------------------------------------
-
-
 @app.cell
 def _(mo):
     from canvodpy import demo_data
@@ -85,8 +77,7 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## The dashboard
 
     Pick a run in the list to see its page. **Compare runs by label** at the
@@ -95,8 +86,7 @@ def _(mo):
     durations on a logarithmic axis, which spreads short and long stages
     apart. **Download** gives the data behind the page as a zip of CSV
     files.
-    """
-    )
+    """)
     return
 
 

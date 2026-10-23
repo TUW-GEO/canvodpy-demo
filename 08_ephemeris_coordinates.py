@@ -41,18 +41,13 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
     width="medium",
     app_title="Ephemeris & Coordinate Augmentation",
     css_file="canvod_nordic.css",
     html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -104,7 +99,6 @@ def _():
 
     """
     )
-
     return (mo,)
 
 
@@ -114,7 +108,7 @@ def _():
 
     root = demo_data("rinex")
     root = demo_data("aux")
-    return root
+    return (root,)
 
 
 @app.cell
@@ -215,12 +209,7 @@ def _(root):
         yaml.safe_dump(settings, sort_keys=False)
     )
     os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
-
-
-# ---------------------------------------------------------------------------
-# Imports and paths
-# ---------------------------------------------------------------------------
+    return (work,)
 
 
 @app.cell
@@ -232,19 +221,12 @@ def _(root, work):
     canopy_dir = root / "rinex_v3_04" / "01_Rosalia" / "02_canopy" / "01_GNSS" / "01_raw"
     aux_root = work / "aux_data"
     sp3_dir = aux_root / "01_SP3"
-
-    return canopy_dir, aux_root, Path, sp3_dir, np
-
-
-# ---------------------------------------------------------------------------
-# Section: receiver position
-# ---------------------------------------------------------------------------
+    return aux_root, canopy_dir, np, sp3_dir
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Receiver position
 
     The receiver's ECEF (Earth-Centered, Earth-Fixed) position is the
@@ -255,9 +237,7 @@ def _(mo):
     ECEF coordinates express the receiver location in a Cartesian frame
     fixed to the rotating Earth, with the origin at the Earth's centre of
     mass.
-    """
-    )
-
+    """)
     return
 
 
@@ -299,13 +279,7 @@ def _(canopy_dir, mo):
     ellipsoidal height.
     """
     )
-
-    return ECEFPosition, Rnxv3Obs, ds_single, rx_pos
-
-
-# ---------------------------------------------------------------------------
-# Section: ephemeris products
-# ---------------------------------------------------------------------------
+    return ds_single, rx_pos
 
 
 @app.cell
@@ -346,28 +320,19 @@ def _(mo):
     size.
     """
     )
-
-    return list_agencies, list_products
-
-
-# ---------------------------------------------------------------------------
-# Section: pre-computed auxiliary data
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Auxiliary data computed from SP3/CLK
 
     The auxiliary store is not shipped pre-computed.  The next cell uses the
     `AgencyEphemerisProvider` to build it from the CODE final SP3/CLK products
     that `demo_data()` downloads for DOY 2025-001, using Hermite cubic spline
     interpolation to the observation sampling rate.
-    """
-    )
-
+    """)
     return
 
 
@@ -427,19 +392,12 @@ def _(aux_root, ds_single, mo, np, rx_pos):
     constellations and **{ds_aux.sizes["epoch"]:,}** epochs.
     """
     )
-
-    return ds_aux, xr
-
-
-# ---------------------------------------------------------------------------
-# Section: coordinate computation
-# ---------------------------------------------------------------------------
+    return (ds_aux,)
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Coordinate computation
 
     The `compute_spherical_coordinates()` function converts satellite ECEF
@@ -464,9 +422,7 @@ def _(mo):
     This follows the navigation convention where $\phi$ increases clockwise
     from North, consistent with the geographic azimuth used in hemispheric
     grid definitions.
-    """
-    )
-
+    """)
     return
 
 
@@ -517,13 +473,7 @@ def _(ds_aux, ds_single, mo, np, rx_pos):
     due to long, oblique signal paths through the canopy.
     """
     )
-
-    return (compute_spherical_coordinates,)
-
-
-# ---------------------------------------------------------------------------
-# Section: augmenting a dataset
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
@@ -572,26 +522,18 @@ def _(ds_aux, ds_single, mo, np, rx_pos):
     SNR observations and satellite geometry.
     """
     )
-
     return (ds_augmented,)
 
 
 @app.cell
 def _(ds_augmented):
     ds_augmented
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: ephemeris provider abstraction
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Ephemeris providers
 
     The `EphemerisProvider` abstract base class defines a two-step interface
@@ -639,19 +581,12 @@ def _(mo):
     No preprocessing step is needed: the geometry is already embedded in
     the SBF file.  This path is faster but less accurate (~1--2 m orbit
     error vs ~2 cm for final products).
-    """
-    )
-
+    """)
     return
 
 
-# ---------------------------------------------------------------------------
-# Section: interpolation details
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(sp3_dir, mo):
+def _(mo, sp3_dir):
     _sp3_files = sorted(sp3_dir.glob("*.SP3"))
 
     _sp3_info = ""
@@ -690,28 +625,19 @@ def _(sp3_dir, mo):
     phenomenon that affects high-degree polynomial fits.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [07 · Satellite Catalog](./07_satellite_catalog.py)
     | **Next**: [09 · Hemispheric Grids](./09_hemispheric_grids.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

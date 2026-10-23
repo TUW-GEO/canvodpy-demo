@@ -38,16 +38,13 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Hemispheric Grids", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Hemispheric Grids",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
-
-
-# ---------------------------------------------------------------------------
-# Title
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -84,13 +81,7 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -100,15 +91,9 @@ def _():
     return (np,)
 
 
-# ---------------------------------------------------------------------------
-# Section: grid types
-# ---------------------------------------------------------------------------
-
-
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Available grid types
 
     | Type | Key property | Use case |
@@ -126,28 +111,18 @@ def _(mo):
     band into azimuthal sectors such that every cell subtends the same
     solid angle.  This ensures that observations at different elevations
     contribute equally to spatial averages.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: creating a grid
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Creating a grid
 
     The `create_hemigrid()` factory function is the main entry point.
     It accepts a grid type string and an angular resolution in degrees.
-    """
-    )
-
+    """)
     return
 
 
@@ -173,13 +148,7 @@ def _(mo):
     | **Polar angle bands** | {len(grid_2deg.theta_lims) - 1} |
     """
     )
-
     return create_hemigrid, grid_2deg
-
-
-# ---------------------------------------------------------------------------
-# Section: grid data structure
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -218,13 +187,7 @@ def _(grid_2deg, mo, np):
     equal-area grid.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: comparing grid types
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -258,19 +221,12 @@ def _(create_hemigrid, mo, np):
     the pole (small $\\theta$), producing higher CV.
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: cell assignment
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ## Assigning observations to grid cells
 
     Once a dataset has been augmented with $\phi$ and $\theta$ coordinates,
@@ -290,15 +246,8 @@ def _(mo):
     Observations outside the grid (below the horizon or the grid's
     `cutoff_theta`) or with non-finite $\phi$ or $\theta$ (missing
     ephemeris) receive `NaN` cell IDs.
-    """
-    )
-
+    """)
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: converting to xarray
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -330,20 +279,13 @@ def _(grid_2deg, mo):
     **Attributes**: {", ".join(f"`{k}`" for k in ds_grid.attrs)}
     """
     )
-
-    return ds_grid, grid_to_dataset
+    return (ds_grid,)
 
 
 @app.cell
 def _(ds_grid):
     ds_grid
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: resolution choice
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -378,28 +320,19 @@ def _(create_hemigrid, mo):
     - **10--15 deg**: coarse monitoring or sites with few visible satellites
     """
     )
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [08 · Ephemeris & Coordinates](./08_ephemeris_coordinates.py)
     | **Next**: [10 · VOD Retrieval](./10_vod_retrieval.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 

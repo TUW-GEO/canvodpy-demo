@@ -39,10 +39,12 @@
 
 import marimo
 
-__generated_with = "0.21.1"
+__generated_with = "0.25.2"
 app = marimo.App(
-    width="medium", app_title="Visualization", css_file="canvod_nordic.css",
-    html_head_file="canvod_head.html"
+    width="medium",
+    app_title="Visualization",
+    css_file="canvod_nordic.css",
+    html_head_file="canvod_head.html",
 )
 
 
@@ -78,13 +80,7 @@ def _():
 
     """
     )
-
     return (mo,)
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -92,11 +88,6 @@ def _():
     import numpy as np
 
     return (np,)
-
-
-# ---------------------------------------------------------------------------
-# Section: creating a grid to visualize
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -126,13 +117,7 @@ def _(mo):
     | **Resolution** | 5.0 degrees |
     """
     )
-
     return create_hemigrid, grid
-
-
-# ---------------------------------------------------------------------------
-# Section: 2D polar plot, empty grid
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -174,24 +159,17 @@ def _(grid, mo):
     - **Angular axis**: azimuth $\phi$ (0° = North, clockwise)
     """
     )
-
-    return HemisphereVisualizer, PolarPlotStyle, ax_empty, fig_empty, viz
+    return PolarPlotStyle, ax_empty, fig_empty, viz
 
 
 @app.cell
 def _(fig_empty):
     fig_empty
-
     return
 
 
-# ---------------------------------------------------------------------------
-# Section: 2D polar plot, with data
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(grid, mo, np, viz):
+def _(PolarPlotStyle, grid, mo, np, viz):
     # Simulate data: a smooth gradient based on polar angle (theta)
     _theta_centres = grid.grid["theta"].to_numpy()
     _data = np.cos(_theta_centres)  # cos(theta): 1 at zenith, 0 at horizon
@@ -228,20 +206,13 @@ def _(grid, mo, np, viz):
     **Data shape**: {_data.shape[0]} values (one per cell)
     """
     )
-
-    return ax_data, fig_data
+    return (fig_data,)
 
 
 @app.cell
 def _(fig_data):
     fig_data
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: Tissot indicatrix
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -272,13 +243,7 @@ def _(ax_empty, fig_empty, grid, mo):
     gives equal weight to observations at all elevations.
     """
     )
-
-    return (add_tissot_indicatrix,)
-
-
-# ---------------------------------------------------------------------------
-# Section: 3D hemisphere
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
@@ -315,20 +280,13 @@ def _(grid, mo, np, viz):
     satellite coverage, asymmetric canopy structure).
     """
     )
-
     return (fig_3d,)
 
 
 @app.cell
 def _(fig_3d):
     fig_3d
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: 3D overlays
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -373,20 +331,13 @@ def _(mo, viz):
     2D polar plot.
     """
     )
-
-    return HemisphereVisualizer3D, fig_overlay
+    return (fig_overlay,)
 
 
 @app.cell
 def _(fig_overlay):
     fig_overlay
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: style presets
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -425,13 +376,7 @@ def _(mo):
     `.to_plotly_layout()`.
     """
     )
-
-    return PlotStyle, create_interactive_style, create_publication_style
-
-
-# ---------------------------------------------------------------------------
-# Section: convenience functions
-# ---------------------------------------------------------------------------
+    return
 
 
 @app.cell
@@ -472,31 +417,23 @@ def _(grid, mo, np):
     return the same figure objects.
     """
     )
-
-    return visualize_grid, visualize_grid_3d, fig2d, fig3d_conv
+    return fig2d, fig3d_conv
 
 
 @app.cell
 def _(fig2d):
     fig2d
-
     return
 
 
 @app.cell
 def _(fig3d_conv):
     fig3d_conv
-
     return
 
 
-# ---------------------------------------------------------------------------
-# Section: comparing grid types visually
-# ---------------------------------------------------------------------------
-
-
 @app.cell
-def _(PolarPlotStyle, create_hemigrid, mo, np):
+def _(PolarPlotStyle, create_hemigrid, mo):
     import matplotlib.pyplot as plt
 
     from canvod.viz import HemisphereVisualizer2D
@@ -550,20 +487,13 @@ def _(PolarPlotStyle, create_hemigrid, mo, np):
     ```
     """
     )
-
-    return HemisphereVisualizer2D, plt, fig_comp
+    return (fig_comp,)
 
 
 @app.cell
 def _(fig_comp):
     fig_comp
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: publication figure
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -596,20 +526,13 @@ def _(grid, mo, np, viz):
     disk at the specified DPI.
     """
     )
-
-    return ax_pub, fig_pub
+    return (fig_pub,)
 
 
 @app.cell
 def _(fig_pub):
     fig_pub
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Section: interactive explorer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
@@ -643,35 +566,25 @@ def _(grid, mo, np, viz):
     useful for presentations and screen-based analysis.
     """
     )
-
     return (fig_explorer,)
 
 
 @app.cell
 def _(fig_explorer):
     fig_explorer
-
     return
-
-
-# ---------------------------------------------------------------------------
-# Footer
-# ---------------------------------------------------------------------------
 
 
 @app.cell
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     **Previous**: [13 · Store Operations](./13_workflow_store_operations.py)
     | **Next**: [15 · Grid Exploration](./15_grid_exploration.py)
 
     *canVODpy · Apache 2.0*
-    """
-    )
-
+    """)
     return
 
 
