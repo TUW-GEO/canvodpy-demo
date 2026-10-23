@@ -64,27 +64,27 @@ uv run marimo edit demo/10_vod_retrieval.py
 
 | # | Notebook | Topic | Open |
 |---|---|---|---|
-| 01 | `01_cli_pipeline.py` | `canvodpy run`: the production CLI | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/01_cli_pipeline.py?mode=edit) |
-| 02 | `02_configuration.py` | Pydantic configuration models | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/02_configuration.py?mode=edit) |
-| 03 | `03_convenience_speedrun.py` | Full pipeline in five cells | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/03_convenience_speedrun.py?mode=edit) |
-| 04 | `04_naming_convention.py` | GNSS filename convention parsing and validation | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/04_naming_convention.py?mode=edit) |
-| 05 | `05_rinex_reading.py` | RINEX v3.04 file reading → `xarray.Dataset` | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/05_rinex_reading.py?mode=edit) |
-| 06 | `06_sbf_reading.py` | SBF binary file reading | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/06_sbf_reading.py?mode=edit) |
-| 07 | `07_satellite_catalog.py` | IGS SatelliteCatalog: PRN metadata and lookup | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/07_satellite_catalog.py?mode=edit) |
-| 08 | `08_ephemeris_coordinates.py` | SP3/CLK augmentation and ECEF → spherical transforms | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/08_ephemeris_coordinates.py?mode=edit) |
-| 09 | `09_hemispheric_grids.py` | Equal-area, equal-angle, geodesic, Fibonacci grids | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/09_hemispheric_grids.py?mode=edit) |
-| 10 | `10_vod_retrieval.py` | Tau-Omega VOD retrieval algorithm | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/10_vod_retrieval.py?mode=edit) |
-| 11 | `11_icechunk_store.py` | Versioned Icechunk/Zarr storage | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/11_icechunk_store.py?mode=edit) |
-| 12 | `12_store_metadata.py` | DataCite/ACDD/STAC provenance metadata | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/12_store_metadata.py?mode=edit) |
-| 13 | `13_workflow_store_operations.py` | Store read/write/branch operations | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_workflow_store_operations.py?mode=edit) |
-| 14 | `14_visualization.py` | 2D/3D hemispheric visualization | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/14_visualization.py?mode=edit) |
-| 15 | `15_grid_exploration.py` | Interactive hemispheric grid explorer | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/15_grid_exploration.py?mode=edit) |
-| 16 | `16_grid_3d_gallery.py` | 3D gallery comparing all hemispheric grid types | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/16_grid_3d_gallery.py?mode=edit) |
-| 17 | `17_api_overview.py` | API overview: CLI and Site pipeline | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/17_api_overview.py?mode=edit) |
-| 18 | `18_site_pipeline.py` | `Site().pipeline().process_range()` | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/18_site_pipeline.py?mode=edit) |
-| 19 | `19_workflow_single_day.py` | End-to-end single-day processing | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/19_workflow_single_day.py?mode=edit) |
-| 20 | `20_workflow_batch_processing.py` | Batch processing with Dask | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/20_workflow_batch_processing.py?mode=edit) |
-| 21 | `21_plugins.py` | Your own VOD calculator: register it, compare it, make it a plugin | [![molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/21_plugins.py?mode=edit) |
+| 01 | `01_cli_pipeline.py` | `canvodpy run`: the production CLI | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/01_cli_pipeline.py) |
+| 02 | `02_configuration.py` | Pydantic configuration models | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/02_configuration.py) |
+| 03 | `03_convenience_speedrun.py` | Full pipeline in five cells | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/03_convenience_speedrun.py) |
+| 04 | `04_naming_convention.py` | GNSS filename convention parsing and validation | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/04_naming_convention.py) |
+| 05 | `05_rinex_reading.py` | RINEX v3.04 file reading → `xarray.Dataset` | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/05_rinex_reading.py) |
+| 06 | `06_sbf_reading.py` | SBF binary file reading | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/06_sbf_reading.py) |
+| 07 | `07_satellite_catalog.py` | IGS SatelliteCatalog: PRN metadata and lookup | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/07_satellite_catalog.py) |
+| 08 | `08_ephemeris_coordinates.py` | SP3/CLK augmentation and ECEF → spherical transforms | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/08_ephemeris_coordinates.py) |
+| 09 | `09_hemispheric_grids.py` | Equal-area, equal-angle, geodesic, Fibonacci grids | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/09_hemispheric_grids.py) |
+| 10 | `10_vod_retrieval.py` | Tau-Omega VOD retrieval algorithm | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/10_vod_retrieval.py) |
+| 11 | `11_icechunk_store.py` | Versioned Icechunk/Zarr storage | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/11_icechunk_store.py) |
+| 12 | `12_store_metadata.py` | DataCite/ACDD/STAC provenance metadata | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/12_store_metadata.py) |
+| 13 | `13_workflow_store_operations.py` | Store read/write/branch operations | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/13_workflow_store_operations.py) |
+| 14 | `14_visualization.py` | 2D/3D hemispheric visualization | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/14_visualization.py) |
+| 15 | `15_grid_exploration.py` | Interactive hemispheric grid explorer | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/15_grid_exploration.py) |
+| 16 | `16_grid_3d_gallery.py` | 3D gallery comparing all hemispheric grid types | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/16_grid_3d_gallery.py) |
+| 17 | `17_api_overview.py` | API overview: CLI and Site pipeline | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/17_api_overview.py) |
+| 18 | `18_site_pipeline.py` | `Site().pipeline().process_range()` | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/18_site_pipeline.py) |
+| 19 | `19_workflow_single_day.py` | End-to-end single-day processing | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/19_workflow_single_day.py) |
+| 20 | `20_workflow_batch_processing.py` | Batch processing with Dask | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/20_workflow_batch_processing.py) |
+| 21 | `21_plugins.py` | Your own VOD calculator: register it, compare it, make it a plugin | [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/21_plugins.py) |
 
 ## Test data
 
