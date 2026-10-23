@@ -6,7 +6,7 @@
 # ]
 #
 # [tool.uv.sources]
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "1b820d6e1dd1ef285cad48176d6a297b77b0548e" }
+# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
 #
 # [tool.marimo.opengraph]
 # title = "23 · Run Dashboard"

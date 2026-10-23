@@ -20,18 +20,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
+# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
 #
 # [tool.marimo.opengraph]
 # title = "13 · Store Operations"

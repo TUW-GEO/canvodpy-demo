@@ -7,7 +7,7 @@
 # ]
 #
 # [tool.uv.sources]
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "064ba56bf46794fa66007dd58f805bfcf9227949" }
+# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
 #
 # [tool.marimo.opengraph]
 # title = "22 · Stores on S3"
