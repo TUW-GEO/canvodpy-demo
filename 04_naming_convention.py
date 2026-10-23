@@ -38,13 +38,13 @@ def _():
 def _(mo):
     mo.md(r"""
     <p align="center" class="canvod-logo">
-      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
-      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
     </p>
 
     # Naming Convention and File Validation
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/04_naming_convention.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/04_naming_convention.py)
 
     GNSS-Transmissometry campaigns generate thousands of files across
     multiple receivers, days, and sampling intervals.  Without a strict
@@ -317,7 +317,7 @@ def _(mo):
     Sites that receive data from third-party operators often use their own
     naming schemes (RINEX v2 short names, Septentrio native names, etc.).
     The optional `canvod-filemap` package from
-    [canvodpy-extensions](https://github.com/nfb2021/canvodpy-extensions)
+    [canvodpy-extensions](https://github.com/TUW-GEO/canvodpy-extensions)
     provides **naming recipes**: a recipe translates a receiver's physical
     filenames to canonical names, without renaming anything on disk.
     Create one per receiver and name it in the receiver's `recipe` setting:
