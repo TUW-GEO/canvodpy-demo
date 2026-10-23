@@ -19,18 +19,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-grids = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-ops = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-preflight = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-store = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-store-metadata = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-viz = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvod-vod = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
-# canvodpy = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "canvodpy", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
 #
 # [tool.marimo.opengraph]
 # title = "13 · Store Operations"
@@ -55,13 +55,13 @@ def _():
     mo.md(
         r"""
     <p align="center" class="canvod-logo">
-      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
-      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
     </p>
 
     # Store Operations
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/13_workflow_store_operations.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/13_workflow_store_operations.py)
 
     A comprehensive, hands-on tour of everything `MyIcechunkStore`
     (`canvod-store`) and its companion `canvod-store-metadata` package can

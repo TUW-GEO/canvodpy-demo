@@ -58,7 +58,7 @@ def _zenodo_valid_dir(downloader=None) -> Path:
             "Install pooch to enable automatic data download:\n"
             "  pip install pooch\n"
             "Or clone the test data manually:\n"
-            "  git clone https://github.com/nfb2021/canvodpy-test-data.git test_data"
+            "  git clone https://github.com/TUW-GEO/canvodpy-test-data.git test_data"
         ) from exc
 
     cache_root = Path(pooch.os_cache("canvodpy"))
