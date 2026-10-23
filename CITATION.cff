@@ -1,0 +1,48 @@
+cff-version: 1.2.0
+message: >
+  The demo notebooks have no DOI of their own. If you use canVODpy, please
+  cite canVODpy as below.
+type: software
+title: "canVODpy Demo: Interactive marimo Notebooks for the canVODpy GNSS-Transmissometry Ecosystem"
+abstract: >
+  Interactive marimo notebooks covering the canVODpy pipeline from raw GNSS
+  data ingestion through VOD retrieval and visualization. Runnable locally or
+  in the browser via marimo molab.
+authors:
+  - family-names: Bader
+    given-names: Nicolas François
+    email: support@canvodpy.eu
+    affiliation: "TU Wien, Department of Geodesy and Geoinformation, Climate and Environmental Remote Sensing CLIMERS Research Unit"
+    orcid: "https://orcid.org/0000-0002-9932-1925"
+repository-code: "https://github.com/TUW-GEO/canvodpy-demo"
+url: "https://canvodpy.eu"
+keywords:
+  - GNSS-Transmissometry
+  - GNSS-T
+  - vegetation optical depth
+  - VOD
+  - canVODpy
+  - marimo
+  - notebooks
+license: Apache-2.0
+preferred-citation:
+  type: software
+  title: "canVODpy: An Open Python Ecosystem for GNSS-Transmissometry Canopy VOD Retrievals"
+  authors:
+    - family-names: Bader
+      given-names: Nicolas François
+      orcid: "https://orcid.org/0000-0002-9932-1925"
+  repository-code: "https://github.com/TUW-GEO/canvodpy"
+  url: "https://canvodpy.eu"
+  doi: "10.5281/zenodo.18496233"
+  license: Apache-2.0
+references:
+  - type: data
+    title: "canvodpy-test-data: Reference GNSS observations for canVODpy testing"
+    authors:
+      - family-names: Bader
+        given-names: Nicolas François
+        orcid: "https://orcid.org/0000-0002-9932-1925"
+    repository-code: "https://github.com/TUW-GEO/canvodpy-test-data"
+    doi: "10.5281/zenodo.19708759"
+    license: Apache-2.0

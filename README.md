@@ -105,6 +105,15 @@ v2.11, stripped RINEX v3.05, SBF and NMEA, with orbit and clock products.
 See [CONTRIBUTING.md](https://github.com/nfb2021/canvodpy/blob/main/CONTRIBUTING.md)
 in the canvodpy repository.
 
+## Citation
+
+The notebooks have no DOI of their own. If you use canVODpy, please cite it:
+[doi:10.5281/zenodo.18496233](https://doi.org/10.5281/zenodo.18496233).
+If you use the test data, please cite it as well:
+[doi:10.5281/zenodo.19708759](https://doi.org/10.5281/zenodo.19708759).
+[CITATION.cff](CITATION.cff) holds both; GitHub shows it under
+"Cite this repository".
+
 ## License
 
 [Apache License 2.0](LICENSE)
