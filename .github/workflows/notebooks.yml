@@ -1,0 +1,126 @@
+name: Notebooks
+
+# Every notebook runs as a script (`scripts/run_notebooks.sh`), as a reader
+# would run it: a notebook that raises an error fails the job. The weekly run
+# catches changes in canvodpy, the demo data or the dependencies that no pull
+# request here touches.
+#
+# Before the run:
+# - `marimo check --strict` fails on formatting warnings; `marimo check --fix`
+#   fixes most of them.
+# - Every notebook must pin the same canvodpy commit (`rev = "..."` in its
+#   script header), so they all show the same canvodpy.
+#
+# Notebook 22 writes stores to S3. Here it writes to an S3 emulator, RustFS,
+# at the tag canvodpy's own S3 tests use (.github/workflows/test_s3.yml in
+# canvodpy). The emulator is for this check only, not a recommendation for
+# production. After the run, the bucket must hold the stores: a notebook 22
+# that wrote nothing fails the job.
+
+on:
+    pull_request:
+    schedule:
+        - cron: "0 5 * * 1"
+    workflow_dispatch:
+
+permissions: read-all
+
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+    RUSTFS_IMAGE: rustfs/rustfs:1.0.0-rc.6@sha256:97171b3d72cd47dc81000f92ea84de25608bfc35a94c965501afaeb5d99f6035
+    BUCKET: canvod-demo
+
+jobs:
+    notebooks:
+        name: Run the notebooks
+        runs-on: ubuntu-latest
+        timeout-minutes: 60
+
+        defaults:
+            run:
+                shell: bash
+
+        steps:
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+            - name: Make throwaway credentials
+              # New for every run and masked in the logs: nothing secret is
+              # in the repository.
+              run: |
+                  key_id="$(openssl rand -hex 12)"
+                  secret="$(openssl rand -hex 24)"
+                  echo "::add-mask::${key_id}"
+                  echo "::add-mask::${secret}"
+                  {
+                      echo "AWS_ACCESS_KEY_ID=${key_id}"
+                      echo "AWS_SECRET_ACCESS_KEY=${secret}"
+                  } >> "$GITHUB_ENV"
+            - name: Start the S3 emulator
+              # A folder under /data is a bucket to RustFS.
+              run: |
+                  docker run --detach --name rustfs --publish 9000:9000 \
+                      --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY \
+                      --entrypoint /bin/sh "$RUSTFS_IMAGE" -c \
+                      "mkdir -p /data/$BUCKET && exec rustfs --access-key \"\$AWS_ACCESS_KEY_ID\" --secret-key \"\$AWS_SECRET_ACCESS_KEY\" /data"
+            - name: Install uv and set the python version
+              uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+              with:
+                  python-version: '3.14'
+                  enable-cache: true
+            - name: Check the lock file
+              run: uv lock --check
+            - name: Check the notebook format
+              run: uv run --locked marimo check --strict [0-9][0-9]_*.py
+            - name: Check that all notebooks pin the same canvodpy
+              id: rev
+              run: |
+                  revs="$(grep -ho 'rev = "[0-9a-f]*"' [0-9][0-9]_*.py | sort -u)"
+                  if [ "$(wc -l <<< "$revs")" -ne 1 ]; then
+                      echo "::error::The notebooks pin different canvodpy commits:"
+                      grep -o 'rev = "[0-9a-f]*"' [0-9][0-9]_*.py
+                      exit 1
+                  fi
+                  echo "rev=$(cut -d'"' -f2 <<< "$revs")" >> "$GITHUB_OUTPUT"
+            - name: Cache the demo data
+              # canvodpy downloads the demo data on first use. The key is the
+              # pinned canvodpy commit, which fixes the demo data version.
+              uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+              with:
+                  path: ~/.cache/canvodpy/demo
+                  key: canvodpy-demo-data-${{ steps.rev.outputs.rev }}
+            - name: Wait for the S3 emulator
+              run: |
+                  for _ in $(seq 1 60); do
+                      if curl --silent --fail http://127.0.0.1:9000/health > /dev/null; then
+                          exit 0
+                      fi
+                      sleep 1
+                  done
+                  docker logs rustfs
+                  exit 1
+            - name: Run the notebooks
+              env:
+                  CANVOD_DEMO_S3_URL: s3://${{ env.BUCKET }}/ci-${{ github.run_id }}-${{ github.run_attempt }}
+                  AWS_ENDPOINT_URL: http://127.0.0.1:9000
+                  AWS_REGION: us-east-1
+                  AWS_EC2_METADATA_DISABLED: "true"
+                  CANVOD_S3_PATH_STYLE: "1"
+              run: scripts/run_notebooks.sh
+            - name: Check that notebook 22 wrote to S3
+              run: |
+                  prefix="/data/$BUCKET/ci-${{ github.run_id }}-${{ github.run_attempt }}"
+                  count="$(docker exec rustfs sh -c "find $prefix -mindepth 1 2> /dev/null | wc -l")"
+                  echo "Objects under $prefix: $count"
+                  if [ "$count" -eq 0 ]; then
+                      echo "::error::Notebook 22 wrote nothing to the S3 emulator."
+                      exit 1
+                  fi
+            - name: Upload the notebook logs
+              if: always()
+              uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+              with:
+                  name: notebook-logs
+                  path: logs/
+                  if-no-files-found: ignore
+            - name: Emulator log
+              if: failure()
+              run: docker logs rustfs

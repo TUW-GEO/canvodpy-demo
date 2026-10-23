@@ -26,3 +26,6 @@ data/
 .coverage
 *.lcov
 *.bak
+
+# Notebook run logs (scripts/run_notebooks.sh)
+logs/

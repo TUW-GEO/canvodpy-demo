@@ -142,6 +142,19 @@ user cache folder.
 See [CONTRIBUTING.md](https://github.com/TUW-GEO/canvodpy/blob/main/CONTRIBUTING.md)
 in the canvodpy repository.
 
+CI runs every notebook on each pull request and once a week. To run the same
+checks locally:
+
+```bash
+uv run --locked marimo check --strict [0-9][0-9]_*.py   # format; --fix fixes most warnings
+scripts/run_notebooks.sh                                # all notebooks
+scripts/run_notebooks.sh 05 13                          # only these
+```
+
+Notebook 22 needs an S3 endpoint and credentials in the environment; the
+notebook shows how to start a local S3 emulator for it. Every notebook must
+pin the same canvodpy commit (`rev = "..."`).
+
 ## Citation
 
 The notebooks have no DOI of their own. If you use canVODpy, please cite it:
