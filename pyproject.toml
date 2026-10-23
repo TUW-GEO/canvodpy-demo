@@ -6,20 +6,8 @@ readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.14"
 dependencies = [
-    # ── Pre-release ──────────────────────────────────────────────────────────
-    # canvodpy is not yet on PyPI. Install from a local clone:
-    #
-    #   git clone https://github.com/TUW-GEO/canvodpy.git ../canvodpy
-    #   # then uncomment the line below and run: uv sync
-    #
-    # "canvodpy @ ../canvodpy",
-    #
-    # ── PyPI (once published) ────────────────────────────────────────────────
-    # Replace the local path above with the versioned PyPI release:
-    #
-    # "canvodpy>=<version>",
-    #
-    # ────────────────────────────────────────────────────────────────────────
+    # No canvodpy here: each notebook pins its canvod* packages from PyPI in
+    # its own PEP 723 header, and `marimo edit --sandbox` installs them.
     "marimo>=0.23.9",
 ]
 

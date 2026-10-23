@@ -8,8 +8,9 @@ name: Notebooks
 # Before the run:
 # - `marimo check --strict` fails on formatting warnings; `marimo check --fix`
 #   fixes most of them.
-# - Every notebook must pin the same canvodpy commit (`rev = "..."` in its
-#   script header), so they all show the same canvodpy.
+# - Every notebook must pin the same canvodpy release from PyPI
+#   (`"canvodpy==1.0.0"` in its script header), so they all show the same
+#   canvodpy.
 #
 # Notebook 22 writes stores to S3. Here it writes to an S3 emulator, RustFS,
 # at the tag canvodpy's own S3 tests use (.github/workflows/test_s3.yml in
@@ -71,37 +72,36 @@ jobs:
             - name: Check the notebook format
               run: uv run --locked marimo check --strict [0-9][0-9]_*.py
             - name: Check that all notebooks pin the same canvodpy
-              # Once the notebooks pin canvodpy from PyPI instead of a commit,
-              # this check and the cache key below have to change with them.
-              id: rev
+              id: release
               run: |
-                  # Each canvod* dependency in a script header needs a git
-                  # source with a rev. Notebooks without canvod* dependencies
-                  # (01, 20) need none.
+                  # Each canvod* dependency in a script header is pinned to a
+                  # release from PyPI ("canvodpy==1.0.0"), all to the same
+                  # one. Notebooks without canvod* dependencies (01, 20) need
+                  # none.
                   unpinned=0
                   for nb in [0-9][0-9]_*.py; do
                       deps="$(grep -c '^#   "canvod' "$nb" || true)"
-                      pins="$(grep -c '^# canvod[a-z-]* = { git = .*rev = "[0-9a-f]\{40\}"' "$nb" || true)"
+                      pins="$(grep -c '^#   "canvod[a-z-]*\(\[[a-z,]*\]\)\?==[0-9][0-9.]*",' "$nb" || true)"
                       if [ "$deps" -ne "$pins" ]; then
-                          echo "::error::$nb: $deps canvod* dependencies, $pins pinned to a commit."
+                          echo "::error::$nb: $deps canvod* dependencies, $pins pinned to a release."
                           unpinned=1
                       fi
                   done
                   [ "$unpinned" -eq 0 ] || exit 1
-                  revs="$(grep -ho 'rev = "[0-9a-f]*"' [0-9][0-9]_*.py | sort -u)"
-                  if [ -z "$revs" ] || [ "$(wc -l <<< "$revs")" -ne 1 ]; then
-                      echo "::error::The notebooks pin different canvodpy commits:"
-                      grep -o 'rev = "[0-9a-f]*"' [0-9][0-9]_*.py
+                  versions="$(grep -ho '^#   "canvod[^"]*==[0-9.]*"' [0-9][0-9]_*.py | sed 's/.*==//; s/"$//' | sort -u)"
+                  if [ -z "$versions" ] || [ "$(wc -l <<< "$versions")" -ne 1 ]; then
+                      echo "::error::The notebooks pin different canvodpy releases:"
+                      grep -o '^#   "canvod[^"]*"' [0-9][0-9]_*.py
                       exit 1
                   fi
-                  echo "rev=$(cut -d'"' -f2 <<< "$revs")" >> "$GITHUB_OUTPUT"
+                  echo "version=$versions" >> "$GITHUB_OUTPUT"
             - name: Cache the demo data
               # canvodpy downloads the demo data on first use. The key is the
-              # pinned canvodpy commit, which fixes the demo data version.
+              # pinned canvodpy release, which fixes the demo data version.
               uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
               with:
                   path: ~/.cache/canvodpy/demo
-                  key: canvodpy-demo-data-${{ steps.rev.outputs.rev }}
+                  key: canvodpy-demo-data-${{ steps.release.outputs.version }}
             - name: Wait for the S3 emulator
               run: |
                   for _ in $(seq 1 60); do

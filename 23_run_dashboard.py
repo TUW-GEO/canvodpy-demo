@@ -1,12 +1,9 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvodpy",
+#   "canvodpy==1.0.0",
 #   "marimo>=0.23.13",
 # ]
-#
-# [tool.uv.sources]
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
 #
 # [tool.marimo.opengraph]
 # title = "23 · Run Dashboard"

@@ -1,16 +1,11 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-config",
-#   "canvod-store-metadata",
-#   "canvod-utils",
+#   "canvod-config==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
 #   "marimo>=0.23.9",
 # ]
-#
-# [tool.uv.sources]
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
 #
 # [tool.marimo.opengraph]
 # title = "12 · Store Metadata & FAIR Compliance"

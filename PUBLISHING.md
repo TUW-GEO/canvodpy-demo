@@ -6,7 +6,7 @@ Working checklist for preparing all notebooks for molab, gallery, and thumbnails
 
 - **WASM / playground**: not viable; canvodpy depends on native C extensions
   (icechunk, xarray, numpy) that cannot compile to WebAssembly.
-- **molab**: the right path. Runs on real cloud servers, reads the single-file notebooks (each pins its own `canvod*` revision) and runs `canvodpy.demo_data()` to fetch the test data on first use.
+- **molab**: the right path. Runs on real cloud servers, reads the single-file notebooks (each pins its own `canvod*` release from PyPI) and runs `canvodpy.demo_data()` to fetch the test data on first use.
 - **Gallery**: rendered by `marimo run ./` (locally) and on molab. Driven by OpenGraph
   metadata in each notebook's PEP 723 header + thumbnail images.
 - **Thumbnails**: one link-preview image per notebook, made by
@@ -100,7 +100,7 @@ def _(root):
 ```
 
 Each data-reading notebook declares `canvodpy` (and the `canvod*` packages it
-uses) in its PEP 723 header, pinned to a single revision.
+uses) in its PEP 723 header, pinned to one canVODpy release from PyPI.
 
 The settings block is identical in the 8 notebooks that write a
 `canvod-settings.yaml` (`grep -l canvod-settings.yaml *.py`): change it in
@@ -153,6 +153,6 @@ Requires OpenGraph metadata (Step 1) and thumbnails (Step 4) to look good.
 - `css_file="canvod_nordic.css"` is already set on all notebooks; the Nordic
   Green theme will render on molab as long as the CSS file is in the repo root.
 - Each notebook is self-contained and declares its own `canvod*` dependencies
-  and their pinned revision, so molab does not need `pyproject.toml` to resolve
+  and their pinned release, so molab does not need `pyproject.toml` to resolve
   them. `canvodpy.demo_data()` fetches the test data on first use into the
   platform cache folder.

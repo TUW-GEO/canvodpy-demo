@@ -1,36 +1,22 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-auxiliary",
-#   "canvod-config",
-#   "canvod-grids",
-#   "canvod-ops",
-#   "canvod-preflight",
-#   "canvod-readers",
-#   "canvod-store",
-#   "canvod-store-metadata",
-#   "canvod-utils",
-#   "canvod-viz",
-#   "canvod-vod",
-#   "canvodpy",
+#   "canvod-auxiliary==1.0.0",
+#   "canvod-config==1.0.0",
+#   "canvod-grids==1.0.0",
+#   "canvod-ops==1.0.0",
+#   "canvod-preflight==1.0.0",
+#   "canvod-readers==1.0.0",
+#   "canvod-store==1.0.0",
+#   "canvod-store-metadata==1.0.0",
+#   "canvod-utils==1.0.0",
+#   "canvod-viz==1.0.0",
+#   "canvod-vod==1.0.0",
+#   "canvodpy==1.0.0",
 #   "marimo>=0.23.9",
 #   "matplotlib==3.11.2",
 #   "numpy==2.5.4",
 # ]
-#
-# [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "0ad152a240120d81929da5f2fa0e6c6c3cb9f25a" }
 #
 # [tool.marimo.opengraph]
 # title = "14 · Visualization"

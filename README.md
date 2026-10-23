@@ -153,7 +153,7 @@ scripts/run_notebooks.sh 05 13                          # only these
 
 Notebook 22 needs an S3 endpoint and credentials in the environment; the
 notebook shows how to start a local S3 emulator for it. Every notebook must
-pin the same canvodpy commit (`rev = "..."`).
+pin the same canVODpy release from PyPI (`"canvodpy==1.0.0"`).
 
 ## Citation
 
