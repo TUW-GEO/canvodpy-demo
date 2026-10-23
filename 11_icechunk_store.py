@@ -19,18 +19,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
 #
 # [tool.marimo.opengraph]
 # title = "11 · Icechunk Store"
@@ -79,10 +79,11 @@ def _():
 
     ---
 
-    **Test data**: this notebook builds the store live, at run time, by
-    running the site pipeline against real Rosalia RINEX v3.04 data
-    for DOY 2025-001 (canopy + reference receivers); no pre-built store
-    fixture is shipped.
+    **Test data**: the GNSS store and the VOD store that `canvodpy run`
+    writes from the Rosalia RINEX v3.04 day, 2025-01-01 (canopy and
+    reference receiver), downloaded with `canvodpy.demo_data("stores")`.
+    They are canVODpy's published reference stores. How a run builds
+    them is shown in [01 · CLI Pipeline](./01_cli_pipeline.py).
 
     """
     )
@@ -90,125 +91,13 @@ def _():
 
 
 @app.cell
-def _():
+def _(mo):
+    from canvod.store import open_gnss_store
     from canvodpy import demo_data
 
-    root = demo_data("rinex")
-    root = demo_data("aux")
-    return root
-
-
-@app.cell
-def _(root):
-    import os
-    import shutil
-    import tempfile
-    from pathlib import Path
-
-    import yaml
-
-    from canvod.utils import testing
-
-    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
-    config_dir = work / "config"
-    config_dir.mkdir(parents=True, exist_ok=True)
-    aux_data_dir = work / "aux_data"
-    aux_data_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
-    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
-
-    settings = {
-        "sites": {
-            "rosalia_v3_04": {
-                "store_description": (
-                    "Reference GNSS-T store for the Rosalia beech forest site,"
-                    " built live from real RINEX v3.04 raw data (DOY 2025-001)."
-                ),
-                "description": (
-                    "Beech forest GNSS-T research site, reference test dataset."
-                ),
-                "country": "AT",
-                "latitude": 47.7,
-                "longitude": 16.3,
-                "altitude_m": 680.0,
-                "gnss_site_data_root": str(root / "rinex_v3_04" / "01_Rosalia"),
-                "receivers": {
-                    "reference_01": {
-                        "type": "reference",
-                        "directory": "01_reference/01_GNSS/01_raw",
-                        "reader_format": "rinex3",
-                        "paired_canopies": "all",
-                        "description": "Rosalia reference receiver (test data)",
-                        "metadata": {
-                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
-                            "firmware_version": "4.14.4",
-                        },
-                    },
-                    "canopy_01": {
-                        "type": "canopy",
-                        "directory": "02_canopy/01_GNSS/01_raw",
-                        "reader_format": "rinex3",
-                        "description": "Rosalia canopy receiver (test data)",
-                        "metadata": {
-                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
-                            "firmware_version": "4.14.4",
-                        },
-                    },
-                },
-                "vod_analyses": {
-                    "canopy_01_vs_reference_01": {
-                        "canopy_receiver": "canopy_01",
-                        "reference_receiver": "reference_01",
-                    }
-                },
-            }
-        },
-        "processing": {
-            "metadata": {
-                "author": testing.PERSON_NAME,
-                "email": testing.PERSON_EMAIL,
-                "orcid": testing.PERSON_ORCID,
-                "institution": testing.INSTITUTION,
-                "institution_ror": "https://ror.org/" + testing.INSTITUTION_ROR,
-                "department": testing.DEPARTMENT,
-                "research_group": testing.RESEARCH_GROUP,
-                "website": testing.WEBSITE,
-                "license": "CC-BY-4.0",
-                "publisher": testing.PUBLISHER,
-                "publisher_url": testing.WEBSITE,
-                "naming_authority": testing.NAMING_AUTHORITY,
-            },
-            "references": {
-                "software_repository": "https://github.com/TUW-GEO/canvodpy",
-                "documentation": "https://github.com/TUW-GEO/canvodpy/tree/main/docs",
-                "publications": [],
-                "funding": [],
-            },
-            "storage": {
-                "stores_root_dir": str(work / "stores"),
-                "aux_data_dir": str(aux_data_dir),
-                "shared_aux_cache_dir": None,
-            },
-            "logging": {"log_dir": str(work / "logs")},
-        },
-    }
-    (config_dir / "canvod-settings.yaml").write_text(
-        yaml.safe_dump(settings, sort_keys=False)
-    )
-    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
-
-
-@app.cell
-def _(mo, config_dir, root):
-    from canvodpy import Site
-
-    site = Site("rosalia_v3_04")
-    data = site.pipeline(n_workers=2).process_date("2025001")
-    site.vod.compute_day(data, "canopy_01_vs_reference_01", write=True)
-
-    store = site.gnss_store
-    store_path = site.gnss_store_path
+    stores_root = demo_data("stores") / "stores" / "rosalia_rinex_v3_04"
+    store_path = stores_root / "gnss"
+    store = open_gnss_store(store_path)
 
     _branches = store.get_branch_names()
     _groups = store.list_groups()
@@ -218,16 +107,15 @@ def _(mo, config_dir, root):
     ## Opening a store
 
     ```python
-    from canvodpy import Site
+    from canvod.store import open_gnss_store
+    from canvodpy import demo_data
 
-    site = Site("rosalia_v3_04")
-    data = site.pipeline().process_date("2025001")
+    stores_root = demo_data("stores") / "stores" / "rosalia_rinex_v3_04"
+    store = open_gnss_store(stores_root / "gnss")
     ```
 
-    The site pipeline ran on the demo data that `demo_data()` downloaded,
-    and wrote the store into a fresh temporary folder. Each notebook run
-    uses its own temporary folder, so the stores are throwaway and the
-    demo cache is only ever read, never written to.
+    For your own site, give the path of its GNSS store, for example
+    `open_gnss_store("/data/stores/my_site/gnss")`.
 
     | Property | Value |
     |----------|-------|
@@ -236,15 +124,12 @@ def _(mo, config_dir, root):
     | **Branches** | {", ".join(f"`{b}`" for b in _branches)} |
     | **Groups** | {", ".join(f"`{g}`" for g in _groups) if _groups else "(empty)"} |
 
-    The store knows its site from its own metadata, not from the folder
-    it sits in, so moving or renaming the folder doesn't change it.
-
-    A normal `canvodpy run` (or `site.pipeline()`) writes to both the GNSS
-    and the VOD store in the same pipeline pass whenever the site config
-    defines `vod_analyses` -- no separate VOD computation step is needed.
+    `demo_data("stores")` downloads the store once and returns the same
+    folder on every later call. This notebook only reads it; copy a
+    store before you write to it.
     """
     )
-    return site, store
+    return store, stores_root
 
 
 @app.cell
@@ -254,9 +139,11 @@ def _(store):
 
 
 @app.cell
-def _(site, mo):
-    vod_store = site.vod_store
-    vod_store_path = site.vod_store_path
+def _(mo, stores_root):
+    from canvod.store import open_vod_store
+
+    vod_store_path = stores_root / "vod"
+    vod_store = open_vod_store(vod_store_path)
 
     _vod_branches = vod_store.get_branch_names()
     _vod_groups = vod_store.list_groups()
@@ -272,7 +159,7 @@ def _(site, mo):
     retrieval algorithms.
 
     ```python
-    vod_store = MyIcechunkStore(store_path=Path("stores/my_site/vod"), store_type="vod_store")
+    vod_store = open_vod_store(stores_root / "vod")
     ```
 
     | Property | Value |

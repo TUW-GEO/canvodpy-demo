@@ -20,18 +20,18 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
-# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "c979f38b33048852ed3c2c4c6b4ab10b5b85f654" }
+# canvod-auxiliary = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-auxiliary", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-grids = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-grids", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-ops = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-ops", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-preflight = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-preflight", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-store-metadata = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-store-metadata", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-viz = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-viz", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvod-vod = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-vod", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
+# canvodpy = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "canvodpy", rev = "4a31f872538381aaa35ae9e811d982ceeb5dc625" }
 #
 # [tool.marimo.opengraph]
 # title = "13 · Store Operations"
@@ -69,12 +69,31 @@ def _():
     do to a real store: branching, writing, commit history, time travel,
     native rich rendering, and store-wide provenance metadata.
 
-    Every operation below runs against the **same live store** built for
-    [11 · Icechunk Store](./11_icechunk_store.py); nothing here is illustrative-only.
+    Every operation below runs against a real store, the one
+    [11 · Icechunk Store](./11_icechunk_store.py) shows; nothing here is illustrative-only.
 
-    **Test data**: this notebook builds the store live, at run time, by
-    running the site pipeline against real Rosalia RINEX v3.04 data
-    for DOY 2025-001; no pre-built store fixture is shipped.
+    **Test data**: a copy of the GNSS store that `canvodpy run` writes
+    from the Rosalia RINEX v3.04 day, 2025-01-01, downloaded with
+    `canvodpy.demo_data("stores")`, canVODpy's published reference store.
+    The operations below write to the store, so the notebook works on a
+    copy in a temporary folder and the downloaded store stays as it is.
+
+    **Settings**: reading a store and moving branches need no settings,
+    but writing a group does, and the settings must match the ones the
+    store was written with. Write them from the store once before this
+    notebook, into a folder of their own, and point canVODpy at it:
+
+    ```bash
+    canvodpy config init --config-dir ~/canvodpy-demo-settings \
+        --from-store <cache>/stores/rosalia_rinex_v3_04/gnss
+    export CANVOD_CONFIG_DIR=~/canvodpy-demo-settings
+    ```
+
+    `<cache>` is the folder `canvodpy.demo_data("stores")` returns. Fill
+    in the values the file leaves as `TODO` (your name, email and
+    folders). Without settings, the write below stops with an error that
+    says so; with settings from `canvodpy config init` alone, the store
+    refuses the write because its site is not in them.
 
     ---
 
@@ -84,124 +103,19 @@ def _():
 
 
 @app.cell
-def _():
-    from canvodpy import demo_data
-
-    root = demo_data("rinex")
-    root = demo_data("aux")
-    return root
-
-
-@app.cell
-def _(root):
-    import os
+def _(mo):
     import shutil
     import tempfile
     from pathlib import Path
 
-    import yaml
+    from canvod.store import open_gnss_store
+    from canvodpy import demo_data
 
-    from canvod.utils import testing
-
-    work = Path(tempfile.mkdtemp(prefix="canvodpy_demo_"))
-    config_dir = work / "config"
-    config_dir.mkdir(parents=True, exist_ok=True)
-    aux_data_dir = work / "aux_data"
-    aux_data_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
-    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
-
-    settings = {
-        "sites": {
-            "rosalia_v3_04": {
-                "store_description": (
-                    "Reference GNSS-T store for the Rosalia beech forest site,"
-                    " built live from real RINEX v3.04 raw data (DOY 2025-001)."
-                ),
-                "description": (
-                    "Beech forest GNSS-T research site, reference test dataset."
-                ),
-                "country": "AT",
-                "latitude": 47.7,
-                "longitude": 16.3,
-                "altitude_m": 680.0,
-                "gnss_site_data_root": str(root / "rinex_v3_04" / "01_Rosalia"),
-                "receivers": {
-                    "reference_01": {
-                        "type": "reference",
-                        "directory": "01_reference/01_GNSS/01_raw",
-                        "reader_format": "rinex3",
-                        "paired_canopies": "all",
-                        "description": "Rosalia reference receiver (test data)",
-                        "metadata": {
-                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
-                            "firmware_version": "4.14.4",
-                        },
-                    },
-                    "canopy_01": {
-                        "type": "canopy",
-                        "directory": "02_canopy/01_GNSS/01_raw",
-                        "reader_format": "rinex3",
-                        "description": "Rosalia canopy receiver (test data)",
-                        "metadata": {
-                            "receiver_model": "Septentrio AsteRx-SB3 Pro",
-                            "firmware_version": "4.14.4",
-                        },
-                    },
-                },
-                "vod_analyses": {
-                    "canopy_01_vs_reference_01": {
-                        "canopy_receiver": "canopy_01",
-                        "reference_receiver": "reference_01",
-                    }
-                },
-            }
-        },
-        "processing": {
-            "metadata": {
-                "author": testing.PERSON_NAME,
-                "email": testing.PERSON_EMAIL,
-                "orcid": testing.PERSON_ORCID,
-                "institution": testing.INSTITUTION,
-                "institution_ror": "https://ror.org/" + testing.INSTITUTION_ROR,
-                "department": testing.DEPARTMENT,
-                "research_group": testing.RESEARCH_GROUP,
-                "website": testing.WEBSITE,
-                "license": "CC-BY-4.0",
-                "publisher": testing.PUBLISHER,
-                "publisher_url": testing.WEBSITE,
-                "naming_authority": testing.NAMING_AUTHORITY,
-            },
-            "references": {
-                "software_repository": "https://github.com/TUW-GEO/canvodpy",
-                "documentation": "https://github.com/TUW-GEO/canvodpy/tree/main/docs",
-                "publications": [],
-                "funding": [],
-            },
-            "storage": {
-                "stores_root_dir": str(work / "stores"),
-                "aux_data_dir": str(aux_data_dir),
-                "shared_aux_cache_dir": None,
-            },
-            "logging": {"log_dir": str(work / "logs")},
-        },
-    }
-    (config_dir / "canvod-settings.yaml").write_text(
-        yaml.safe_dump(settings, sort_keys=False)
-    )
-    os.environ["CANVOD_CONFIG_DIR"] = str(config_dir)
-    return work, config_dir
-
-
-@app.cell
-def _(mo, config_dir, root):
-    from canvodpy import Site
-
-    site = Site("rosalia_v3_04")
-    site.pipeline(n_workers=2).process_date("2025001")
-
-    store = site.gnss_store
-    store_path = site.gnss_store_path
+    # The operations below write: work on a copy of the downloaded store.
+    _published = demo_data("stores") / "stores" / "rosalia_rinex_v3_04" / "gnss"
+    store_path = Path(tempfile.mkdtemp(prefix="canvodpy-demo-")) / "gnss"
+    shutil.copytree(_published, store_path)
+    store = open_gnss_store(store_path)
 
     _branches = store.get_branch_names()
     _groups = store.list_groups()
@@ -212,10 +126,9 @@ def _(mo, config_dir, root):
     ## Opening and inspecting a store
 
     ```python
-    from canvodpy import Site
+    from canvod.store import open_gnss_store
 
-    site = Site("rosalia_v3_04")
-    data = site.pipeline().process_date("2025001")
+    store = open_gnss_store(store_path)  # a copy of demo_data("stores")
     ```
 
     | Property | Value |
@@ -227,10 +140,6 @@ def _(mo, config_dir, root):
 
     The `source_format` root attribute indicates whether data
     originated from RINEX or SBF files.
-
-    This store was built by running the site pipeline on the demo data that
-    `demo_data()` downloaded; the settings above tell the site where its
-    data and stores live, in a fresh temporary folder each run.
     """
     )
     return site, store, store_path
@@ -446,21 +355,14 @@ def _(mo):
     mo.md(r"""
     ## Changing data on the branch
 
-    `canvodpy run` writes the observations; afterwards you can still add
-    variables computed from the data already in a group. Here the
-    observations of `canopy_01` are assigned to the cells of a 5° equal-area
-    grid, the same operation as `processing.preprocessing.grid_assignment` in
-    a run. Only the new `cell_id_equal_area_5.0deg` variable is written, and
-    only on `demo/scratch`, so `main` is unaffected:
-
-    ```python
-    from canvod.ops import assign_grid_cells_in_store
-
-    assign_grid_cells_in_store(
-        store, "canopy_01", grid_type="equal_area", angular_resolution=5.0,
-        branch="demo/scratch",
-    )
-    ```
+    A small synthetic dataset, built inline (not real GNSS data) purely
+    to demonstrate `write_initial_group()` without touching any of the
+    real ingested groups. Written to the `demo/scratch` branch, so
+    `main` is completely unaffected. Its epochs are marked as GPS time
+    (`epoch.attrs["time_system"] = "GPS"`): a store holds GPS time only and
+    refuses data that doesn't record its time scale. The write takes its
+    chunks and compression from your settings file, so it needs the
+    settings written from the store (see the top of this notebook).
     """)
     return
 
@@ -1156,18 +1058,6 @@ def _(mo):
     # first, last or middle value, as integer_method sets.
     # sid-only coords (e.g. sv, band) are preserved unchanged.
     ```
-
-    #### Quick-look: `store.safe_temporal_aggregate()`
-
-    For interactive exploration, the store provides a convenience method:
-
-    ```python
-    ds_agg = store.safe_temporal_aggregate("canopy_01", freq="1D")
-    ```
-
-    This uses xarray's `.resample()` which preserves the `sid` dimension
-    (each satellite is aggregated independently).  For production
-    analyses, prefer `TemporalAggregate`.
 
     #### Anti-pattern: naive resampling
 
