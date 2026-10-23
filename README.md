@@ -110,7 +110,9 @@ uv run marimo edit demo/10_vod_retrieval.py
 Notebooks that read real GNSS data get it from `canvodpy.demo_data()`,
 which downloads it on first use into your platform's cache folder: Linux
 `~/.cache/canvodpy/demo/2`, macOS `~/Library/Caches/canvodpy/demo/2`,
-Windows `%LOCALAPPDATA%\canvodpy\canvodpy\Cache\demo\2`. Later runs
+Windows `%LOCALAPPDATA%\canvodpy\canvodpy\Cache\demo\2`. The reference
+stores of `demo_data("stores")` go next to it, into
+`demo/stores/<revision>`. Later runs
 reuse the cached copy; no manual download and no cloned test-data
 repository are needed.
 
