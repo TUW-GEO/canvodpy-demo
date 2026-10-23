@@ -9,9 +9,9 @@
 # ]
 #
 # [tool.uv.sources]
-# canvod-config = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-readers = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
-# canvod-utils = { git = "https://github.com/nfb2021/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-config = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-config", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-readers = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-readers", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
+# canvod-utils = { git = "https://github.com/TUW-GEO/canvodpy.git", subdirectory = "packages/canvod-utils", rev = "f30959f710ca71e28433135f25140097d0c0e08f" }
 #
 # [tool.marimo.opengraph]
 # title = "05 · RINEX v3 Observation Reading"
@@ -36,13 +36,13 @@ def _():
     mo.md(
         r"""
     <p align="center" class="canvod-logo">
-      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
-      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-light" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" alt="canVODpy logo" width="280">
+      <img class="canvod-logo-dark" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg" alt="canVODpy logo" width="280">
     </p>
 
     # RINEX v3.04 Observation Reading
 
-    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/nfb2021/canvodpy-demo/blob/main/05_rinex_reading.py?mode=edit)
+    [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/TUW-GEO/canvodpy-demo/blob/main/05_rinex_reading.py)
 
     This notebook introduces the **canvod-readers** package and demonstrates how
     to read RINEX v3.04 observation files into `xarray.Dataset` objects.

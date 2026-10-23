@@ -5,22 +5,22 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 <!-- Identity -->
-[![canVODpy](https://img.shields.io/badge/canVODpy-submodule-2d6a4f)](https://github.com/nfb2021/canvodpy)
+[![canVODpy](https://img.shields.io/badge/canVODpy-submodule-2d6a4f)](https://github.com/TUW-GEO/canvodpy)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![CLIMERS @ TU Wien](https://img.shields.io/badge/CLIMERS-TU_Wien-006699)](https://www.tuwien.at/en/mg/geo/climers)
 [![VODnet](https://img.shields.io/badge/-VODnet-2d6a4f?labelColor=555555&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAHhlWElmTU0AKgAAAAgABAEaAAUAAAABAAAAPgEbAAUAAAABAAAARgEoAAMAAAABAAIAAIdpAAQAAAABAAAATgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAA6gAwAEAAAAAQAAAA4AAAAAjn8NzQAAAAlwSFlzAAALEwAACxMBAJqcGAAAAflJREFUKBWtUEtoE1EUPe+9SczHiam/aixtqi1E7aai4kK0CAVBDFZwrQs3xp2KIriYtiKuav3QRVxYKIjFVihWrCBIaaWioKidQBsxi3SwYmMmkxidYWaemYEEKUgRPHDhXu4575x3gf+NKfVD3UQ2u/Zv7wrLF8mPfV2ZH1ZCNIM7xUCAHHjyfN6wQ8mZo3vvE4Av57tzOjfd/WZpivfJSW5wkzvomnzFe2SFTyyU+iFJtCpk1eaRfOIw84TuRsN7kEkVMDzyEjPvUtga2YiDTRFM5+m+F8XYHMZuzDqaWlQf8yVMpmJ0/DUu9g6hVNQAy8au3W04NHAV85oFRulZS+LDkIjtWmcyHT6vQHYoXwrouTWKkv4LLOAHE4N4K6dxZ2AISl4DpawVDVrYcXSFZtTPGSV8IatjUVErJ+Cwbdstx3Vw8CG+pmQIHg+HUVlWo7aSp/qz9Kn3W5p5S/x4DJ8/lfGt4kAow7bmBpQ9fuQ3RUFtM4Uz61Qk/vijbpLbgtc61n05zjQ1hCvXHmB9fT3OnT8NOWfi+uxP0IJxE4S4jrXzxrffm1xlb75Aud/cEFmD9vYW6KaNUoUmCpS3BblUPNk45sR0UBM6Qzx2qd9LVnfqujGS+64puaX8olEuj4uMHHnc2dTrcFZGtCOMxv11KxP/kfEbTTzNcyb5ar0AAAAASUVORK5CYII=&logoColor=white)](https://www.gfz.de/en/section/remote-sensing-and-geoinformatics/projects/vodnet)
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg">
-    <img alt="canVODpy logo" src="https://raw.githubusercontent.com/nfb2021/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" width="312">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_dark_mode.svg">
+    <img alt="canVODpy logo" src="https://raw.githubusercontent.com/TUW-GEO/canvodpy/main/docs/assets/logo/canvodpy_logo_bright_mode.svg" width="312">
   </picture>
 </p>
 
 # canVODpy Demo Notebooks
 
 [marimo](https://marimo.io) notebooks for
-[canVODpy](https://github.com/nfb2021/canvodpy), the software for canopy
+[canVODpy](https://github.com/TUW-GEO/canvodpy), the software for canopy
 Vegetation Optical Depth (VOD) from GNSS transmissometry. They go through
 the whole pipeline on real data: reading receiver files, adding satellite
 positions, hemispheric grids, VOD, versioned storage and plots.
@@ -38,7 +38,7 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/),
 clone this repository and run a notebook:
 
 ```bash
-git clone https://github.com/nfb2021/canvodpy-demo.git
+git clone https://github.com/TUW-GEO/canvodpy-demo.git
 cd canvodpy-demo
 uvx marimo edit --sandbox 10_vod_retrieval.py   # edit and run
 uvx marimo run --sandbox 10_vod_retrieval.py    # read-only app
@@ -54,7 +54,7 @@ The notebooks are the `demo/` submodule of canvodpy and use its environment
 and test data:
 
 ```bash
-git clone --recurse-submodules https://github.com/nfb2021/canvodpy.git
+git clone --recurse-submodules https://github.com/TUW-GEO/canvodpy.git
 cd canvodpy
 uv sync
 uv run marimo edit demo/10_vod_retrieval.py
@@ -88,7 +88,7 @@ uv run marimo edit demo/10_vod_retrieval.py
 
 ## Test data
 
-The notebooks read [canvodpy-test-data](https://github.com/nfb2021/canvodpy-test-data):
+The notebooks read [canvodpy-test-data](https://github.com/TUW-GEO/canvodpy-test-data):
 real observations of receiver pairs at four sites in RINEX v3.04, RINEX
 v2.11, stripped RINEX v3.05, SBF and NMEA, with orbit and clock products.
 `_paths.py` finds the data in this order:
@@ -97,12 +97,12 @@ v2.11, stripped RINEX v3.05, SBF and NMEA, with orbit and clock products.
 | ----- | ---- |
 | `../packages/canvod-readers/tests/test_data/` | inside the canvodpy repository |
 | the user cache folder, `canvodpy/` | after a first download |
-| `./test_data/` | after `git clone https://github.com/nfb2021/canvodpy-test-data.git test_data` |
+| `./test_data/` | after `git clone https://github.com/TUW-GEO/canvodpy-test-data.git test_data` |
 | Zenodo ([doi:10.5281/zenodo.19708759](https://doi.org/10.5281/zenodo.19708759)) | otherwise: downloaded once (about 1.7 GB) and cached |
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/nfb2021/canvodpy/blob/main/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/TUW-GEO/canvodpy/blob/main/CONTRIBUTING.md)
 in the canvodpy repository.
 
 ## Citation
