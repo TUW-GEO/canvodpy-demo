@@ -610,6 +610,8 @@ def _(mo):
     # Validate the configuration and the receiver data it points to
     canvodpy config validate
     canvodpy config validate --site <site>
+    # ... with an overlay file applied on top, as for canvodpy run
+    canvodpy config validate --config overlay.yaml
 
     # Show the current configuration
     canvodpy config show
