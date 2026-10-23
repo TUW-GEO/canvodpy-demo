@@ -4,7 +4,7 @@
 #   "canvod-config",
 #   "canvod-store-metadata",
 #   "canvod-utils",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 # ]
 #
 # [tool.uv.sources]

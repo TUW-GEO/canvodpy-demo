@@ -5,7 +5,7 @@
 #   "canvod-readers",
 #   "canvod-utils",
 #   "canvodpy",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 #   "numpy==2.5.4",
 # ]
 #

@@ -1,7 +1,7 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 # ]
 #
 # [tool.marimo.opengraph]

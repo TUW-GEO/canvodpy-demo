@@ -14,7 +14,7 @@
 #   "canvod-vod",
 #   "canvodpy",
 #   "pyyaml>=6.0",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 #   "xarray==2026.9.0",
 # ]
 #

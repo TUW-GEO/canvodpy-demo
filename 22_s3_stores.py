@@ -2,7 +2,7 @@
 # requires-python = ">=3.14"
 # dependencies = [
 #   "canvodpy",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 #   "pyyaml==6.0.3",
 # ]
 #

@@ -14,7 +14,7 @@
 #   "canvod-vod",
 #   "canvodpy",
 #   "plotly>=5.0",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 #   "numpy==2.5.4",
 #   "xarray==2026.9.0",
 # ]

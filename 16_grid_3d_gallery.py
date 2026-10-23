@@ -15,7 +15,7 @@
 #   "canvodpy",
 #   "healpy>=1.16",
 #   "plotly>=5.0",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 #   "numpy==2.5.4",
 #   "matplotlib==3.11.2",
 # ]

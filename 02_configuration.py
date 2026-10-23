@@ -6,7 +6,7 @@
 #   "numpy>=1.24.0",
 #   "xarray>=2024.1.0",
 #   "zarr>=3.1.2",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 # ]
 #
 # [tool.uv.sources]

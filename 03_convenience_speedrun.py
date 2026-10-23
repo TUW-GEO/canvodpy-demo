@@ -15,7 +15,7 @@
 #   "canvodpy",
 #   "zarr>=3.1.2",
 #   "plotly>=5.0",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 #   "pyyaml==6.0.3",
 #   "numpy==2.5.4",
 # ]

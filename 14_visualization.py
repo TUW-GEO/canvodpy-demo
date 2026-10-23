@@ -13,7 +13,7 @@
 #   "canvod-viz",
 #   "canvod-vod",
 #   "canvodpy",
-#   "marimo>=0.21.1",
+#   "marimo>=0.23.9",
 #   "matplotlib==3.11.2",
 #   "numpy==2.5.4",
 # ]
