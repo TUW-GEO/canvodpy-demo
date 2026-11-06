@@ -283,8 +283,8 @@ def _(mo):
     ## Ephemeris products
 
     Satellite orbits are distributed as **SP3** files (precise positions
-    at 5--15 minute intervals).  Multiple analysis centres produce them
-    with varying latency.  The analysis centres also publish **CLK** files
+    at 5--15 minute intervals).  Multiple analysis centers produce them
+    with varying latency.  The analysis centers also publish **CLK** files
     (satellite clock corrections); VOD does not use them, so canvodpy reads
     them only with `processing.aux_data.fetch_clock: true`, which adds
     the variable `clock` to the GNSS store.
@@ -302,7 +302,7 @@ def _(mo):
     | **Broadcast** | Real time | `ephemeris_source: broadcast` (SBF files, or RINEX navigation files) |
 
     The latencies are those the [IGS](https://igs.org/products/) gives for
-    its own products; other analysis centres publish on their own
+    its own products; other analysis centers publish on their own
     schedules.
 
     canVODpy makes no claim about how the choice between the precise and
