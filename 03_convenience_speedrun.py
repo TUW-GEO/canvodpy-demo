@@ -60,7 +60,7 @@ def _():
     | Step | What happens |
     |------|--------------|
     | **1** | Read RINEX observation files (canopy + reference) |
-    | **2** | Augment with satellite geometry (SP3/CLK auxiliary data) |
+    | **2** | Augment with satellite geometry (SP3 orbits) |
     | **3** | Compute transmittance and VOD via Tau-Omega model |
     | **4** | Inspect results and plot VOD vs polar angle |
 
@@ -101,7 +101,6 @@ def _(root):
     aux_data_dir = work / "aux_data"
     aux_data_dir.mkdir(parents=True, exist_ok=True)
     shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
-    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
 
     settings = {
         "sites": {
@@ -191,7 +190,7 @@ def _(mo, root, work):
         f"""
         The settings for the site are written to `canvod-settings.yaml` in a
         fresh temporary folder (`{work}`), and `CANVOD_CONFIG_DIR` points at
-        it: this is how canvodpy finds the site and the SP3/CLK server list
+        it: this is how canvodpy finds the site and the SP3 server list
         here. `demo_data()` lays the test data out like a real run, under
         `{root}`; the settings, stores, logs and auxiliary data for this run
         go into the fresh temporary folder `{work}`.
@@ -248,7 +247,7 @@ def _(mo):
     ## Step 2: Augment with satellite geometry
 
     The satellite geometry (position, polar angle $\theta$, azimuth $\phi$)
-    is computed from the COD final SP3 orbits and CLK clocks that
+    is computed from the COD final SP3 orbits that
     `demo_data("aux")` put in the cache. `AgencyEphemerisProvider` reads
     those files and augments each observation with the receiver-relative
     angles, the same way `canvodpy run` does.
@@ -265,7 +264,7 @@ def _(ds_can_raw, ds_ref_raw, work):
 
     aux_root = work / "aux_data"
     provider = AgencyEphemerisProvider(
-        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
+        agency="COD", product_type="final", aux_data_dir=aux_root
     )
     provider.preprocess_day("2025001", None)
 
@@ -411,7 +410,7 @@ def _(mo):
     |----------|-------|
     | [01 · Running the Pipeline (CLI)](./01_cli_pipeline.py) | The `canvodpy run` command-line interface |
     | [05 · RINEX Reading](./05_rinex_reading.py) | Deep dive into the RINEX reader |
-    | [08 · Ephemeris & Coordinates](./08_ephemeris_coordinates.py) | SP3/CLK, ECEF → spherical |
+    | [08 · Ephemeris & Coordinates](./08_ephemeris_coordinates.py) | SP3, ECEF → spherical |
     | [10 · VOD Retrieval](./10_vod_retrieval.py) | Full VOD derivation explained |
     | [11 · Icechunk Store](./11_icechunk_store.py) | Persist results in a versioned store |
     | [19 · Single-Day Workflow](./19_workflow_single_day.py) | Production pipeline, all 96 files |

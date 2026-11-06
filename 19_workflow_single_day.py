@@ -105,7 +105,6 @@ def _(root):
     aux_data_dir = work / "aux_data"
     aux_data_dir.mkdir(parents=True, exist_ok=True)
     shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
-    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
 
     settings = {
         "sites": {
@@ -206,7 +205,7 @@ def _(canopy_dir, mo, ref_dir):
     ## Step 1: Discover RINEX files
 
     The first stage identifies all observation files for the target day.
-    Files follow the IGS long-name convention and are organised by
+    Files follow the IGS long-name convention and are organized by
     two-digit year + DOY subdirectory.
 
     | Receiver | Directory | Files found |
@@ -279,7 +278,7 @@ def _(ds_canopy, ds_reference, mo, work):
 
     aux_root = work / "aux_data"
     provider = AgencyEphemerisProvider(
-        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
+        agency="COD", product_type="final", aux_data_dir=aux_root
     )
     provider.preprocess_day("2025001", None)
 
@@ -299,7 +298,7 @@ def _(ds_canopy, ds_reference, mo, work):
     angle ($\\theta$), and azimuth ($\\phi$).
 
     The transformation chain:
-    1. Compute satellite positions from the SP3/CLK files (SP3 → Hermite interpolation → 5s grid)
+    1. Compute satellite positions from the SP3 files (SP3 → orbit interpolation, `lagrange` by default → 5s grid)
     2. Extract receiver ECEF position from RINEX header
     3. Convert satellite ECEF → receiver-local ENU → spherical
 
@@ -407,7 +406,7 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     | **New variable** | `{_cell_var}` |
 
     One hour of data covers {len(_unique):,} of {_grid.ncells:,} cells.
-    A full 24-hour day typically covers 60--80% of the hemisphere,
+    A full 24-hour day typically covers 60–80% of the hemisphere,
     limited by satellite geometry and horizon obstructions.
     """
     )
@@ -423,7 +422,7 @@ def _(mo):
     |------|----------|-------|--------|
     | 1 | `glob()` | Directory path | File list |
     | 2 | `Rnxv3Obs().to_ds()` + `xr.concat()` | RINEX files | `xr.Dataset(epoch, sid)` |
-    | 3 | `AgencyEphemerisProvider.augment_dataset()` | Dataset + SP3/CLK | Dataset + θ, φ, r |
+    | 3 | `AgencyEphemerisProvider.augment_dataset()` | Dataset + SP3 | Dataset + θ, φ, r |
     | 4 | `TauOmegaZerothOrder.from_datasets()` | Canopy + reference | VOD dataset |
     | 5 | `add_cell_ids_to_ds_fast()` | VOD dataset + grid | VOD + cell_id |
 

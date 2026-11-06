@@ -89,11 +89,11 @@ def _(mo):
     |-------|-------|-------------|---------|
     | **SIT** | 3 | Site identifier (uppercase) | `ROS` |
     | **T** | 1 | Receiver type: `R`=reference, `A`=active (canopy) | `A` |
-    | **NN** | 2 | Receiver number (01--99) | `01` |
+    | **NN** | 2 | Receiver number (01–99) | `01` |
     | **AGC** | 3 | Operating agency (uppercase) | `TUW` |
     | `_R_` | 3 | Separator (RINEX convention) | |
     | **YYYY** | 4 | Year | `2025` |
-    | **DOY** | 3 | Day of year (001--366) | `001` |
+    | **DOY** | 3 | Day of year (001–366) | `001` |
     | **HHMM** | 4 | Start hour and minute (GPS time) | `0000` |
     | **PER** | 3 | File duration (`15M`, `01H`, `01D`) | `15M` |
     | **SMP** | 3 | Sampling interval (`05S`, `01S`) | `05S` |

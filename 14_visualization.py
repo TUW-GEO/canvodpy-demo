@@ -20,7 +20,7 @@
 #
 # [tool.marimo.opengraph]
 # title = "14 · Visualization"
-# description = "Visualise VOD and hemispheric grid data in 2D polar and 3D hemispherical plots. Interactive sky-view maps of vegetation transmittance per grid cell."
+# description = "Visualize VOD and hemispheric grid data in 2D polar and 3D hemispherical plots. Interactive sky-view maps of vegetation transmittance per grid cell."
 # ///
 
 import marimo
@@ -129,7 +129,7 @@ def _(grid, mo):
 
     `plot_2d()` renders the grid cells as patches on a polar axis.
     When no data array is provided, all cells are drawn with the same
-    fill colour, useful for inspecting grid geometry.
+    fill color, useful for inspecting grid geometry.
 
     ```python
     from canvod.viz import HemisphereVisualizer, PolarPlotStyle
@@ -140,7 +140,7 @@ def _(grid, mo):
 
     The polar axis convention matches the hemispheric grid definition:
 
-    - **Radial axis**: polar angle $\theta$ (0° at centre = overhead,
+    - **Radial axis**: polar angle $\theta$ (0° at center = overhead,
       90° at edge = horizon)
     - **Angular axis**: azimuth $\phi$ (0° = North, clockwise)
     """
@@ -177,7 +177,7 @@ def _(PolarPlotStyle, grid, mo, np, viz):
     ## 2D polar plot with data
 
     When a 1-D array of length `ncells` is provided, each cell is
-    colour-mapped to its data value.  Here we simulate a polar-angle-dependent
+    color-mapped to its data value.  Here we simulate a polar-angle-dependent
     VOD field using $\\cos(\\theta)$, which produces maximum attenuation
     overhead and zero at the horizon.
 
@@ -186,7 +186,7 @@ def _(PolarPlotStyle, grid, mo, np, viz):
     fig, ax = viz.plot_2d(data=data, style=style)
     ```
 
-    The colourbar label, limits, and colourmap are all configurable
+    The colorbar label, limits, and colormap are all configurable
     through `PolarPlotStyle`.
 
     **Data shape**: {_data.shape[0]} values (one per cell)
@@ -213,7 +213,7 @@ def _(ax_empty, fig_empty, grid, mo):
     ## Tissot indicatrix
 
     The **Tissot indicatrix** places identical circles at grid cell
-    centres and lets the projection distort them.  On an equal-area
+    centers and lets the projection distort them.  On an equal-area
     grid, the circles have constant area (though their shape may vary);
     on an equal-angle grid, areas shrink toward the zenith.
 
@@ -248,7 +248,7 @@ def _(grid, mo, np, viz):
         r"""
     ## 3D interactive hemisphere
 
-    `plot_3d()` renders each grid cell as a coloured surface element on a
+    `plot_3d()` renders each grid cell as a colored surface element on a
     unit hemisphere using Plotly.  The result is interactive: rotate by
     dragging, zoom with scroll, hover for cell values.
 
@@ -299,7 +299,7 @@ def _(mo, viz):
 
     `add_spherical_overlays()` draws elevation rings (constant $\theta$)
     and meridian lines (constant $\phi$) over the hemisphere surface.
-    `add_custom_axes()` adds labelled E/N/Up axes for orientation.
+    `add_custom_axes()` adds labeled E/N/Up axes for orientation.
 
     ```python
     from canvod.viz import HemisphereVisualizer3D

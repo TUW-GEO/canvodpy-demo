@@ -3,6 +3,7 @@
 # dependencies = [
 #   "canvod-config==1.0.0",
 #   "canvod-utils==1.0.0",
+#   "canvodpy==1.0.0",
 #   "numpy>=1.24.0",
 #   "xarray>=2024.1.0",
 #   "zarr>=3.1.2",
@@ -235,10 +236,10 @@ def _(ReceiverConfig, SiteConfig, VodAnalysisConfig, mo):
 @app.cell
 def _(AuxDataConfig, mo):
     _agencies = [
-        ("COD", "final", "CODE (Bern), ~2 cm, 12-18 days"),
-        ("GFZ", "final", "GFZ Potsdam, ~2 cm, 12-18 days"),
-        ("COD", "rapid", "CODE rapid, ~2-3 cm, 17-41 hours"),
-        ("IGS", "final", "IGS combined, ~2 cm, 12-18 days"),
+        ("COD", "final", "CODE (Bern), final"),
+        ("GFZ", "final", "GFZ Potsdam, final"),
+        ("COD", "rapid", "CODE (Bern), rapid"),
+        ("IGS", "final", "IGS combined, final"),
     ]
 
     _rows = "\n".join(f"| `{a}` | `{p}` | {d} |" for a, p, d in _agencies)
@@ -249,8 +250,9 @@ def _(AuxDataConfig, mo):
         f"""
     ## Ephemeris source configuration
 
-    The `AuxDataConfig` model controls which analysis centre and
-    product type to use for satellite orbit data:
+    With `ephemeris_source: precise` (the default), the `AuxDataConfig`
+    model controls which analysis center and product type to use for
+    satellite orbit data:
 
     ```python
     aux = AuxDataConfig(agency="COD", product_type="final")
@@ -262,10 +264,19 @@ def _(AuxDataConfig, mo):
 
     **Default**: agency=`{_default.agency}`, product_type=`{_default.product_type}`
 
-    For most GNSS-T applications at 2-degree grid resolution, the choice
-    of ephemeris product has negligible impact on VOD results.  The angular
-    difference between broadcast and final orbits is approximately 0.1°,
-    20 times smaller than the grid cell size.
+    With `ephemeris_source: broadcast`, the angles come from the
+    receiver's own broadcast ephemeris instead (SBF files, or RINEX
+    navigation files), and the agency and product type do not apply.
+
+    `sp3_interpolation` picks how the orbits are interpolated onto the
+    epochs of the observations, for the precise and the RINEX broadcast
+    orbits alike: `lagrange` (the default, `{_default.sp3_interpolation}`
+    here) or `hermite`, the method of canvodpy v1.0.0. A store keeps the
+    method it was created with.
+
+    canVODpy makes no claim about how the choice between the precise and
+    the broadcast ephemeris affects VOD. It is up to you to decide
+    which one to use for which task and to what end.
     """
     )
     return
@@ -280,7 +291,7 @@ def _(ProcessingParams, mo):
         (
             "ephemeris_source",
             _default.ephemeris_source,
-            "final (SP3/CLK) or broadcast (SBF)",
+            "precise (SP3/CLK) or broadcast (SBF, RINEX navigation files)",
         ),
         ("max_memory_gb", _default.max_memory_gb, "Memory budget of a run in GB"),
         (
@@ -302,7 +313,7 @@ def _(ProcessingParams, mo):
         f"""
     ## Processing parameters
 
-    `ProcessingParams` controls pipeline behaviour:
+    `ProcessingParams` controls pipeline behavior:
 
     | Parameter | Default | Description |
     |-----------|---------|-------------|
@@ -344,7 +355,7 @@ def _(mo):
     does with a file that is already in the GNSS store (same file hash,
     or an overlapping epoch range). New files are always written:
 
-    | Strategy | Behaviour |
+    | Strategy | Behavior |
     |----------|-----------|
     | `skip` | Default: leave the stored data unchanged; the log book records the skip |
     | `overwrite` | Write the file again into its slots, replacing what it wrote before |
@@ -426,7 +437,7 @@ def _(mo):
         f"""
     ## Date utilities
 
-    GNSS data is organised by **Day of Year (DOY)**.  The `YYYYDOY`
+    GNSS data is organized by **Day of Year (DOY)**.  The `YYYYDOY`
     dataclass converts between calendar dates, DOY strings, and GPS
     week numbers:
 
@@ -510,7 +521,7 @@ def _(mo):
     The `canvodpy config` commands manage the configuration file:
 
     ```bash
-    # Initialise config/canvod-settings.yaml from the template
+    # Initialize config/canvod-settings.yaml from the template
     canvodpy config init
 
     # Validate the configuration and the receiver data it points to

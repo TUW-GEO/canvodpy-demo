@@ -22,7 +22,7 @@
 #
 # [tool.marimo.opengraph]
 # title = "08 · Ephemeris & Coordinate Augmentation"
-# description = "Augment GNSS observations with precise SP3/CLK satellite ephemeris. Transform ECEF positions to receiver-relative spherical coordinates (polar angle θ, azimuth φ)."
+# description = "Augment GNSS observations with precise SP3 satellite ephemeris. Transform ECEF positions to receiver-relative spherical coordinates (polar angle θ, azimuth φ)."
 # ///
 
 import marimo
@@ -68,7 +68,7 @@ def _():
 
     The augmentation pipeline works in two steps:
 
-    1. **Preprocessing**: download SP3 orbit and CLK clock files for the
+    1. **Preprocessing**: download the SP3 orbit files for the
        observation day $n$ and for the days $n-1$ and $n+1$, interpolate
        satellite ECEF positions to the observation sampling rate (5 s), and
        cache the result as a Zarr store. The two shouldering days increase
@@ -80,7 +80,7 @@ def _():
 
     ---
 
-    **Test data**: `demo_data()` downloads the CODE final SP3/CLK products
+    **Test data**: `demo_data()` downloads the CODE final SP3 products
     for DOY 2025-001; this notebook computes the auxiliary store from them.
 
     """
@@ -114,7 +114,6 @@ def _(root):
     aux_data_dir = work / "aux_data"
     aux_data_dir.mkdir(parents=True, exist_ok=True)
     shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
-    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
 
     settings = {
         "sites": {
@@ -221,7 +220,7 @@ def _(mo):
     (`APPROX POSITION XYZ` record), never from configuration files.
 
     ECEF coordinates express the receiver location in a Cartesian frame
-    fixed to the rotating Earth, with the origin at the Earth's centre of
+    fixed to the rotating Earth, with the origin at the Earth's center of
     mass.
     """)
     return
@@ -284,26 +283,31 @@ def _(mo):
     ## Ephemeris products
 
     Satellite orbits are distributed as **SP3** files (precise positions
-    at 5--15 minute intervals) and **CLK** files (satellite clock
-    corrections at 5--30 second intervals).  Multiple analysis centres
-    produce these products with varying latency and accuracy.
+    at 5–15 minute intervals).  Multiple analysis centers produce them
+    with varying latency.  The analysis centers also publish **CLK** files
+    (satellite clock corrections); VOD does not use them, so canvodpy reads
+    them only with `processing.aux_data.fetch_clock: true`, which adds
+    the variable `clock` to the GNSS store.
 
     | Agency | Product type |
     |--------|-------------|
     {chr(10).join(_rows)}
     | ... | ({len(_products)} products from {len(_agencies)} agencies total) |
 
-    | Product tier | Latency | Orbit accuracy | Use case |
-    |-------------|---------|----------------|----------|
-    | **Final** | 12--18 days | ~2 cm | Archival analysis |
-    | **Rapid** | 17--41 hours | ~2--3 cm | Near-real-time |
-    | **Ultra-rapid** | 3--9 hours | ~5 cm | Not supported: refused in the settings |
-    | **Broadcast** | Real-time | ~1--2 m | SBF fast path |
+    | Ephemeris | Latency of the IGS products | In canvodpy |
+    |-----------|-----------------------------|-------------|
+    | **Final** | 12–19 days | `ephemeris_source: precise`, `product_type: final` |
+    | **Rapid** | 17–41 hours | `ephemeris_source: precise`, `product_type: rapid` |
+    | **Ultra-rapid** | 3–9 hours | Not supported: refused in the settings |
+    | **Broadcast** | Real time | `ephemeris_source: broadcast` (SBF files, or RINEX navigation files) |
 
-    For GNSS-T at 2-degree grid resolution, even broadcast ephemeris is
-    sufficient: the angular difference between broadcast and final orbits
-    is approximately 0.1 degrees, which is 20x smaller than the grid cell
-    size.
+    The latencies are those the [IGS](https://igs.org/products/) gives for
+    its own products; other analysis centers publish on their own
+    schedules.
+
+    canVODpy makes no claim about how the choice between the precise and
+    the broadcast ephemeris affects VOD. It is up to you to decide
+    which one to use for which task and to what end.
     """
     )
     return
@@ -312,12 +316,12 @@ def _(mo):
 @app.cell
 def _(mo):
     mo.md(r"""
-    ## Auxiliary data computed from SP3/CLK
+    ## Auxiliary data computed from SP3
 
     The auxiliary store is not shipped pre-computed.  The next cell uses the
-    `AgencyEphemerisProvider` to build it from the CODE final SP3/CLK products
-    that `demo_data()` downloads for DOY 2025-001, using Hermite cubic spline
-    interpolation to the observation sampling rate.
+    `AgencyEphemerisProvider` to build it from the CODE final SP3 products
+    that `demo_data()` downloads for DOY 2025-001, interpolated to the
+    observation sampling rate.
     """)
     return
 
@@ -330,7 +334,7 @@ def _(aux_root, ds_single, mo, np, rx_pos):
     from canvod.auxiliary.interpolation import sampling_interval_from_epochs
 
     provider = AgencyEphemerisProvider(
-        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
+        agency="COD", product_type="final", aux_data_dir=aux_root
     )
     provider.preprocess_day("2025001", None)
 
@@ -359,7 +363,7 @@ def _(aux_root, ds_single, mo, np, rx_pos):
         f"""
     ### Auxiliary Zarr store contents
 
-    **Source**: CODE final SP3/CLK products for DOY 2025-001, downloaded by
+    **Source**: CODE final SP3 products for DOY 2025-001, downloaded by
     `demo_data()` and interpolated to the observation sampling rate.
     **Path**: `aux_data/aux_2025001_{_interval:g}s.zarr`
     **Dimensions**: `{dict(ds_aux.sizes)}`
@@ -370,9 +374,8 @@ def _(aux_root, ds_single, mo, np, rx_pos):
 
     The `X`, `Y`, `Z` variables are satellite ECEF coordinates in meters,
     interpolated from the 5-minute SP3 samples to the 5-second observation grid.
-    `Vx`, `Vy`, `Vz` are velocity components computed by central differencing
-    of the position time series.  `clock_offset` is the satellite clock
-    correction interpolated from CLK 30-second samples.
+    `Vx`, `Vy`, `Vz` are the velocity components, the derivative of the
+    interpolated orbit.
 
     The store contains **{ds_aux.sizes["sid"]}** SIDs across all
     constellations and **{ds_aux.sizes["epoch"]:,}** epochs.
@@ -452,7 +455,7 @@ def _(ds_aux, ds_single, mo, np, rx_pos):
     | **Max** | {np.nanmax(_theta):.4f} rad ({np.rad2deg(np.nanmax(_theta)):.2f} deg) | {np.nanmax(_phi):.4f} rad |
     | **Mean** | {np.nanmean(_theta):.4f} rad ({np.rad2deg(np.nanmean(_theta)):.2f} deg) | {np.nanmean(_phi):.4f} rad |
 
-    Polar angles cluster around 0.4--1.4 rad (23--80 degrees from zenith),
+    Polar angles cluster around 0.4–1.4 rad (23–80 degrees from zenith),
     reflecting the typical elevation range of visible GNSS satellites.
     Values near $\\pi/2$ (1.57 rad, 90 degrees) correspond to satellites
     close to the horizon, which are typically excluded from VOD analysis
@@ -533,18 +536,19 @@ def _(mo):
 
     Two concrete implementations exist:
 
-    ### AgencyEphemerisProvider (SP3/CLK)
+    ### AgencyEphemerisProvider (SP3)
 
-    Downloads post-processed precise orbits from an analysis centre, then
-    interpolates satellite positions using **Hermite cubic splines** (which
-    use both SP3 positions and velocities for continuity).
+    Downloads post-processed precise orbits from an analysis center, then
+    interpolates the satellite positions as `sp3_interpolation` says: by
+    default with a **polynomial of degree 10** through the 11 nearest SP3
+    epochs.
 
     ```python
     from canvod.auxiliary.ephemeris.provider import AgencyEphemerisProvider
 
     provider = AgencyEphemerisProvider(
         agency="COD",           # CODE (Bern)
-        product_type="final",   # ~2 cm orbit accuracy
+        product_type="final",   # or "rapid"
         aux_data_dir=aux_dir,   # Cache directory
     )
     provider.preprocess_day("2025001", site_config)
@@ -565,8 +569,19 @@ def _(mo):
     ```
 
     No preprocessing step is needed: the geometry is already embedded in
-    the SBF file.  This path is faster but less accurate (~1--2 m orbit
-    error vs ~2 cm for final products).
+    the SBF file, with a resolution of 0.01 degrees (SatVisibility block;
+    Septentrio AsteRx SB3 ProBase Firmware v4.14.0 Reference Guide, p. 400).
+
+    ### Broadcast ephemeris from RINEX navigation files
+
+    RINEX observation files hold no satellite geometry. With
+    `ephemeris_source: broadcast`, a receiver with RINEX files names the
+    folder of its RINEX navigation files as `nav_directory` (and a
+    `nav_recipe` if their names don't follow the canVOD convention).
+    canvodpy computes the satellite positions from the navigation records,
+    then interpolates them and transforms them to $\theta$ and $\phi$ with
+    the same polynomial and coordinate transformation as the SP3 orbits
+    above.
     """)
     return
 
@@ -595,20 +610,24 @@ def _(mo, sp3_dir):
     | **Days** | $n-1$, $n$, $n+1$ (1 h of each neighboring day) |
     | **SP3 interval** | 5 minutes (289 positions per daily file, 00:00 to 24:00) |
     | **Target interval** | 5 seconds (17,280 positions per day) |
-    | **Method** | `scipy.CubicHermiteSpline` (piecewise cubic) |
-    | **Velocities** | Computed from the SP3 positions (central differences), used as Hermite derivatives |
-    | **Clock method** | Piecewise linear with jump detection |
+    | **Method** | `processing.aux_data.sp3_interpolation`: `lagrange` (default), the polynomial of degree 10 through the 11 nearest SP3 epochs; or `hermite`, the cubic Hermite spline of canvodpy v1.0.0 |
+    | **Velocities** | Derivative of the interpolated orbit |
 
-    The orbits and clocks of the two shouldering days, $n-1$ and $n+1$,
+    The orbits of the two shouldering days, $n-1$ and $n+1$,
     are fetched as well, and one hour of each is joined to day $n$. This
     increases the interpolation accuracy at the beginning and the end of
     the day: from a single daily file, no samples would be available
-    beyond the day's edges, and the spline would not fit as well there.
+    beyond the day's edges, and the interpolation would have to extrapolate
+    there. canvodpy never extrapolates: an epoch outside a satellite's SP3
+    epochs, or between two of its SP3 epochs more than 1.5 sampling steps
+    apart, gets NaN coordinates.
 
-    The Hermite spline uses both SP3 positions and velocities as boundary
-    conditions for each cubic segment.  This produces C1-continuous
-    trajectories (continuous position and velocity) without the Runge
-    phenomenon that affects high-degree polynomial fits.
+    The default, `lagrange`, is how RTKLIB interpolates precise ephemerides
+    (RTKLIB 2.4.2 p13, `pephpos`), evaluated in barycentric form (Berrut and
+    Trefethen, 2004, *SIAM Review* 46(3), 501-517). A store keeps one
+    method: it records it and refuses runs with the other one, and a store
+    created before v1.1.0 counts as `hermite`. This notebook uses the
+    default.
     """
     )
     return

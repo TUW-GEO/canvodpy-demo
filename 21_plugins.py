@@ -98,7 +98,6 @@ def _(root):
     aux_data_dir = work / "aux_data"
     aux_data_dir.mkdir(parents=True, exist_ok=True)
     shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
-    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
 
     settings = {
         "sites": {
@@ -234,7 +233,7 @@ def _(root, work):
 
     aux_root = work / "aux_data"
     provider = AgencyEphemerisProvider(
-        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
+        agency="COD", product_type="final", aux_data_dir=aux_root
     )
     provider.preprocess_day("2025001", None)
 

@@ -4,6 +4,7 @@
 #   "canvod-config==1.0.0",
 #   "canvod-readers==1.0.0",
 #   "canvod-utils==1.0.0",
+#   "canvodpy==1.0.0",
 #   "polars",
 #   "marimo>=0.23.9",
 # ]
@@ -55,7 +56,7 @@ def _():
 
     ---
 
-    **Data source**: IGS `igs_satellite_metadata.snx`, updated every 2--4
+    **Data source**: IGS `igs_satellite_metadata.snx`, updated every 2–4
     weeks.  The catalog ships a bundled fallback copy and will never fail,
     even offline.
 

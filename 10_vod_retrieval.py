@@ -123,7 +123,6 @@ def _(root):
     aux_data_dir = work / "aux_data"
     aux_data_dir.mkdir(parents=True, exist_ok=True)
     shutil.copytree(root / "aux_data" / "01_SP3", aux_data_dir / "01_SP3")
-    shutil.copytree(root / "aux_data" / "02_CLK", aux_data_dir / "02_CLK")
 
     settings = {
         "sites": {
@@ -218,7 +217,7 @@ def _(mo):
     variables with aligned `(epoch, sid)` dimensions.
 
     Here we load one file from each receiver and augment both
-    with satellite geometry computed from the SP3/CLK files that
+    with satellite geometry computed from the SP3 files that
     `demo_data("aux")` downloaded.
     """)
     return
@@ -244,10 +243,10 @@ def _(root, work):
         keep_data_vars=["SNR"], write_global_attrs=True
     )
 
-    # Compute the satellite geometry from the SP3/CLK files demo_data downloaded
+    # Compute the satellite geometry from the SP3 files demo_data downloaded
     aux_root = work / "aux_data"
     provider = AgencyEphemerisProvider(
-        agency="COD", product_type="final", aux_data_dir=aux_root, fetch_clock=True
+        agency="COD", product_type="final", aux_data_dir=aux_root
     )
     provider.preprocess_day("2025001", None)
 

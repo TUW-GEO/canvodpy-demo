@@ -4,6 +4,7 @@
 #   "canvod-config==1.0.0",
 #   "canvod-store-metadata==1.0.0",
 #   "canvod-utils==1.0.0",
+#   "canvodpy==1.0.0",
 #   "marimo>=0.23.9",
 # ]
 #
