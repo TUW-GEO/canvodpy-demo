@@ -1,12 +1,13 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
+#   "canvodpy==1.0.0",
 #   "marimo>=0.23.9",
 # ]
 #
 # [tool.marimo.opengraph]
 # title = "20 · Batch Processing Workflows"
-# description = "Process multiple days of GNSS-T data in parallel worker processes. Covers date-range iteration, store appends, and strategies for large-scale canopy monitoring."
+# description = "Process multiple days of GNSS-T data in parallel worker processes. Covers date-range iteration, units of days written as day blocks, and strategies for large-scale canopy monitoring."
 # ///
 
 import marimo
@@ -91,16 +92,15 @@ def _(mo):
     mo.md(r"""
     ## Choosing ephemeris agencies
 
-    Different analysis centres produce orbit products with varying
-    latency and accuracy:
+    Several analysis centres produce orbit products, for example:
 
-    | Agency | Code | Latency | Orbit accuracy |
-    |--------|------|---------|----------------|
-    | **CODE** (Bern) | `COD` | 12-18 days | ~2 cm |
-    | **GFZ** (Potsdam) | `GFZ` | 12-18 days | ~2 cm |
-    | **IGS** (combined) | `IGS` | 12-18 days | ~2 cm |
-    | **ESA** | `ESA` | 12-18 days | ~2 cm |
-    | **JPL** | `JPL` | 12-18 days | ~2 cm |
+    | Agency | Code |
+    |--------|------|
+    | **CODE** (Bern) | `COD` |
+    | **GFZ** (Potsdam) | `GFZ` |
+    | **IGS** (combined) | `IGS` |
+    | **ESA** | `ESA` |
+    | **JPL** | `JPL` |
 
     ```python
     # Use CODE final products (default)
@@ -111,22 +111,16 @@ def _(mo):
     with site.pipeline(aux_agency="GFZ") as pipe:
         data = pipe.process_date("2025001")
 
-    # Use broadcast ephemeris (from SBF SatVisibility block)
-    # Only available when source format is SBF
+    # Use the broadcast ephemeris: set processing.params.ephemeris_source
+    # to "broadcast" in config/canvod-settings.yaml. SBF files bring their
+    # own angles; receivers with RINEX files need nav_directory.
     with site.pipeline() as pipe:
-        # Set processing.params.ephemeris_source to "broadcast"
-        # in config/canvod-settings.yaml
         data = pipe.process_date("2025001")
     ```
 
-    For GNSS-T at 2-degree grid resolution, the choice of agency
-    has **negligible impact** on VOD values.  The angular difference
-    between agencies is approximately 0.001°, three orders of
-    magnitude smaller than the grid cell size.
-
-    The practical difference is **availability**: if one agency's FTP
-    server is down, switch to another.  All final products use the
-    same satellite laser ranging and VLBI calibration data.
+    canVODpy makes no claim about how the choice of agency, or between
+    the precise and the broadcast ephemeris, affects VOD. It is up to you
+    to decide which one to use for which task and to what end.
     """)
     return
 

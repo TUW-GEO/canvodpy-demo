@@ -260,8 +260,8 @@ def _(mo):
     two-dimensional `xarray.Dataset` with dimensions `(epoch, sid)`.
 
     The `keep_data_vars` parameter controls which observables are retained.
-    For GNSS-T, only SNR is needed; omitting other variables reduces memory
-    by approximately 80%.
+    For GNSS-T, only SNR is needed; omitting the other variables reduces
+    memory use.
     """)
     return
 
@@ -445,9 +445,9 @@ def _(ds_single, mo, np):
     | **Dtype** | `{_snr.dtype}` |
 
     The data is stored as `float32` (not `float64`), a deliberate design
-    choice that halves memory usage.  RINEX SNR values have approximately
-    0.001 dB precision, so `float32` (7 significant digits) introduces at
-    most ~2 x 10^-6 dB truncation error, which is 1000x below measurement
+    choice that halves memory usage.  RINEX gives SNR values with three
+    decimals (format F14.3, RINEX 3.04 Table A3); for values below 64,
+    `float32` rounds them by at most 2 x 10^-6, far below that 0.001
     resolution.
     """
     )

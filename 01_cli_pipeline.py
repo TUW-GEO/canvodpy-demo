@@ -1,6 +1,7 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
+#   "canvodpy==1.0.0",
 #   "marimo>=0.23.9",
 # ]
 #
@@ -129,7 +130,7 @@ def _(mo):
 
     | Flag | Choices | Default |
     |------|---------|---------|
-    | `--ephemeris-source` | `final` (agency SP3/CLK), `broadcast` (SBF SatVisibility) | from `canvod-settings.yaml` |
+    | `--ephemeris-source` | `precise` (agency SP3/CLK), `broadcast` (SBF SatVisibility, or RINEX navigation files) | from `canvod-settings.yaml` |
     | `--vod-calculator` | registered in `VODFactory` (currently `tau_omega`) | `tau_omega` |
 
     Both flags are one-off overrides for a single invocation; they don't

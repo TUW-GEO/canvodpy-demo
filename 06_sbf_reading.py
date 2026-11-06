@@ -45,8 +45,7 @@ def _():
 
     SBF is the proprietary binary format produced by Septentrio GNSS receivers
     (e.g. PolaRx5, AsteRx).  Unlike the ASCII-based RINEX format, SBF stores
-    observations as packed binary blocks, which makes it more compact and
-    faster to write in real-time.  Each SBF file contains the same
+    observations as packed binary blocks.  Each SBF file contains the same
     fundamental observables as its RINEX counterpart (pseudorange, carrier
     phase, Doppler, and SNR) but also includes **receiver-computed
     metadata** that RINEX does not carry:
@@ -97,12 +96,11 @@ def _(mo):
     | Property | RINEX v3.04 | SBF |
     |----------|-------------|-----|
     | **Encoding** | Fixed-width ASCII | Packed binary blocks |
-    | **SNR quantization** | ~0.001 dB | 0.25 dB-Hz; 0.03125 dB-Hz with MeasExtra |
+    | **SNR quantization** | 0.001 (format F14.3, RINEX 3.04 Table A3) | 0.25 dB-Hz; 0.03125 dB-Hz with MeasExtra |
     | **Satellite geometry** | Not included | Firmware-computed azimuth, elevation |
     | **DOP values** | Not included | PDOP, HDOP, VDOP per epoch |
     | **PVT solution** | Not included | Full position/velocity/time |
     | **Multipath** | Not included | Per-signal corrections |
-    | **File size** | Larger (text) | Smaller (~40% of RINEX) |
     | **Constellations** | All GNSS | All GNSS |
 
     The MeasEpoch block reports C/N0 in steps of 0.25 dB-Hz.  Where the
@@ -304,11 +302,13 @@ def _(mo):
     Every value comes from the SBF blocks with the same time stamp as the
     observations of that epoch.
 
-    These receiver-computed angles use **broadcast ephemeris** (the
-    navigation message decoded in real time), which has ~1--2 m orbit
-    accuracy.  The canvodpy pipeline can alternatively compute angles from
-    **post-processed SP3 orbits** (~2 cm accuracy) via the auxiliary
-    package.
+    These receiver-computed angles use the **broadcast ephemeris** (the
+    navigation message decoded in real time), stored with a resolution of
+    0.01 degrees (SatVisibility block; Septentrio AsteRx SB3 ProBase
+    Firmware v4.14.0 Reference Guide, p. 400).  With
+    `ephemeris_source: broadcast` a run uses them; with `precise` (the
+    default) the canvodpy pipeline computes the angles from
+    **post-processed SP3 orbits** via the auxiliary package instead.
     """)
     return
 
@@ -442,10 +442,9 @@ def _(mo):
     | Use case | Recommended format |
     |----------|--------------------|
     | **Archival / sharing** | RINEX (open standard, tool-agnostic) |
-    | **Real-time monitoring** | SBF (no conversion step, faster I/O) |
-    | **Broadcast ephemeris** | SBF (SatVisibility block provides angles directly) |
+    | **Real-time monitoring** | SBF (no conversion step) |
+    | **Broadcast ephemeris** | Either: SBF (SatVisibility block provides angles directly), or RINEX with navigation files |
     | **Post-processed orbits** | Either (SP3/CLK augmentation replaces receiver geometry) |
-    | **Maximum SNR precision** | RINEX from non-Septentrio receivers (~0.001 dB) |
     | **Receiver diagnostics** | SBF (DOP, multipath, PVT available) |
 
     In practice, many GNSS-T sites log SBF natively and convert to RINEX

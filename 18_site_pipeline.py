@@ -358,7 +358,9 @@ def _(mo):
 
     This pattern has several advantages:
 
-    - **Idempotent ingestion**: re-running a day is safe (deduplication guards)
+    - **Idempotent ingestion**: re-running a day is safe: files already stored
+      are skipped, or with `overwrite` written to the same slots of their day
+      block, so no duplicates arise
     - **Recomputable VOD**: if the algorithm changes, VOD can be recomputed
       from the store without re-reading raw files
     - **Independent scheduling**: ingestion and retrieval can run on
