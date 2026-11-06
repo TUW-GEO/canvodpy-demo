@@ -271,7 +271,7 @@ def _(ds_sbf, mo, np):
 
     A step size q adds a quantization noise of about q / sqrt(12):
     0.072 dB-Hz RMS for 0.25 dB-Hz and 0.009 dB-Hz RMS for 0.03125 dB-Hz,
-    both small relative to the typical SNR dynamic range of 20--50 dB-Hz
+    both small relative to the typical SNR dynamic range of 20–50 dB-Hz
     observed through forest canopies.
     """
     )

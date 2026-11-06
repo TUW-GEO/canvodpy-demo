@@ -50,7 +50,7 @@ def _():
     encodes carrier phase, pseudorange, Doppler, and signal-to-noise ratio
     (SNR) observables in a fixed-width ASCII layout.
 
-    The canvod-readers package parses RINEX files into labelled, indexed
+    The canvod-readers package parses RINEX files into labeled, indexed
     `xarray.Dataset` objects with dimensions `(epoch, sid)`, where each SID
     (Signal ID) uniquely identifies a satellite-frequency-tracking-code
     combination.

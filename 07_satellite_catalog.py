@@ -56,7 +56,7 @@ def _():
 
     ---
 
-    **Data source**: IGS `igs_satellite_metadata.snx`, updated every 2--4
+    **Data source**: IGS `igs_satellite_metadata.snx`, updated every 2–4
     weeks.  The catalog ships a bundled fallback copy and will never fail,
     even offline.
 

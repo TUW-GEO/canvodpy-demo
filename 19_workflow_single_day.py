@@ -205,7 +205,7 @@ def _(canopy_dir, mo, ref_dir):
     ## Step 1: Discover RINEX files
 
     The first stage identifies all observation files for the target day.
-    Files follow the IGS long-name convention and are organised by
+    Files follow the IGS long-name convention and are organized by
     two-digit year + DOY subdirectory.
 
     | Receiver | Directory | Files found |
@@ -406,7 +406,7 @@ def _(ds_can_aug, ds_ref_aug, mo, np):
     | **New variable** | `{_cell_var}` |
 
     One hour of data covers {len(_unique):,} of {_grid.ncells:,} cells.
-    A full 24-hour day typically covers 60--80% of the hemisphere,
+    A full 24-hour day typically covers 60–80% of the hemisphere,
     limited by satellite geometry and horizon obstructions.
     """
     )

@@ -86,7 +86,7 @@ def _(mo):
     |------|-------------|----------|
     | **`equal_area`** | Constant solid angle per cell | Default for GNSS-T (fair spatial averaging) |
     | **`equal_angle`** | Constant angular spacing | Compatible with gnssvod (Humphrey et al.) |
-    | **`equirectangular`** | Simple lat/lon grid | Quick visualisation |
+    | **`equirectangular`** | Simple lat/lon grid | Quick visualization |
     | **`fibonacci`** | Golden-spiral + Voronoi | Nearly uniform sampling |
     | **`healpix`** | Hierarchical equal area | CMB / astronomy heritage |
     | **`geodesic`** | Icosahedral subdivision | Triangular cells |
@@ -303,7 +303,7 @@ def _(create_hemigrid, mo):
 
     - **2 deg**: standard for canopy structure analysis
     - **5 deg**: robust averages with fewer observations
-    - **10--15 deg**: coarse monitoring or sites with few visible satellites
+    - **10–15 deg**: coarse monitoring or sites with few visible satellites
     """
     )
     return

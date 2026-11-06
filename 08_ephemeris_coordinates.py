@@ -220,7 +220,7 @@ def _(mo):
     (`APPROX POSITION XYZ` record), never from configuration files.
 
     ECEF coordinates express the receiver location in a Cartesian frame
-    fixed to the rotating Earth, with the origin at the Earth's centre of
+    fixed to the rotating Earth, with the origin at the Earth's center of
     mass.
     """)
     return
@@ -283,7 +283,7 @@ def _(mo):
     ## Ephemeris products
 
     Satellite orbits are distributed as **SP3** files (precise positions
-    at 5--15 minute intervals).  Multiple analysis centers produce them
+    at 5–15 minute intervals).  Multiple analysis centers produce them
     with varying latency.  The analysis centers also publish **CLK** files
     (satellite clock corrections); VOD does not use them, so canvodpy reads
     them only with `processing.aux_data.fetch_clock: true`, which adds
@@ -455,7 +455,7 @@ def _(ds_aux, ds_single, mo, np, rx_pos):
     | **Max** | {np.nanmax(_theta):.4f} rad ({np.rad2deg(np.nanmax(_theta)):.2f} deg) | {np.nanmax(_phi):.4f} rad |
     | **Mean** | {np.nanmean(_theta):.4f} rad ({np.rad2deg(np.nanmean(_theta)):.2f} deg) | {np.nanmean(_phi):.4f} rad |
 
-    Polar angles cluster around 0.4--1.4 rad (23--80 degrees from zenith),
+    Polar angles cluster around 0.4–1.4 rad (23–80 degrees from zenith),
     reflecting the typical elevation range of visible GNSS satellites.
     Values near $\\pi/2$ (1.57 rad, 90 degrees) correspond to satellites
     close to the horizon, which are typically excluded from VOD analysis
@@ -538,7 +538,7 @@ def _(mo):
 
     ### AgencyEphemerisProvider (SP3)
 
-    Downloads post-processed precise orbits from an analysis centre, then
+    Downloads post-processed precise orbits from an analysis center, then
     interpolates the satellite positions as `sp3_interpolation` says: by
     default with a **polynomial of degree 10** through the 11 nearest SP3
     epochs.

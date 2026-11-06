@@ -251,7 +251,7 @@ def _(AuxDataConfig, mo):
     ## Ephemeris source configuration
 
     With `ephemeris_source: precise` (the default), the `AuxDataConfig`
-    model controls which analysis centre and product type to use for
+    model controls which analysis center and product type to use for
     satellite orbit data:
 
     ```python
@@ -313,7 +313,7 @@ def _(ProcessingParams, mo):
         f"""
     ## Processing parameters
 
-    `ProcessingParams` controls pipeline behaviour:
+    `ProcessingParams` controls pipeline behavior:
 
     | Parameter | Default | Description |
     |-----------|---------|-------------|
@@ -355,7 +355,7 @@ def _(mo):
     does with a file that is already in the GNSS store (same file hash,
     or an overlapping epoch range). New files are always written:
 
-    | Strategy | Behaviour |
+    | Strategy | Behavior |
     |----------|-----------|
     | `skip` | Default: leave the stored data unchanged; the log book records the skip |
     | `overwrite` | Write the file again into its slots, replacing what it wrote before |
@@ -437,7 +437,7 @@ def _(mo):
         f"""
     ## Date utilities
 
-    GNSS data is organised by **Day of Year (DOY)**.  The `YYYYDOY`
+    GNSS data is organized by **Day of Year (DOY)**.  The `YYYYDOY`
     dataclass converts between calendar dates, DOY strings, and GPS
     week numbers:
 
@@ -521,7 +521,7 @@ def _(mo):
     The `canvodpy config` commands manage the configuration file:
 
     ```bash
-    # Initialise config/canvod-settings.yaml from the template
+    # Initialize config/canvod-settings.yaml from the template
     canvodpy config init
 
     # Validate the configuration and the receiver data it points to

@@ -92,7 +92,7 @@ def _(mo):
     mo.md(r"""
     ## Choosing ephemeris agencies
 
-    Several analysis centres produce orbit products, for example:
+    Several analysis centers produce orbit products, for example:
 
     | Agency | Code |
     |--------|------|

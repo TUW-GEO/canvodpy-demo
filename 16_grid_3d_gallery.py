@@ -55,7 +55,7 @@ def _():
     `canvod-grids` implements, each rendered as an **interactive 3D
     Plotly scene** (rotate by dragging, zoom with scroll) in three ways:
 
-    - **a) Empty grid**: the raw tessellation, uniformly coloured, to
+    - **a) Empty grid**: the raw tessellation, uniformly colored, to
       compare cell shape and density
     - **b) Synthetic data**: the same random per-cell values projected
       onto each grid's own cells
@@ -200,7 +200,7 @@ def _(mo):
     **volume** of space that direction subtends, not its solid angle
     alone.
 
-    Modelling the canopy as a uniform-density region extending out to a
+    Modeling the canopy as a uniform-density region extending out to a
     fixed **sensing radius** $R$ around the antenna, each cell is a
     spherical sector (a cone from the antenna out to radius $R$)
     with volume
@@ -227,12 +227,12 @@ def _(mo):
     2026-07-19), so a handful of them genuinely dip a few degrees past
     the horizon (verified: ~6° at 10° resolution, ~12° at 20°; worse
     at coarser resolutions, but nowhere near reaching the far pole).
-    That's still enough to skew a colour range shared across grid
+    That's still enough to skew a color range shared across grid
     types, which is why each tab below uses its **own** scale instead:
     a shared one would let those few boundary cells compress every
     other grid's real distortion pattern into one indistinguishable
-    colour. Each figure's title shows its own value range so the
-    absolute numbers stay comparable even though the colours aren't
+    color. Each figure's title shows its own value range so the
+    absolute numbers stay comparable even though the colors aren't
     directly comparable tab-to-tab.
     """)
     return
@@ -253,7 +253,7 @@ def _(mo):
     mo.md(r"""
     ## a) Empty grids: geometry only
 
-    Uniform cell colour, no data; only the tessellation itself is
+    Uniform cell color, no data; only the tessellation itself is
     visible: cell shape, density, and horizon coverage.
     """)
     return
@@ -285,12 +285,12 @@ def _(mo):
     mo.md(r"""
     ## b) Synthetic data on each grid
 
-    Same random values everywhere, but **each tab has its own colour
+    Same random values everywhere, but **each tab has its own color
     scale** (auto-scaled to that grid's own min/max) rather than one
     shared range, since a shared scale would compress everything toward one
-    colour once any grid has a wider spread than the others. The title
+    color once any grid has a wider spread than the others. The title
     on each figure shows its actual value range so the numbers stay
-    comparable even though the colours aren't.
+    comparable even though the colors aren't.
     """)
     return
 
@@ -329,12 +329,12 @@ def _(mo):
     mo.md(r"""
     ## c) Cell volume: biomass-sampling proxy
 
-    Colour now encodes each cell's own sampled volume, not a
+    Color now encodes each cell's own sampled volume, not a
     projection-distortion probe. **Each tab is scaled to its own
     min/max**, not a shared range; with a shared scale, Fibonacci's
     few over-horizon outlier cells (see note above) would stretch the
-    colour range so wide that every other grid's real distortion
-    pattern gets compressed into one indistinguishable colour. The
+    color range so wide that every other grid's real distortion
+    pattern gets compressed into one indistinguishable color. The
     title on each figure shows its actual m³ range, so `equal_area`
     reading as visually flat *and* a tight title range together
     confirm genuine uniformity, not just a coincidentally narrow
@@ -386,7 +386,7 @@ def _(mo):
     - **orthographic** (`rho = sin(theta)`, the default): mathematically
       the same view as looking straight down at the 3D hemisphere above
       from directly overhead: horizon cells compress toward the plot's
-      rim, zenith cells stay spread out near the centre.
+      rim, zenith cells stay spread out near the center.
     - **equidistant** (`rho = theta / (pi/2)`): a *true* polar plot,
       radius linear in the polar angle, so elevation rings are evenly
       spaced. This is the conventional GNSS-skyplot convention (e.g.
