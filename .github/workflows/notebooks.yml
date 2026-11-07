@@ -9,7 +9,7 @@ name: Notebooks
 # - `marimo check --strict` fails on formatting warnings; `marimo check --fix`
 #   fixes most of them.
 # - Every notebook must pin the same canvodpy release from PyPI
-#   (`"canvodpy==1.0.0"` in its script header), so they all show the same
+#   (`"canvodpy==1.1.0"` in its script header), so they all show the same
 #   canvodpy.
 #
 # Notebook 22 writes stores to S3. Here it writes to an S3 emulator, RustFS,
@@ -75,7 +75,7 @@ jobs:
               id: release
               run: |
                   # Each canvod* dependency in a script header is pinned to a
-                  # release from PyPI ("canvodpy==1.0.0"), all to the same
+                  # release from PyPI ("canvodpy==1.1.0"), all to the same
                   # one. Notebooks without canvod* dependencies (01, 20) need
                   # none.
                   unpinned=0
