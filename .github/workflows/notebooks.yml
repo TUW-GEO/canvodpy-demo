@@ -9,7 +9,7 @@ name: Notebooks
 # - `marimo check --strict` fails on formatting warnings; `marimo check --fix`
 #   fixes most of them.
 # - Every notebook must pin the same canvodpy release from PyPI
-#   (`"canvodpy==1.0.0"` in its script header), so they all show the same
+#   (`"canvodpy==1.1.0"` in its script header), so they all show the same
 #   canvodpy.
 #
 # Notebook 22 writes stores to S3. Here it writes to an S3 emulator, RustFS,
@@ -75,9 +75,11 @@ jobs:
               id: release
               run: |
                   # Each canvod* dependency in a script header is pinned to a
-                  # release from PyPI ("canvodpy==1.0.0"), all to the same
-                  # one. Notebooks without canvod* dependencies (01, 20) need
-                  # none.
+                  # release from PyPI ("canvodpy==1.1.0"). All notebooks pin
+                  # the same canvodpy release, and each canvod-* package at
+                  # one version, the one that canvodpy release pins (packages
+                  # have versions of their own). Notebooks without canvod-*
+                  # dependencies need none.
                   unpinned=0
                   for nb in [0-9][0-9]_*.py; do
                       deps="$(grep -c '^#   "canvod' "$nb" || true)"
@@ -88,10 +90,19 @@ jobs:
                       fi
                   done
                   [ "$unpinned" -eq 0 ] || exit 1
-                  versions="$(grep -ho '^#   "canvod[^"]*==[0-9.]*"' [0-9][0-9]_*.py | sed 's/.*==//; s/"$//' | sort -u)"
+                  versions="$(grep -ho '^#   "canvodpy==[0-9.]*"' [0-9][0-9]_*.py | sed 's/.*==//; s/"$//' | sort -u)"
                   if [ -z "$versions" ] || [ "$(wc -l <<< "$versions")" -ne 1 ]; then
                       echo "::error::The notebooks pin different canvodpy releases:"
-                      grep -o '^#   "canvod[^"]*"' [0-9][0-9]_*.py
+                      grep -o '^#   "canvodpy==[^"]*"' [0-9][0-9]_*.py
+                      exit 1
+                  fi
+                  # One version per canvod-* package across the notebooks.
+                  mixed="$(grep -ho '^#   "canvod-[a-z-]*\(\[[a-z,]*\]\)\?==[0-9.]*"' [0-9][0-9]_*.py \
+                      | sed 's/^#   "//; s/"$//; s/\[[a-z,]*\]//' | sort -u \
+                      | cut -d= -f1 | uniq -d)"
+                  if [ -n "$mixed" ]; then
+                      echo "::error::The notebooks pin these packages at different versions: $mixed"
+                      grep -o '^#   "canvod-[^"]*"' [0-9][0-9]_*.py
                       exit 1
                   fi
                   echo "version=$versions" >> "$GITHUB_OUTPUT"

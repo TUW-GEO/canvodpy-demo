@@ -1,9 +1,9 @@
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#   "canvod-config==1.0.0",
+#   "canvod-config==1.1.0",
 #   "canvod-utils==1.0.0",
-#   "canvodpy==1.0.0",
+#   "canvodpy==1.1.0",
 #   "numpy>=1.24.0",
 #   "xarray>=2024.1.0",
 #   "zarr>=3.1.2",
